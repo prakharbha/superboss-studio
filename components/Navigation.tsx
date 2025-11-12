@@ -49,7 +49,7 @@ export default function Navigation() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[55] transition-all duration-300 ${
         isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-transparent'
       }`}
     >
@@ -188,18 +188,19 @@ export default function Navigation() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="lg:hidden fixed inset-0 bg-white z-40 overflow-hidden"
+            className="lg:hidden fixed inset-0 top-0 left-0 right-0 bottom-0 bg-white z-[60] overflow-hidden"
+            style={{ position: 'fixed' }}
           >
             {/* Close Button */}
             <button
               onClick={() => setIsMobileMenuOpen(false)}
               aria-label="Close menu"
-              className="absolute top-6 right-6 p-2 text-sb-black hover:text-sb-grey transition-colors z-50"
+              className="absolute top-6 right-6 p-2 text-sb-black hover:text-sb-grey transition-colors z-[70]"
             >
               <X className="w-8 h-8" />
             </button>
 
-            <div className="h-full flex flex-col justify-evenly px-8 py-12 overflow-y-auto">
+            <div className="h-full w-full flex flex-col justify-evenly px-8 py-12 overflow-y-auto">
               <Link
                 href="/"
                 className="text-2xl font-semibold text-sb-black hover:text-sb-grey transition-colors text-center py-4"

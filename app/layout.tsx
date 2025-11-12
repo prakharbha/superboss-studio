@@ -4,13 +4,7 @@ import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import StructuredData from "@/components/StructuredData";
-import dynamic from "next/dynamic";
-
-// Lazy load LiveChat since it's not needed for initial render
-const LiveChat = dynamic(() => import("@/components/LiveChat"), {
-  ssr: false,
-  loading: () => null,
-});
+import ClientProviders from "@/components/ClientProviders";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -86,7 +80,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
-        <LiveChat />
+        <ClientProviders />
       </body>
     </html>
   );

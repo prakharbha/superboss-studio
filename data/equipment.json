@@ -1,0 +1,341 @@
+[
+  {
+    "id": "eq-001",
+    "name": "Professional LED Panel Light",
+    "category": "Lighting",
+    "description": "High-output LED panel with adjustable color temperature",
+    "pricePerHour": 50,
+    "pricePerDay": 300,
+    "currency": "AED",
+    "specifications": [
+      "5600K daylight balanced",
+      "Dimmable 0-100%",
+      "CRI 95+",
+      "Includes stand"
+    ],
+    "image": "/images/equipment/led-panel.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-002",
+    "name": "Softbox Kit (3-Light)",
+    "category": "Lighting",
+    "description": "Complete 3-light softbox setup for professional shoots",
+    "pricePerHour": 75,
+    "pricePerDay": 450,
+    "currency": "AED",
+    "specifications": [
+      "3 softboxes with stands",
+      "Adjustable power",
+      "Carrying case included"
+    ],
+    "image": "/images/equipment/softbox-kit.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-003",
+    "name": "Canon EOS R5 Camera",
+    "category": "Camera",
+    "description": "Professional mirrorless camera with 45MP sensor",
+    "pricePerHour": 150,
+    "pricePerDay": 900,
+    "currency": "AED",
+    "specifications": [
+      "45MP full-frame sensor",
+      "8K video recording",
+      "Dual card slots",
+      "Includes battery and charger"
+    ],
+    "image": "/images/equipment/canon-r5.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-004",
+    "name": "Sony A7 IV Camera",
+    "category": "Camera",
+    "description": "Versatile full-frame mirrorless camera",
+    "pricePerHour": 130,
+    "pricePerDay": 800,
+    "currency": "AED",
+    "specifications": [
+      "33MP full-frame sensor",
+      "4K 60fps video",
+      "Advanced autofocus",
+      "Includes battery and charger"
+    ],
+    "image": "/images/equipment/sony-a7iv.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-005",
+    "name": "24-70mm f/2.8 Lens",
+    "category": "Lens",
+    "description": "Professional zoom lens for versatile shooting",
+    "pricePerHour": 60,
+    "pricePerDay": 350,
+    "currency": "AED",
+    "specifications": [
+      "Constant f/2.8 aperture",
+      "Image stabilization",
+      "Weather sealed",
+      "Available in Canon/Sony mount"
+    ],
+    "image": "/images/equipment/24-70mm.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-006",
+    "name": "70-200mm f/2.8 Lens",
+    "category": "Lens",
+    "description": "Professional telephoto zoom lens",
+    "pricePerHour": 80,
+    "pricePerDay": 480,
+    "currency": "AED",
+    "specifications": [
+      "Constant f/2.8 aperture",
+      "Image stabilization",
+      "Perfect for portraits",
+      "Available in Canon/Sony mount"
+    ],
+    "image": "/images/equipment/70-200mm.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-007",
+    "name": "Godox AD600 Flash",
+    "category": "Lighting",
+    "description": "Powerful portable strobe light",
+    "pricePerHour": 70,
+    "pricePerDay": 420,
+    "currency": "AED",
+    "specifications": [
+      "600Ws power output",
+      "TTL and HSS support",
+      "Wireless control",
+      "Battery powered"
+    ],
+    "image": "/images/equipment/godox-ad600.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-008",
+    "name": "C-Stand with Grip Head",
+    "category": "Support",
+    "description": "Professional lighting stand",
+    "pricePerHour": 15,
+    "pricePerDay": 80,
+    "currency": "AED",
+    "specifications": [
+      "Heavy-duty construction",
+      "Adjustable height",
+      "Includes grip head and arm",
+      "Stable base"
+    ],
+    "image": "/images/equipment/c-stand.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-009",
+    "name": "Reflector 5-in-1 Kit",
+    "category": "Lighting",
+    "description": "Multi-surface reflector kit",
+    "pricePerHour": 20,
+    "pricePerDay": 100,
+    "currency": "AED",
+    "specifications": [
+      "Gold, silver, white, black, translucent",
+      "42-inch diameter",
+      "Collapsible design",
+      "Carrying case included"
+    ],
+    "image": "/images/equipment/reflector-kit.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-010",
+    "name": "Backdrop Support System",
+    "category": "Support",
+    "description": "Adjustable backdrop stand system",
+    "pricePerHour": 30,
+    "pricePerDay": 180,
+    "currency": "AED",
+    "specifications": [
+      "Adjustable width up to 3m",
+      "Height adjustable",
+      "Heavy-duty construction",
+      "Includes carrying bag"
+    ],
+    "image": "/images/equipment/backdrop-stand.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-011",
+    "name": "DJI Ronin RS3 Pro Gimbal",
+    "category": "Stabilization",
+    "description": "Professional camera stabilizer",
+    "pricePerHour": 100,
+    "pricePerDay": 600,
+    "currency": "AED",
+    "specifications": [
+      "4.5kg payload capacity",
+      "Automated axis locks",
+      "Built-in battery",
+      "Wireless control"
+    ],
+    "image": "/images/equipment/ronin-rs3.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-012",
+    "name": "Slider (120cm)",
+    "category": "Stabilization",
+    "description": "Professional camera slider",
+    "pricePerHour": 50,
+    "pricePerDay": 300,
+    "currency": "AED",
+    "specifications": [
+      "120cm travel distance",
+      "Smooth ball bearings",
+      "Supports up to 10kg",
+      "Includes carrying case"
+    ],
+    "image": "/images/equipment/slider.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-013",
+    "name": "Wireless Lavalier Mic Set",
+    "category": "Audio",
+    "description": "Professional wireless microphone system",
+    "pricePerHour": 60,
+    "pricePerDay": 350,
+    "currency": "AED",
+    "specifications": [
+      "2.4GHz wireless",
+      "100m range",
+      "8-hour battery life",
+      "Includes 2 transmitters"
+    ],
+    "image": "/images/equipment/lavalier-mic.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-014",
+    "name": "Boom Microphone Kit",
+    "category": "Audio",
+    "description": "Professional boom mic with pole",
+    "pricePerHour": 50,
+    "pricePerDay": 300,
+    "currency": "AED",
+    "specifications": [
+      "Shotgun microphone",
+      "Extendable boom pole",
+      "Shock mount included",
+      "Windscreen included"
+    ],
+    "image": "/images/equipment/boom-mic.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-015",
+    "name": "Smoke Machine",
+    "category": "Effects",
+    "description": "Professional fog/smoke machine",
+    "pricePerHour": 40,
+    "pricePerDay": 240,
+    "currency": "AED",
+    "specifications": [
+      "1500W output",
+      "Wireless remote control",
+      "Quick heat-up time",
+      "Includes fog fluid"
+    ],
+    "image": "/images/equipment/smoke-machine.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-016",
+    "name": "RGB LED Tube Lights (Set of 2)",
+    "category": "Lighting",
+    "description": "Color-changing LED tube lights",
+    "pricePerHour": 60,
+    "pricePerDay": 360,
+    "currency": "AED",
+    "specifications": [
+      "Full RGB color spectrum",
+      "App controlled",
+      "Battery powered",
+      "Includes stands"
+    ],
+    "image": "/images/equipment/rgb-tubes.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-017",
+    "name": "Green Screen Backdrop",
+    "category": "Backdrop",
+    "description": "Professional chroma key green screen",
+    "pricePerHour": 25,
+    "pricePerDay": 150,
+    "currency": "AED",
+    "specifications": [
+      "3m x 6m size",
+      "Wrinkle-resistant fabric",
+      "Includes support system",
+      "Easy setup"
+    ],
+    "image": "/images/equipment/green-screen.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-018",
+    "name": "Monitor (32-inch 4K)",
+    "category": "Monitor",
+    "description": "Professional reference monitor",
+    "pricePerHour": 40,
+    "pricePerDay": 240,
+    "currency": "AED",
+    "specifications": [
+      "32-inch 4K display",
+      "Color calibrated",
+      "Multiple input options",
+      "Includes stand"
+    ],
+    "image": "/images/equipment/monitor-4k.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-019",
+    "name": "Teleprompter",
+    "category": "Accessories",
+    "description": "Professional teleprompter system",
+    "pricePerHour": 70,
+    "pricePerDay": 420,
+    "currency": "AED",
+    "specifications": [
+      "Compatible with tablets",
+      "Adjustable glass angle",
+      "Works with cameras up to 5kg",
+      "Includes remote control"
+    ],
+    "image": "/images/equipment/teleprompter.jpg",
+    "available": true
+  },
+  {
+    "id": "eq-020",
+    "name": "Sandbags (Set of 4)",
+    "category": "Support",
+    "description": "Professional sandbags for stability",
+    "pricePerHour": 10,
+    "pricePerDay": 50,
+    "currency": "AED",
+    "specifications": [
+      "Heavy-duty construction",
+      "15kg total weight",
+      "Double-stitched",
+      "Weather resistant"
+    ],
+    "image": "/images/equipment/sandbags.jpg",
+    "available": true
+  }
+]

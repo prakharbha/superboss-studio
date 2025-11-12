@@ -1,0 +1,124 @@
+{
+  "default": {
+    "siteName": "SuperBoss Film Production & Studio",
+    "siteUrl": "https://superbossstudio.com",
+    "defaultTitle": "SuperBoss Film Production & Studio | Dubai's Premier Creative Space",
+    "defaultDescription": "Built across 16,000 sq ft, SuperBoss Studio blends artistry and architectural excellence. Professional photography studios, equipment rental, and creative spaces in Dubai.",
+    "defaultKeywords": "film studio dubai, photography studio dubai, production studio, creative space dubai, studio rental dubai, fashion photography studio, commercial photography dubai",
+    "ogImage": "/og-image.jpg",
+    "twitterHandle": "@superbossproduction",
+    "locale": "en_AE",
+    "type": "website"
+  },
+  "pages": {
+    "/": {
+      "title": "SuperBoss Film Production & Studio | Dubai's Premier Creative Space",
+      "description": "Built across 16,000 sq ft, SuperBoss Studio offers 6 versatile studios for shoots, exhibitions, events, and creative projects. Book your space today.",
+      "keywords": "film studio dubai, photography studio dubai, production studio, creative space dubai, studio rental dubai",
+      "ogType": "website"
+    },
+    "/studios": {
+      "title": "Our Studios | SuperBoss Film Production & Studio",
+      "description": "Explore our 6 professional studios ranging from 800 to 5000 sq ft. Perfect for e-commerce, fashion, music videos, events, and large-scale productions.",
+      "keywords": "photography studios dubai, film studios dubai, studio rental, production space dubai",
+      "ogType": "website"
+    },
+    "/studios/boss-unit": {
+      "title": "Boss Unit - 800 sq ft Studio | SuperBoss Studio Dubai",
+      "description": "Boss Unit: A 800 sq ft creative zone built to lead ideas from concept to creation. Perfect for e-commerce, lifestyle, and creative shoots.",
+      "keywords": "small photography studio dubai, e-commerce photography studio, product photography studio dubai",
+      "ogType": "article"
+    },
+    "/studios/boss-frame": {
+      "title": "Boss Frame - 800 sq ft Studio | SuperBoss Studio Dubai",
+      "description": "Boss Frame: A versatile 800 sq ft corner crafted for shoots and creative focus. Ideal for fashion photography and music videos.",
+      "keywords": "fashion photography studio dubai, music video studio dubai, creative studio rental",
+      "ogType": "article"
+    },
+    "/studios/boss-cell": {
+      "title": "Boss Cell - 800 sq ft Premium Studio | SuperBoss Studio Dubai",
+      "description": "Boss Cell: Our high-end 800 sq ft room designed for comfort, rest and creative planning. Perfect for designer shoots and luxury photography.",
+      "keywords": "luxury photography studio dubai, designer shoot studio, premium studio rental dubai",
+      "ogType": "article"
+    },
+    "/studios/super-cell": {
+      "title": "Super Cell - 1600 sq ft Studio | SuperBoss Studio Dubai",
+      "description": "Super Cell: 1600 sq ft of integrated studio space designed for large productions, fashion shows, and commercial advertisements.",
+      "keywords": "large photography studio dubai, fashion show venue dubai, commercial photography studio",
+      "ogType": "article"
+    },
+    "/studios/super-frame": {
+      "title": "Super Frame - 2400 sq ft Studio | SuperBoss Studio Dubai",
+      "description": "Super Frame: 2400 sq ft combination studio built for workshops, fashion trials, and immersive art setups.",
+      "keywords": "workshop venue dubai, fashion trial studio, art installation space dubai",
+      "ogType": "article"
+    },
+    "/studios/boss-arena": {
+      "title": "Boss Arena - 5000 sq ft Studio | SuperBoss Studio Dubai",
+      "description": "Boss Arena: A holistic 5000 sq ft studio for large-scale productions, events, exhibitions, and experimental showcases.",
+      "keywords": "large event space dubai, exhibition venue dubai, production studio dubai, event venue umm ramool",
+      "ogType": "article"
+    },
+    "/equipment": {
+      "title": "Equipment Rental | SuperBoss Film Production & Studio",
+      "description": "Professional photography and videography equipment rental in Dubai. Cameras, lighting, audio, and more for your production needs.",
+      "keywords": "camera rental dubai, lighting rental dubai, photography equipment rental, production equipment dubai",
+      "ogType": "website"
+    },
+    "/props": {
+      "title": "Props Rental | SuperBoss Film Production & Studio",
+      "description": "Extensive collection of props for rent including furniture, decor, textiles, and accessories. Elevate your creative projects.",
+      "keywords": "props rental dubai, furniture rental photography, studio props dubai, photography props rental",
+      "ogType": "website"
+    },
+    "/book": {
+      "title": "Book Now | SuperBoss Film Production & Studio",
+      "description": "Book your studio, equipment, and props online. Simple booking process with flexible scheduling. Our team will contact you for payment.",
+      "keywords": "book studio dubai, studio booking online, photography studio reservation dubai",
+      "ogType": "website"
+    },
+    "/rules": {
+      "title": "Studio Rules & Guidelines | SuperBoss Film Production & Studio",
+      "description": "Important rules and guidelines for using SuperBoss Studio facilities. Ensure a smooth and professional experience.",
+      "keywords": "studio rules dubai, photography studio guidelines, production studio policies",
+      "ogType": "article"
+    },
+    "/contact": {
+      "title": "Contact Us | SuperBoss Film Production & Studio",
+      "description": "Get in touch with SuperBoss Studio. Located in Umm Ramool, Dubai. Call +971 56 156 1570 or email info@superbossstudio.com",
+      "keywords": "contact studio dubai, photography studio umm ramool, film studio contact dubai",
+      "ogType": "website"
+    }
+  },
+  "structuredData": {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "SuperBoss Film Production & Studio",
+    "image": "/og-image.jpg",
+    "description": "Built across 16,000 sq ft, SuperBoss Studio blends artistry and architectural excellence. Professional photography studios, equipment rental, and creative spaces in Dubai.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Umm Ramool, St. 17, Warehouse No. 4",
+      "addressLocality": "Dubai",
+      "addressCountry": "AE"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 25.2318,
+      "longitude": 55.3537
+    },
+    "url": "https://superbossstudio.com",
+    "telephone": "+971561561570",
+    "email": "info@superbossstudio.com",
+    "priceRange": "AED 250 - AED 7500",
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "08:00",
+      "closes": "22:00"
+    },
+    "sameAs": [
+      "https://www.instagram.com/superbossproduction"
+    ]
+  }
+}

@@ -1,0 +1,239 @@
+[
+  {
+    "id": "boss-unit",
+    "name": "Boss Unit",
+    "slug": "boss-unit",
+    "size": 800,
+    "unit": "sq. ft",
+    "description": "A creative zone built to lead ideas from concept to creation.",
+    "pricePerHour": 250,
+    "pricePerDay": 1800,
+    "currency": "AED",
+    "features": [
+      "Professional lighting setup",
+      "White cyclorama wall",
+      "Climate controlled",
+      "High ceilings",
+      "Power outlets throughout",
+      "WiFi included"
+    ],
+    "suitableFor": [
+      "E-commerce shoots",
+      "Lifestyle photography",
+      "Product photography",
+      "Small creative projects"
+    ],
+    "images": [
+      "/images/studios/boss-unit-1.jpg",
+      "/images/studios/boss-unit-2.jpg",
+      "/images/studios/boss-unit-3.jpg"
+    ],
+    "video": null,
+    "location": {
+      "address": "Umm Ramool, St. 17, Warehouse No. 4, Dubai",
+      "coordinates": {
+        "lat": 25.2318,
+        "lng": 55.3537
+      }
+    }
+  },
+  {
+    "id": "boss-frame",
+    "name": "Boss Frame",
+    "slug": "boss-frame",
+    "size": 800,
+    "unit": "sq. ft",
+    "description": "A versatile corner crafted for shoots and creative focus.",
+    "pricePerHour": 250,
+    "pricePerDay": 1800,
+    "currency": "AED",
+    "features": [
+      "Professional lighting setup",
+      "Versatile backdrop options",
+      "Climate controlled",
+      "High ceilings",
+      "Power outlets throughout",
+      "WiFi included"
+    ],
+    "suitableFor": [
+      "Fashion photography",
+      "Creative shoots",
+      "Music videos",
+      "Content creation"
+    ],
+    "images": [
+      "/images/studios/boss-frame-1.jpg",
+      "/images/studios/boss-frame-2.jpg",
+      "/images/studios/boss-frame-3.jpg"
+    ],
+    "video": null,
+    "location": {
+      "address": "Umm Ramool, St. 17, Warehouse No. 4, Dubai",
+      "coordinates": {
+        "lat": 25.2318,
+        "lng": 55.3537
+      }
+    }
+  },
+  {
+    "id": "boss-cell",
+    "name": "Boss Cell",
+    "slug": "boss-cell",
+    "size": 800,
+    "unit": "sq. ft",
+    "description": "Our high end room is designed for comfort, rest and creative planning.",
+    "pricePerHour": 300,
+    "pricePerDay": 2200,
+    "currency": "AED",
+    "features": [
+      "Premium finishes",
+      "Comfortable seating area",
+      "Climate controlled",
+      "Private space",
+      "High-end lighting",
+      "WiFi included"
+    ],
+    "suitableFor": [
+      "Designer shoots",
+      "High-end fashion",
+      "Luxury product photography",
+      "Creative planning sessions"
+    ],
+    "images": [
+      "/images/studios/boss-cell-1.jpg",
+      "/images/studios/boss-cell-2.jpg",
+      "/images/studios/boss-cell-3.jpg"
+    ],
+    "video": null,
+    "location": {
+      "address": "Umm Ramool, St. 17, Warehouse No. 4, Dubai",
+      "coordinates": {
+        "lat": 25.2318,
+        "lng": 55.3537
+      }
+    }
+  },
+  {
+    "id": "super-cell",
+    "name": "Super Cell",
+    "slug": "super-cell",
+    "size": 1600,
+    "unit": "sq. ft",
+    "description": "Two studios integrated and designed for safety and creative solutions.",
+    "pricePerHour": 450,
+    "pricePerDay": 3200,
+    "currency": "AED",
+    "features": [
+      "Double studio space",
+      "Professional lighting grid",
+      "Multiple backdrop options",
+      "Climate controlled",
+      "High ceilings",
+      "Separate zones",
+      "WiFi included"
+    ],
+    "suitableFor": [
+      "Large productions",
+      "Fashion shows",
+      "Multi-set shoots",
+      "Commercial advertisements"
+    ],
+    "images": [
+      "/images/studios/super-cell-1.jpg",
+      "/images/studios/super-cell-2.jpg",
+      "/images/studios/super-cell-3.jpg"
+    ],
+    "video": null,
+    "location": {
+      "address": "Umm Ramool, St. 17, Warehouse No. 4, Dubai",
+      "coordinates": {
+        "lat": 25.2318,
+        "lng": 55.3537
+      }
+    }
+  },
+  {
+    "id": "super-frame",
+    "name": "Super Frame",
+    "slug": "super-frame",
+    "size": 2400,
+    "unit": "sq. ft",
+    "description": "A combination of three studios built for workshops, fashion trials or immersive art setups.",
+    "pricePerHour": 600,
+    "pricePerDay": 4500,
+    "currency": "AED",
+    "features": [
+      "Triple studio combination",
+      "Extensive lighting options",
+      "Multiple shooting zones",
+      "Climate controlled",
+      "High ceilings throughout",
+      "Flexible configurations",
+      "WiFi included"
+    ],
+    "suitableFor": [
+      "Workshops",
+      "Fashion trials",
+      "Immersive art installations",
+      "Large-scale productions",
+      "Events"
+    ],
+    "images": [
+      "/images/studios/super-frame-1.jpg",
+      "/images/studios/super-frame-2.jpg",
+      "/images/studios/super-frame-3.jpg"
+    ],
+    "video": null,
+    "location": {
+      "address": "Umm Ramool, St. 17, Warehouse No. 4, Dubai",
+      "coordinates": {
+        "lat": 25.2318,
+        "lng": 55.3537
+      }
+    }
+  },
+  {
+    "id": "boss-arena",
+    "name": "Boss Arena",
+    "slug": "boss-arena",
+    "size": 5000,
+    "unit": "sq. ft",
+    "description": "A holistic studio setup for large-scale productions, events and experimental showcases.",
+    "pricePerHour": 1000,
+    "pricePerDay": 7500,
+    "currency": "AED",
+    "features": [
+      "Massive production space",
+      "Professional lighting grid",
+      "Multiple backdrop zones",
+      "Climate controlled",
+      "Extra high ceilings",
+      "Loading dock access",
+      "Green room facilities",
+      "WiFi included"
+    ],
+    "suitableFor": [
+      "Large-scale productions",
+      "Fashion shows",
+      "Live performances",
+      "Designer launches",
+      "Exhibitions",
+      "Art galleries",
+      "Private events"
+    ],
+    "images": [
+      "/images/studios/boss-arena-1.jpg",
+      "/images/studios/boss-arena-2.jpg",
+      "/images/studios/boss-arena-3.jpg"
+    ],
+    "video": null,
+    "location": {
+      "address": "Umm Ramool, St. 17, Warehouse No. 4, Dubai",
+      "coordinates": {
+        "lat": 25.2318,
+        "lng": 55.3537
+      }
+    }
+  }
+]
+

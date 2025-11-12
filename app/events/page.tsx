@@ -176,7 +176,7 @@ export default function EventsPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+            className="fixed inset-0 z-[60] bg-black/95 flex items-center justify-center p-4"
             onClick={() => setSelectedItem(null)}
           >
             <motion.div
@@ -188,7 +188,7 @@ export default function EventsPage() {
             >
               <button
                 onClick={() => setSelectedItem(null)}
-                className="absolute top-4 right-4 z-10 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full transition-colors"
+                className="absolute -top-12 right-0 z-[70] bg-white hover:bg-sb-grey-light text-sb-black p-3 rounded-full transition-colors shadow-lg"
                 aria-label="Close"
               >
                 <X className="w-6 h-6" />
@@ -196,11 +196,23 @@ export default function EventsPage() {
               
               <div className="relative aspect-video rounded-lg overflow-hidden bg-sb-grey">
                 {selectedItem.type === 'video' ? (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center text-white">
-                      <Play className="w-20 h-20 mx-auto mb-4 fill-white" />
-                      <p className="text-xl">Video Preview</p>
-                      <p className="text-sm text-white/70 mt-2">Video content will be available here</p>
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={selectedItem.src}
+                      alt={selectedItem.title}
+                      fill
+                      className="object-cover"
+                      sizes="90vw"
+                    />
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                      <div className="text-center text-white">
+                        <div className="bg-white/20 hover:bg-white/30 rounded-full p-6 mb-4 inline-block transition-colors cursor-pointer">
+                          <Play className="w-16 h-16 fill-white" />
+                        </div>
+                        <p className="text-xl font-semibold mb-2">Video Content</p>
+                        <p className="text-sm text-white/80">Video will be available here</p>
+                        <p className="text-xs text-white/60 mt-2">Click outside to close</p>
+                      </div>
                     </div>
                   </div>
                 ) : (

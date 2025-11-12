@@ -142,10 +142,10 @@ export default function Navigation() {
             </Link>
 
             <Link
-              href="/rules"
+              href="/events"
               className="text-base font-medium text-sb-black hover:text-sb-grey transition-colors"
             >
-              Rules
+              Events
             </Link>
 
             <Link
@@ -275,11 +275,11 @@ export default function Navigation() {
               </Link>
 
               <Link
-                href="/rules"
+                href="/events"
                 className="text-2xl font-semibold text-sb-black hover:text-sb-grey transition-colors text-center py-4"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Rules
+                Events
               </Link>
 
               <button

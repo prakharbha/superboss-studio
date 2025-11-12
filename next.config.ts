@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Target modern browsers to reduce polyfills
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  
   // Optimize font loading
   optimizeFonts: true,
   
@@ -27,6 +32,20 @@ const nextConfig: NextConfig = {
   // Optimize CSS
   experimental: {
     optimizeCss: true,
+  },
+  
+  // Disable unnecessary polyfills for modern browsers
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      // Exclude polyfills for modern browsers
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      };
+    }
+    return config;
   },
   
   // Add headers for caching

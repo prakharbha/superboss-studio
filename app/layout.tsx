@@ -9,6 +9,9 @@ import StructuredData from "@/components/StructuredData";
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
+  preload: true,
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -68,6 +71,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body className={inter.className}>
         <StructuredData />
         <Navigation />

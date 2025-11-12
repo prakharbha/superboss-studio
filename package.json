@@ -2,6 +2,17 @@
   "name": "superboss-new",
   "version": "0.1.0",
   "private": true,
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "not dead",
+    "not IE 11",
+    "Chrome >= 90",
+    "Firefox >= 88",
+    "Safari >= 14",
+    "Edge >= 90",
+    "iOS >= 14"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",

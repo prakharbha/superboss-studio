@@ -1,7 +1,8 @@
 /**
  * Generate a unique booking reference number
- * Format: YYMMDD + HHMMSS encoded in base32 (e.g., 2411125H3K)
- * This creates a 10-character reference that includes date and time, virtually eliminating duplicates
+ * Format: YYMMDD + HHMMSS encoded in base32 + 1 random char (e.g., 2411125H3KA)
+ * This creates an 11-character reference that includes date, time, and randomness
+ * Virtually impossible to have duplicates even with simultaneous bookings
  */
 export function generateBookingReference(): string {
   const now = new Date();
@@ -33,8 +34,11 @@ export function generateBookingReference(): string {
     num = Math.floor(num / 32);
   }
   
-  // Combine: YYMMDD (6) + Base32Time (4) = 10 characters total
-  return `${datePrefix}${timeEncoded}`;
+  // Add 1 random character for uniqueness (handles simultaneous bookings in same second)
+  const randomChar = chars.charAt(Math.floor(Math.random() * chars.length));
+  
+  // Combine: YYMMDD (6) + Base32Time (4) + Random (1) = 11 characters total
+  return `${datePrefix}${timeEncoded}${randomChar}`;
 }
 
 /**
@@ -92,14 +96,17 @@ export function parseBookingReference(reference: string): { date: Date | null; i
 
 /**
  * Format booking reference for display (adds hyphen for readability)
- * Example: 2411125H3K -> 241112-5H3K
+ * Example: 2411125H3KA -> 241112-5H3KA
  */
 export function formatBookingReference(reference: string): string {
-  if (reference.length === 10) {
-    // New format: YYMMDD-XXXX
+  if (reference.length === 11) {
+    // Current format: YYMMDD-XXXXX (date + time + random)
+    return `${reference.substring(0, 6)}-${reference.substring(6)}`;
+  } else if (reference.length === 10) {
+    // Previous format: YYMMDD-XXXX (date + time)
     return `${reference.substring(0, 6)}-${reference.substring(6)}`;
   } else if (reference.length === 8) {
-    // Old format: YYMMDD-XX
+    // Old format: YYMMDD-XX (date + random)
     return `${reference.substring(0, 6)}-${reference.substring(6)}`;
   } else if (reference.length === 6) {
     // Short format: YMMDD-X

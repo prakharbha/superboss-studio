@@ -6,9 +6,6 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   
-  // Optimize font loading
-  optimizeFonts: true,
-  
   // Compress responses
   compress: true,
   
@@ -25,9 +22,6 @@ const nextConfig: NextConfig = {
   
   // Enable React strict mode for better performance
   reactStrictMode: true,
-  
-  // Optimize production builds
-  swcMinify: true,
   
   // Optimize CSS
   experimental: {

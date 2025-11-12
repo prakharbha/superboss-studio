@@ -34,19 +34,8 @@ const nextConfig: NextConfig = {
     optimizeCss: true,
   },
   
-  // Disable unnecessary polyfills for modern browsers
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      // Exclude polyfills for modern browsers
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      };
-    }
-    return config;
-  },
+  // Enable Turbopack (Next.js 16 default)
+  turbopack: {},
   
   // Add headers for caching
   async headers() {

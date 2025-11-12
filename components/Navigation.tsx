@@ -48,6 +48,7 @@ export default function Navigation() {
   }, [isMobileMenuOpen]);
 
   return (
+    <>
     <nav
       className={`fixed top-0 left-0 right-0 z-[55] transition-all duration-300 ${
         isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-transparent'
@@ -179,6 +180,7 @@ export default function Navigation() {
           </button>
         </div>
       </div>
+    </nav>
 
       {/* Mobile Menu - Full Screen */}
       <AnimatePresence>
@@ -312,6 +314,6 @@ export default function Navigation() {
         isOpen={isCatalogModalOpen}
         onClose={() => setIsCatalogModalOpen(false)}
       />
-    </nav>
+    </>
   );
 }

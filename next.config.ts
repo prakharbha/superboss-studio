@@ -23,9 +23,10 @@ const nextConfig: NextConfig = {
   // Enable React strict mode for better performance
   reactStrictMode: true,
   
-  // Optimize CSS
+  // Optimize CSS and fonts
   experimental: {
     optimizeCss: true,
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
   
   // Enable Turbopack (Next.js 16 default)

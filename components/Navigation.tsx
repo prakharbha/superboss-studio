@@ -55,7 +55,7 @@ export default function Navigation() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
-              src="/logo.webp?v=2"
+              src="/logo.webp"
               alt="SuperBoss Studio"
               width={240}
               height={80}
@@ -63,7 +63,8 @@ export default function Navigation() {
                 isScrolled ? 'h-10 md:h-12' : 'h-15 md:h-18'
               }`}
               priority
-              unoptimized
+              quality={90}
+              sizes="(max-width: 768px) 180px, 240px"
             />
           </Link>
 

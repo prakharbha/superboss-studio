@@ -190,6 +190,15 @@ export default function Navigation() {
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="lg:hidden fixed inset-0 bg-white z-40 overflow-hidden"
           >
+            {/* Close Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              aria-label="Close menu"
+              className="absolute top-6 right-6 p-2 text-sb-black hover:text-sb-grey transition-colors z-50"
+            >
+              <X className="w-8 h-8" />
+            </button>
+
             <div className="h-full flex flex-col justify-evenly px-8 py-12 overflow-y-auto">
               <Link
                 href="/"

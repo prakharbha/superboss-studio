@@ -3,9 +3,14 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { Menu, X, ChevronDown, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import CatalogDownloadModal from './CatalogDownloadModal';
+
+// Lazy load modal since it's only needed when user clicks
+const CatalogDownloadModal = dynamic(() => import('./CatalogDownloadModal'), {
+  ssr: false,
+});
 
 const studios = [
   { name: 'Boss Unit', slug: 'boss-unit' },

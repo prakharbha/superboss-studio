@@ -3,8 +3,14 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import LiveChat from "@/components/LiveChat";
 import StructuredData from "@/components/StructuredData";
+import dynamic from "next/dynamic";
+
+// Lazy load LiveChat since it's not needed for initial render
+const LiveChat = dynamic(() => import("@/components/LiveChat"), {
+  ssr: false,
+  loading: () => null,
+});
 
 const inter = Inter({
   subsets: ["latin"],

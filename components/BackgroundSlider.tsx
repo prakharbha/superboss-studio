@@ -38,10 +38,10 @@ export default function BackgroundSlider({
             alt={`Background ${index + 1}`}
             fill
             priority={index === 0}
+            fetchPriority={index === 0 ? 'high' : 'low'}
             quality={75}
             className="object-cover"
             sizes="100vw"
-            loading={index === 0 ? 'eager' : 'lazy'}
           />
         </div>
       ))}

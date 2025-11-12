@@ -29,11 +29,6 @@ export const metadata: Metadata = {
   authors: [{ name: "SuperBoss Studio" }],
   creator: "SuperBoss Studio",
   publisher: "SuperBoss Studio",
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/favicon.ico',
-  },
   robots: {
     index: true,
     follow: true,

@@ -12,7 +12,7 @@ import { formatCurrency } from '@/lib/utils';
 export default function EquipmentPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
-  const [isFilterOpen, setIsFilterOpen] = useState(true);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   // Get unique categories
   const categories = ['All', ...Array.from(new Set(equipmentData.map((item) => item.category)))];

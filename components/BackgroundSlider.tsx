@@ -5,12 +5,14 @@ import Image from 'next/image';
 
 interface BackgroundSliderProps {
   images: string[];
+  mobileImages?: string[];
   interval?: number;
   className?: string;
 }
 
 export default function BackgroundSlider({ 
   images, 
+  mobileImages,
   interval = 5000,
   className = '' 
 }: BackgroundSliderProps) {
@@ -33,6 +35,7 @@ export default function BackgroundSlider({
             index === currentIndex ? 'opacity-100' : 'opacity-0'
           }`}
         >
+          {/* Desktop Image */}
           <Image
             src={image}
             alt={`Background ${index + 1}`}
@@ -40,7 +43,18 @@ export default function BackgroundSlider({
             priority={index === 0}
             fetchPriority={index === 0 ? 'high' : 'low'}
             quality={75}
-            className="object-cover"
+            className="hidden md:block object-cover"
+            sizes="100vw"
+          />
+          {/* Mobile Image */}
+          <Image
+            src={mobileImages ? mobileImages[index] : image}
+            alt={`Background ${index + 1}`}
+            fill
+            priority={index === 0}
+            fetchPriority={index === 0 ? 'high' : 'low'}
+            quality={75}
+            className="md:hidden object-cover"
             sizes="100vw"
           />
         </div>

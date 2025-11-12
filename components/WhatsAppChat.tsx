@@ -11,21 +11,18 @@ export default function WhatsAppChat() {
   const whatsappNumber = '+971561561570';
   const defaultMessage = 'Hi! I would like to inquire about booking a studio.';
 
-  useEffect(() => {
-    // Check if popup has been shown in this session
-    const popupShown = sessionStorage.getItem('whatsapp-popup-shown');
-    
-    if (!popupShown) {
-      // Show popup after 30 seconds
-      const timer = setTimeout(() => {
-        setIsOpen(true);
-        setHasShown(true);
-        sessionStorage.setItem('whatsapp-popup-shown', 'true');
-      }, 30000);
-
-      return () => clearTimeout(timer);
-    }
-  }, []);
+  // Removed auto-popup - button only opens on user click
+  // useEffect(() => {
+  //   const popupShown = sessionStorage.getItem('whatsapp-popup-shown');
+  //   if (!popupShown) {
+  //     const timer = setTimeout(() => {
+  //       setIsOpen(true);
+  //       setHasShown(true);
+  //       sessionStorage.setItem('whatsapp-popup-shown', 'true');
+  //     }, 30000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, []);
 
   const handleWhatsAppClick = () => {
     const url = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(defaultMessage)}`;

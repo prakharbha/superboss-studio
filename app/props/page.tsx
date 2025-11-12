@@ -12,7 +12,7 @@ export default function PropsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedStyle, setSelectedStyle] = useState<string>('All');
-  const [isFilterOpen, setIsFilterOpen] = useState(true);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   // Get unique categories and styles
   const categories = ['All', ...Array.from(new Set(propsData.map((item) => item.category)))];

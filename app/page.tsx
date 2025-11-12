@@ -67,6 +67,10 @@ export default function Home() {
             '/images/home-banner-2.webp',
             '/images/home-banner-1.webp',
           ]}
+          mobileImages={[
+            '/images/home-banner-2-mobile.webp',
+            '/images/home-banner-1-mobile.webp',
+          ]}
           interval={6000}
         />
         

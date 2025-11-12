@@ -43,10 +43,10 @@ export const metadata: Metadata = {
     siteName: "SuperBoss Film Production & Studio",
     images: [
       {
-        url: '/logo-black.png',
+        url: '/images/home-banner-2.webp',
         width: 1200,
         height: 630,
-        alt: 'SuperBoss Studio - Premium Studio Rental Dubai',
+        alt: 'SuperBoss Studio - Premium Film Production Studio in Dubai',
       }
     ],
   },
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     site: "@superbossproduction",
     title: "SuperBoss Film Production & Studio | Premium Studio Rental Dubai",
     description: "16,000 sq ft creative studio in Dubai offering 6 versatile spaces for fashion shoots, film production, events, and exhibitions.",
-    images: ['/logo-black.png'],
+    images: ['/images/home-banner-2.webp'],
   },
   metadataBase: new URL('https://superbossstudio.com'),
   alternates: {

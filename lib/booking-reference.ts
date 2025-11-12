@@ -1,7 +1,7 @@
 /**
  * Generate a unique booking reference number
- * Format: YYMMDD + 2 random alphanumeric characters (e.g., 241112AB)
- * This creates an 8-character reference that includes the date and is highly unlikely to duplicate
+ * Format: YYMMDD + HHMMSS encoded in base32 (e.g., 2411125H3K)
+ * This creates a 10-character reference that includes date and time, virtually eliminating duplicates
  */
 export function generateBookingReference(): string {
   const now = new Date();
@@ -14,15 +14,27 @@ export function generateBookingReference(): string {
   // Create date prefix (6 digits)
   const datePrefix = `${year}${month}${day}`;
   
-  // Generate 2 random alphanumeric characters for uniqueness
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Excluding similar looking chars (0,O,1,I)
-  let randomSuffix = '';
-  for (let i = 0; i < 2; i++) {
-    randomSuffix += chars.charAt(Math.floor(Math.random() * chars.length));
+  // Get time components
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const seconds = now.getSeconds();
+  
+  // Encode time as a single number: HHMMSS (e.g., 143025 = 14:30:25)
+  const timeNumber = hours * 10000 + minutes * 100 + seconds;
+  
+  // Convert to base32 using our character set (more compact than base10)
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // 32 characters (excluding 0,O,1,I)
+  let timeEncoded = '';
+  let num = timeNumber;
+  
+  // Convert to base32 (4 characters can represent 0-1048575, enough for HHMMSS max 235959)
+  for (let i = 0; i < 4; i++) {
+    timeEncoded = chars.charAt(num % 32) + timeEncoded;
+    num = Math.floor(num / 32);
   }
   
-  // Combine: YYMMDD + 2 random chars = 8 characters total
-  return `${datePrefix}${randomSuffix}`;
+  // Combine: YYMMDD (6) + Base32Time (4) = 10 characters total
+  return `${datePrefix}${timeEncoded}`;
 }
 
 /**
@@ -80,12 +92,17 @@ export function parseBookingReference(reference: string): { date: Date | null; i
 
 /**
  * Format booking reference for display (adds hyphen for readability)
- * Example: 241112AB -> 241112-AB
+ * Example: 2411125H3K -> 241112-5H3K
  */
 export function formatBookingReference(reference: string): string {
-  if (reference.length === 8) {
+  if (reference.length === 10) {
+    // New format: YYMMDD-XXXX
+    return `${reference.substring(0, 6)}-${reference.substring(6)}`;
+  } else if (reference.length === 8) {
+    // Old format: YYMMDD-XX
     return `${reference.substring(0, 6)}-${reference.substring(6)}`;
   } else if (reference.length === 6) {
+    // Short format: YMMDD-X
     return `${reference.substring(0, 5)}-${reference.substring(5)}`;
   }
   return reference;

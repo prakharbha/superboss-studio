@@ -19,6 +19,10 @@ const studios = [
   { name: 'Super Cell', slug: 'super-cell' },
   { name: 'Super Frame', slug: 'super-frame' },
   { name: 'Boss Arena', slug: 'boss-arena' },
+  { name: 'Super Feast', slug: 'super-feast' },
+  { name: 'Super Voice', slug: 'super-voice' },
+  { name: 'Super Station', slug: 'super-station' },
+  { name: 'Super Lounge', slug: 'super-lounge' },
 ];
 
 export default function Navigation() {

@@ -234,6 +234,172 @@
         "lng": 55.3537
       }
     }
+  },
+  {
+    "id": "super-feast",
+    "name": "Super Feast",
+    "slug": "super-feast",
+    "size": 600,
+    "unit": "sq. ft",
+    "description": "Our kitchen. Our playground. Our flavor lab. The heart of creation - our in-house pantry and kitchen designed for culinary shoots, content experiments, and lifestyle storytelling.",
+    "pricePerHour": 200,
+    "pricePerDay": 1500,
+    "currency": "AED",
+    "features": [
+      "Fully equipped kitchen",
+      "Professional cooking appliances",
+      "Natural lighting options",
+      "Multiple camera angles",
+      "Climate controlled",
+      "Pantry storage",
+      "WiFi included"
+    ],
+    "suitableFor": [
+      "Culinary shoots",
+      "Food photography",
+      "Cooking videos",
+      "Lifestyle content",
+      "Recipe demonstrations",
+      "Food styling"
+    ],
+    "images": [
+      "/images/studios/super-feast-1.jpg",
+      "/images/studios/super-feast-2.jpg",
+      "/images/studios/super-feast-3.jpg"
+    ],
+    "video": null,
+    "location": {
+      "address": "Umm Ramool, St. 17, Warehouse No. 4, Dubai",
+      "coordinates": {
+        "lat": 25.2318,
+        "lng": 55.3537
+      }
+    }
+  },
+  {
+    "id": "super-voice",
+    "name": "Super Voice",
+    "slug": "super-voice",
+    "size": 200,
+    "unit": "sq. ft",
+    "description": "Our podcast room. Where conversations take center stage - a purpose-built podcast and recording room designed for clear sound, bold ideas, and raw expression.",
+    "pricePerHour": 150,
+    "pricePerDay": 1000,
+    "currency": "AED",
+    "features": [
+      "Professional soundproofing",
+      "High-quality microphones",
+      "Audio mixing equipment",
+      "Comfortable seating",
+      "Recording software included",
+      "Acoustic treatment",
+      "WiFi included"
+    ],
+    "suitableFor": [
+      "Podcast recording",
+      "Voice-over work",
+      "Audio interviews",
+      "Music recording",
+      "Audio content creation",
+      "Radio shows"
+    ],
+    "images": [
+      "/images/studios/super-voice-1.jpg",
+      "/images/studios/super-voice-2.jpg",
+      "/images/studios/super-voice-3.jpg"
+    ],
+    "video": null,
+    "location": {
+      "address": "Umm Ramool, St. 17, Warehouse No. 4, Dubai",
+      "coordinates": {
+        "lat": 25.2318,
+        "lng": 55.3537
+      }
+    }
+  },
+  {
+    "id": "super-station",
+    "name": "Super Station",
+    "slug": "super-station",
+    "size": 2000,
+    "unit": "sq. ft",
+    "description": "Our 2,000 sq. ft. workstation — where ideas are shaped, plans are mapped, and the magic of creation begins.",
+    "pricePerHour": 400,
+    "pricePerDay": 3000,
+    "currency": "AED",
+    "features": [
+      "Spacious workstations",
+      "High-speed internet",
+      "Meeting areas",
+      "Collaborative spaces",
+      "Presentation equipment",
+      "Climate controlled",
+      "Coffee and refreshments",
+      "WiFi included"
+    ],
+    "suitableFor": [
+      "Creative planning",
+      "Team meetings",
+      "Workshops",
+      "Brainstorming sessions",
+      "Production planning",
+      "Client presentations"
+    ],
+    "images": [
+      "/images/studios/super-station-1.jpg",
+      "/images/studios/super-station-2.jpg",
+      "/images/studios/super-station-3.jpg"
+    ],
+    "video": null,
+    "location": {
+      "address": "Umm Ramool, St. 17, Warehouse No. 4, Dubai",
+      "coordinates": {
+        "lat": 25.2318,
+        "lng": 55.3537
+      }
+    }
+  },
+  {
+    "id": "super-lounge",
+    "name": "Super Lounge",
+    "slug": "super-lounge",
+    "size": 800,
+    "unit": "sq. ft",
+    "description": "A space to unwind, recharge, and spark playful energy. Equipped with a pool table, PlayStation, and cozy corners, Super Lounge is where breaks become moments of inspiration.",
+    "pricePerHour": 180,
+    "pricePerDay": 1200,
+    "currency": "AED",
+    "features": [
+      "Pool table",
+      "PlayStation gaming",
+      "Comfortable seating",
+      "Cozy corners",
+      "Entertainment area",
+      "Climate controlled",
+      "Refreshment area",
+      "WiFi included"
+    ],
+    "suitableFor": [
+      "Team breaks",
+      "Casual meetings",
+      "Creative recharge",
+      "Informal gatherings",
+      "Relaxation sessions",
+      "Team building"
+    ],
+    "images": [
+      "/images/studios/super-lounge-1.jpg",
+      "/images/studios/super-lounge-2.jpg",
+      "/images/studios/super-lounge-3.jpg"
+    ],
+    "video": null,
+    "location": {
+      "address": "Umm Ramool, St. 17, Warehouse No. 4, Dubai",
+      "coordinates": {
+        "lat": 25.2318,
+        "lng": 55.3537
+      }
+    }
   }
 ]
 

@@ -54,7 +54,7 @@ async function getAllStudios() {
 
 export async function generateStaticParams() {
   const studios = await getAllStudios();
-  return studios.map((studio) => ({
+  return studios.map((studio: { slug: string }) => ({
     slug: studio.slug,
   }));
 }
@@ -132,7 +132,7 @@ export default async function StudioPage({ params }: StudioPageProps) {
                 <div>
                   <h2 className="text-3xl font-bold text-sb-black mb-6">Features</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {studio.features.map((feature, index) => (
+                    {studio.features.map((feature: string, index: number) => (
                       <div key={index} className="flex items-start space-x-3">
                         <Check className="w-5 h-5 text-sb-black flex-shrink-0 mt-0.5" />
                         <span className="text-sb-grey">{feature}</span>
@@ -147,7 +147,7 @@ export default async function StudioPage({ params }: StudioPageProps) {
                 <div>
                   <h2 className="text-3xl font-bold text-sb-black mb-6">Perfect For</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {studio.suitableFor.map((item, index) => (
+                    {studio.suitableFor.map((item: string, index: number) => (
                       <div
                         key={index}
                         className="bg-sb-grey-light px-4 py-3 rounded-lg text-sb-black font-medium"
@@ -271,9 +271,9 @@ export default async function StudioPage({ params }: StudioPageProps) {
           </AnimatedSection>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {allStudios
-              .filter((s) => s.id !== studio.id)
+              .filter((s: { id: string }) => s.id !== studio.id)
               .slice(0, 3)
-              .map((otherStudio, index) => (
+              .map((otherStudio: any, index: number) => (
                 <AnimatedSection key={otherStudio.id} delay={index * 0.1}>
                   <Link href={`/studios/${otherStudio.slug}`}>
                     <div className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">

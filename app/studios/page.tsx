@@ -86,7 +86,7 @@ export default async function StudiosPage() {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-16">
-            {studiosData.map((studio, index) => (
+            {studiosData.map((studio: any, index: number) => (
               <AnimatedSection key={studio.id} delay={index * 0.1}>
                 <div
                   className={`flex flex-col ${
@@ -117,7 +117,7 @@ export default async function StudiosPage() {
                     <div className="space-y-2">
                       <p className="text-sm text-sb-grey font-medium">PERFECT FOR:</p>
                       <div className="flex flex-wrap gap-2">
-                        {studio.suitableFor.slice(0, 3).map((item, i) => (
+                        {studio.suitableFor.slice(0, 3).map((item: string, i: number) => (
                           <span
                             key={i}
                             className="px-3 py-1 bg-sb-grey-light text-sb-black text-sm rounded-full"

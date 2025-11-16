@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
         }).filter(Boolean).join(', ')
       : 'None';
 
-    const timeInfo = bookingType === 'fullday'
+    const timeInfo = bookingType === 'fullday' || bookingType === 'fullDay'
       ? '8:00 AM - 10:00 PM (Full Day - 14 hours)'
       : timeSlots && timeSlots.length > 0
         ? `${timeSlots[0]} - ${timeSlots[timeSlots.length - 1]} (${timeSlots.length} hours)`
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
         <h3>Booking Details</h3>
         <p><strong>Date:</strong> ${new Date(date).toLocaleDateString()}</p>
         <p><strong>Time:</strong> ${timeInfo}</p>
-        <p><strong>Booking Type:</strong> ${bookingType === 'fullday' ? 'Full Day' : 'Hourly'}</p>
+        <p><strong>Booking Type:</strong> ${bookingType === 'fullday' || bookingType === 'fullDay' ? 'Full Day' : 'Hourly'}</p>
         
         <h3>Selected Items</h3>
         <p><strong>Studios:</strong> ${studiosDetails}</p>

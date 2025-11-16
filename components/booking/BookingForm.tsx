@@ -77,7 +77,7 @@ const steps = [
   { id: 5, name: 'Contact Details', description: 'Your information' },
 ];
 
-export default function BookingForm({ studios: studiosData, equipment: equipmentData, props: propsData }: BookingFormProps) {
+export default function BookingForm({ studios: studiosData = [], equipment: equipmentData = [], props: propsData = [] }: BookingFormProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
@@ -90,44 +90,55 @@ export default function BookingForm({ studios: studiosData, equipment: equipment
   const selectedProps = watch('props') || [];
   const bookingType = watch('bookingType') || 'hourly';
 
+  // Ensure data is always arrays
+  const safeStudiosData = Array.isArray(studiosData) ? studiosData : [];
+  const safeEquipmentData = Array.isArray(equipmentData) ? equipmentData : [];
+  const safePropsData = Array.isArray(propsData) ? propsData : [];
+
   // Calculate total price
   const totalPrice = useMemo(() => {
     let total = 0;
     
     // Calculate studio prices
-    selectedStudios.forEach((studioId: string) => {
-      const studio = studiosData.find(s => s.id === studioId);
-      if (studio) {
-        if (bookingType === 'fullDay') {
-          total += studio.pricePerDay;
-        } else {
-          total += studio.pricePerHour * selectedHours.length;
+    if (Array.isArray(selectedStudios)) {
+      selectedStudios.forEach((studioId: string) => {
+        const studio = safeStudiosData.find(s => s.id === studioId);
+        if (studio) {
+          if (bookingType === 'fullDay') {
+            total += studio.pricePerDay;
+          } else {
+            total += studio.pricePerHour * selectedHours.length;
+          }
         }
-      }
-    });
+      });
+    }
 
     // Calculate equipment prices
-    selectedEquipment.forEach((equipId: string) => {
-      const equip = equipmentData.find(e => e.id === equipId);
-      if (equip) {
-        if (bookingType === 'fullDay') {
-          total += equip.pricePerDay;
-        } else {
-          total += equip.pricePerHour * selectedHours.length;
+    if (Array.isArray(selectedEquipment)) {
+      selectedEquipment.forEach((equipId: string) => {
+        const equip = safeEquipmentData.find(e => e.id === equipId);
+        if (equip) {
+          if (bookingType === 'fullDay') {
+            total += equip.pricePerDay;
+          } else {
+            total += equip.pricePerHour * selectedHours.length;
+          }
         }
-      }
-    });
+      });
+    }
 
     // Calculate props prices (always per day)
-    selectedProps.forEach((propId: string) => {
-      const prop = propsData.find(p => p.id === propId);
-      if (prop) {
-        total += prop.pricePerDay;
-      }
-    });
+    if (Array.isArray(selectedProps)) {
+      selectedProps.forEach((propId: string) => {
+        const prop = safePropsData.find(p => p.id === propId);
+        if (prop) {
+          total += prop.pricePerDay;
+        }
+      });
+    }
 
     return total;
-  }, [selectedStudios, selectedEquipment, selectedProps, bookingType, selectedHours, studiosData, equipmentData, propsData]);
+  }, [selectedStudios, selectedEquipment, selectedProps, bookingType, selectedHours, safeStudiosData, safeEquipmentData, safePropsData]);
 
   // Generate booking ID
   const generateBookingId = () => {
@@ -140,15 +151,47 @@ export default function BookingForm({ studios: studiosData, equipment: equipment
     const newBookingId = generateBookingId();
     setBookingId(newBookingId);
     
-    console.log('Booking Data:', {
-      bookingId: newBookingId,
-      ...data,
-      selectedDate: selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null,
-      selectedHours: data.selectedHours,
-      totalAmount: totalPrice,
-    });
-    // Here you would typically send this to your backend
-    setIsSubmitted(true);
+    try {
+      // Prepare booking data for API
+      const bookingData = {
+        bookingId: newBookingId,
+        studios: data.studios || [],
+        equipment: data.equipment || [],
+        props: data.props || [],
+        date: selectedDate ? format(selectedDate, 'yyyy-MM-dd') : data.date,
+        bookingType: data.bookingType || 'hourly',
+        timeSlots: data.selectedHours || [],
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        company: data.company || '',
+        message: data.message || '',
+        total: totalPrice,
+      };
+
+      // Send booking to API
+      const response = await fetch('/api/booking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookingData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        console.error('Booking submission error:', result);
+        alert('Failed to submit booking. Please try again or contact us directly.');
+        return;
+      }
+
+      console.log('Booking submitted successfully:', result);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error('Error submitting booking:', error);
+      alert('An error occurred while submitting your booking. Please try again or contact us directly at +971 56 156 1570');
+    }
   };
 
   const nextStep = () => {
@@ -287,7 +330,7 @@ export default function BookingForm({ studios: studiosData, equipment: equipment
             >
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Select Studio</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {studiosData.map((studio) => (
+                {safeStudiosData.map((studio) => (
                   <label
                     key={studio.id}
                     className={`relative p-6 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
@@ -336,7 +379,7 @@ export default function BookingForm({ studios: studiosData, equipment: equipment
               <h2 className="text-3xl font-bold text-gray-900 mb-2">Add Equipment</h2>
               <p className="text-gray-600 mb-6">Optional - Skip if not needed</p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[600px] overflow-y-auto pr-2">
-                {equipmentData.map((item) => (
+                {safeEquipmentData.map((item) => (
                   <label
                     key={item.id}
                     className={`relative rounded-lg border-2 cursor-pointer transition-all duration-200 overflow-hidden ${
@@ -392,7 +435,7 @@ export default function BookingForm({ studios: studiosData, equipment: equipment
               <h2 className="text-3xl font-bold text-gray-900 mb-2">Add Props</h2>
               <p className="text-gray-600 mb-6">Optional - Skip if not needed</p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[600px] overflow-y-auto pr-2">
-                {propsData.map((item) => (
+                {safePropsData.map((item) => (
                   <label
                     key={item.id}
                     className={`relative rounded-lg border-2 cursor-pointer transition-all duration-200 overflow-hidden ${

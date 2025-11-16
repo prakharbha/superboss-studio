@@ -30,6 +30,7 @@ async function getBookingData() {
         pricePerDay: item.pricePerDay,
         currency: item.currency,
         available: item.available !== false,
+        image: item.image,
       })),
       props: props.map((item: any) => ({
         id: item.id,
@@ -39,6 +40,7 @@ async function getBookingData() {
         pricePerDay: item.pricePerDay,
         currency: item.currency,
         available: item.available !== false,
+        image: item.image,
       })),
     };
   } catch (error) {

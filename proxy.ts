@@ -4,8 +4,8 @@ import type { NextRequest } from 'next/server';
 export function proxy(request: NextRequest) {
   const url = request.nextUrl;
   
-  // Protect /studio route with Basic Auth
-  if (url.pathname.startsWith('/studio')) {
+  // Only protect /studio route (Sanity CMS), not /studios
+  if (url.pathname === '/studio' || url.pathname.startsWith('/studio/')) {
     const basicAuth = request.headers.get('authorization');
     const studioPassword = process.env.STUDIO_PASSWORD;
     
@@ -32,20 +32,12 @@ export function proxy(request: NextRequest) {
     });
   }
   
-  // Allow all other requests
+  // Allow all other requests (including /studios)
   return NextResponse.next();
 }
 
-// Apply proxy to all routes
+// Only apply proxy to /studio routes
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    '/((?!_next/static|_next/image|favicon.ico).*)',
-  ],
+  matcher: '/studio/:path*',
 };
 

@@ -25,7 +25,7 @@ const nextConfig: NextConfig = {
   
   // Optimize CSS and fonts
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true, // Temporarily disabled - requires critters
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
   

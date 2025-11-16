@@ -3,8 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Metadata } from 'next';
 import { ArrowRight, Check, MapPin, Clock, DollarSign } from 'lucide-react';
-import studiosData from '@/data/studios.json';
-import seoData from '@/data/seo.json';
+import { client, studiosQuery, studioBySlugQuery, seoByPageQuery } from '@/lib/sanity';
 import AnimatedSection from '@/components/AnimatedSection';
 import { formatCurrency } from '@/lib/utils';
 
@@ -12,15 +11,57 @@ interface StudioPageProps {
   params: Promise<{ slug: string }>;
 }
 
+async function getStudioBySlug(slug: string) {
+  try {
+    const studio = await client.fetch(studioBySlugQuery, { slug });
+    if (!studio) return null;
+    
+    return {
+      id: studio.id,
+      name: studio.name,
+      slug: studio.slug?.current || studio.slug,
+      size: studio.size,
+      unit: studio.unit,
+      description: studio.description,
+      pricePerHour: studio.pricePerHour,
+      pricePerDay: studio.pricePerDay,
+      currency: studio.currency,
+      features: studio.features || [],
+      suitableFor: studio.suitableFor || [],
+      location: studio.location || { address: '', coordinates: { lat: 0, lng: 0 } },
+    };
+  } catch (error) {
+    console.error('Error fetching studio:', error);
+    return null;
+  }
+}
+
+async function getAllStudios() {
+  try {
+    const studios = await client.fetch(studiosQuery);
+    return studios.map((studio: any) => ({
+      id: studio.id,
+      name: studio.name,
+      slug: studio.slug?.current || studio.slug,
+      size: studio.size,
+      unit: studio.unit,
+    })) || [];
+  } catch (error) {
+    console.error('Error fetching studios:', error);
+    return [];
+  }
+}
+
 export async function generateStaticParams() {
-  return studiosData.map((studio) => ({
+  const studios = await getAllStudios();
+  return studios.map((studio) => ({
     slug: studio.slug,
   }));
 }
 
 export async function generateMetadata({ params }: StudioPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const studio = studiosData.find((s) => s.slug === slug);
+  const studio = await getStudioBySlug(slug);
   
   if (!studio) {
     return {
@@ -28,7 +69,7 @@ export async function generateMetadata({ params }: StudioPageProps): Promise<Met
     };
   }
 
-  const seoPage = seoData.pages[`/studios/${slug}` as keyof typeof seoData.pages];
+  const seoPage = await client.fetch(seoByPageQuery, { page: `/studios/${slug}` });
 
   return {
     title: seoPage?.title || `${studio.name} | SuperBoss Studio`,
@@ -44,7 +85,8 @@ export async function generateMetadata({ params }: StudioPageProps): Promise<Met
 
 export default async function StudioPage({ params }: StudioPageProps) {
   const { slug } = await params;
-  const studio = studiosData.find((s) => s.slug === slug);
+  const studio = await getStudioBySlug(slug);
+  const allStudios = await getAllStudios();
 
   if (!studio) {
     notFound();
@@ -228,7 +270,7 @@ export default async function StudioPage({ params }: StudioPageProps) {
             </h2>
           </AnimatedSection>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {studiosData
+            {allStudios
               .filter((s) => s.id !== studio.id)
               .slice(0, 3)
               .map((otherStudio, index) => (

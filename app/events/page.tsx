@@ -1,56 +1,70 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Metadata } from 'next';
 import { Filter, Play, X } from 'lucide-react';
 import AnimatedSection from '@/components/AnimatedSection';
 import { motion, AnimatePresence } from 'framer-motion';
+import { client, eventsQuery } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity';
 
-// Event gallery items with categories
-const eventItems = [
-  // Fashion Shows
-  { id: 1, title: 'Fashion Show 2024', category: 'Fashion Shows', type: 'image', src: '/images/DSC09213-large.webp', thumbnail: '/images/DSC09213-medium.webp' },
-  { id: 2, title: 'Designer Launch', category: 'Fashion Shows', type: 'image', src: '/images/DSC09205-large.webp', thumbnail: '/images/DSC09205-medium.webp' },
-  { id: 3, title: 'Runway Event', category: 'Fashion Shows', type: 'image', src: '/images/DSC09220-large.webp', thumbnail: '/images/DSC09220-medium.webp' },
-  
-  // Photo Shoots
-  { id: 4, title: 'E-commerce Shoot', category: 'Photo Shoots', type: 'image', src: '/images/DSC09215-large.webp', thumbnail: '/images/DSC09215-medium.webp' },
-  { id: 5, title: 'Product Photography', category: 'Photo Shoots', type: 'image', src: '/images/DSC09217-large.webp', thumbnail: '/images/DSC09217-medium.webp' },
-  { id: 6, title: 'Lifestyle Session', category: 'Photo Shoots', type: 'image', src: '/images/DSC09221-large.webp', thumbnail: '/images/DSC09221-medium.webp' },
-  { id: 7, title: 'Fashion Editorial', category: 'Photo Shoots', type: 'image', src: '/images/DSC09224-large.webp', thumbnail: '/images/DSC09224-medium.webp' },
-  
-  // Events
-  { id: 8, title: 'Art Exhibition', category: 'Events', type: 'image', src: '/images/DSC09226-large.webp', thumbnail: '/images/DSC09226-medium.webp' },
-  { id: 9, title: 'Launch Party', category: 'Events', type: 'image', src: '/images/DSC09229-large.webp', thumbnail: '/images/DSC09229-medium.webp' },
-  { id: 10, title: 'Private Event', category: 'Events', type: 'image', src: '/images/DSC09230-large.webp', thumbnail: '/images/DSC09230-medium.webp' },
-  { id: 11, title: 'Corporate Event', category: 'Events', type: 'image', src: '/images/DSC09240-large.webp', thumbnail: '/images/DSC09240-medium.webp' },
-  
-  // Music Videos
-  { id: 12, title: 'Music Video Production', category: 'Music Videos', type: 'video', src: '/images/DSC09248-large.webp', thumbnail: '/images/DSC09248-medium.webp' },
-  { id: 13, title: 'Artist Performance', category: 'Music Videos', type: 'video', src: '/images/DSC09250-large.webp', thumbnail: '/images/DSC09250-medium.webp' },
-  { id: 14, title: 'Recording Session', category: 'Music Videos', type: 'video', src: '/images/DSC09260-large.webp', thumbnail: '/images/DSC09260-medium.webp' },
-  
-  // Workshops
-  { id: 15, title: 'Photography Workshop', category: 'Workshops', type: 'image', src: '/images/DSC09263-large.webp', thumbnail: '/images/DSC09263-medium.webp' },
-  { id: 16, title: 'Creative Workshop', category: 'Workshops', type: 'image', src: '/images/DSC09275-large.webp', thumbnail: '/images/DSC09275-medium.webp' },
-  { id: 17, title: 'Production Workshop', category: 'Workshops', type: 'image', src: '/images/DSC09277-large.webp', thumbnail: '/images/DSC09277-medium.webp' },
-  
-  // Exhibitions
-  { id: 18, title: 'Gallery Opening', category: 'Exhibitions', type: 'image', src: '/images/DSC09278-large.webp', thumbnail: '/images/DSC09278-medium.webp' },
-  { id: 19, title: 'Art Installation', category: 'Exhibitions', type: 'image', src: '/images/DSC09282-large.webp', thumbnail: '/images/DSC09282-medium.webp' },
-  { id: 20, title: 'Design Exhibition', category: 'Exhibitions', type: 'image', src: '/images/DSC09187-large.webp', thumbnail: '/images/DSC09187-medium.webp' },
-];
-
-const categories = ['All', ...Array.from(new Set(eventItems.map(item => item.category)))];
+interface EventItem {
+  _id: string;
+  id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  eventType: string;
+  filters: string[];
+  image?: any;
+  _imagePath?: string;
+  _thumbnailPath?: string;
+  _mediaType?: string;
+}
 
 export default function EventsPage() {
+  const [eventItems, setEventItems] = useState<EventItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [selectedItem, setSelectedItem] = useState<typeof eventItems[0] | null>(null);
+  const [selectedItem, setSelectedItem] = useState<EventItem | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchEvents() {
+      try {
+        const events = await client.fetch(eventsQuery);
+        const formattedEvents = events.map((event: any) => ({
+          _id: event._id,
+          id: event.id,
+          title: event.title,
+          slug: event.slug?.current || event.slug,
+          description: event.description,
+          eventType: event.eventType,
+          filters: event.filters || [],
+          image: event.image,
+          _imagePath: event._imagePath,
+          _thumbnailPath: event._thumbnailPath,
+          _mediaType: event._mediaType || 'image',
+        }));
+        setEventItems(formattedEvents);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchEvents();
+  }, []);
+
+  // Get unique categories from filters
+  const allCategories = Array.from(
+    new Set(eventItems.flatMap(item => item.filters || []))
+  ).sort();
+  const categories = ['All', ...allCategories];
 
   const filteredItems = eventItems.filter(item => 
-    selectedCategory === 'All' || item.category === selectedCategory
+    selectedCategory === 'All' || (item.filters && item.filters.includes(selectedCategory))
   );
 
   return (
@@ -97,70 +111,92 @@ export default function EventsPage() {
               </div>
 
               {/* Category Filters */}
-              <div className={`${isFilterOpen ? 'block' : 'hidden'} lg:block mb-8`}>
-                <div className="flex flex-wrap gap-3 justify-center">
-                  {categories.map((category) => (
-                    <button
-                      key={category}
-                      onClick={() => {
-                        setSelectedCategory(category);
-                        setIsFilterOpen(false);
-                      }}
-                      className={`px-6 py-2.5 rounded-lg font-medium transition-all duration-300 ${
-                        selectedCategory === category
-                          ? 'bg-sb-black text-white shadow-lg scale-105'
-                          : 'bg-sb-grey-light text-sb-black hover:bg-sb-grey hover:scale-105'
-                      }`}
-                    >
-                      {category}
-                    </button>
-                  ))}
+              {categories.length > 0 && (
+                <div className={`${isFilterOpen ? 'block' : 'hidden'} lg:block mb-8`}>
+                  <div className="flex flex-wrap gap-3 justify-center">
+                    {categories.map((category) => (
+                      <button
+                        key={category}
+                        onClick={() => {
+                          setSelectedCategory(category);
+                          setIsFilterOpen(false);
+                        }}
+                        className={`px-6 py-2.5 rounded-lg font-medium transition-all duration-300 ${
+                          selectedCategory === category
+                            ? 'bg-sb-black text-white shadow-lg scale-105'
+                            : 'bg-sb-grey-light text-sb-black hover:bg-sb-grey hover:scale-105'
+                        }`}
+                      >
+                        {category}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Results Count */}
-              <p className="text-center text-sb-grey mb-8">
-                Showing {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'}
-                {selectedCategory !== 'All' && ` in ${selectedCategory}`}
-              </p>
+              {!loading && (
+                <p className="text-center text-sb-grey mb-8">
+                  Showing {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'}
+                  {selectedCategory !== 'All' && ` in ${selectedCategory}`}
+                </p>
+              )}
             </div>
+
+            {/* Loading State */}
+            {loading && (
+              <div className="text-center py-16">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-sb-black"></div>
+                <p className="mt-4 text-sb-grey">Loading events...</p>
+              </div>
+            )}
 
             {/* Gallery Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredItems.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="group relative aspect-square overflow-hidden rounded-lg shadow-lg cursor-pointer hover:shadow-2xl transition-all duration-300"
-                  onClick={() => setSelectedItem(item)}
-                >
-                  <Image
-                    src={item.thumbnail}
-                    alt={item.title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-300"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                      <h3 className="font-bold text-lg mb-1">{item.title}</h3>
-                      <p className="text-sm text-white/80">{item.category}</p>
-                    </div>
-                  </div>
-                  {item.type === 'video' && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="bg-black/50 rounded-full p-4 group-hover:bg-black/70 transition-colors">
-                        <Play className="w-8 h-8 text-white fill-white" />
-                      </div>
-                    </div>
-                  )}
-                </motion.div>
-              ))}
-            </div>
+            {!loading && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filteredItems.map((item, index) => {
+                  // Determine image source
+                  let imageSrc = item._thumbnailPath || item._imagePath || '/images/DSC09213-medium.webp';
+                  if (item.image && item.image.asset) {
+                    imageSrc = urlFor(item.image).width(400).height(400).url();
+                  }
 
-            {filteredItems.length === 0 && (
+                  return (
+                    <motion.div
+                      key={item._id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                      className="group relative aspect-square overflow-hidden rounded-lg shadow-lg cursor-pointer hover:shadow-2xl transition-all duration-300"
+                      onClick={() => setSelectedItem(item)}
+                    >
+                      <Image
+                        src={imageSrc}
+                        alt={item.title}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                          <h3 className="font-bold text-lg mb-1">{item.title}</h3>
+                          <p className="text-sm text-white/80">{item.filters?.[0] || item.eventType}</p>
+                        </div>
+                      </div>
+                      {item._mediaType === 'video' && (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="bg-black/50 rounded-full p-4 group-hover:bg-black/70 transition-colors">
+                            <Play className="w-8 h-8 text-white fill-white" />
+                          </div>
+                        </div>
+                      )}
+                    </motion.div>
+                  );
+                })}
+              </div>
+            )}
+
+            {!loading && filteredItems.length === 0 && (
               <div className="text-center py-16">
                 <p className="text-xl text-sb-grey">No items found in this category.</p>
               </div>
@@ -195,15 +231,23 @@ export default function EventsPage() {
               </button>
               
               <div className="relative aspect-video rounded-lg overflow-hidden bg-sb-grey">
-                {selectedItem.type === 'video' ? (
+                {selectedItem._mediaType === 'video' ? (
                   <div className="relative w-full h-full">
-                    <Image
-                      src={selectedItem.src}
-                      alt={selectedItem.title}
-                      fill
-                      className="object-cover"
-                      sizes="90vw"
-                    />
+                    {(() => {
+                      let imageSrc = selectedItem._imagePath || '/images/DSC09213-large.webp';
+                      if (selectedItem.image && selectedItem.image.asset) {
+                        imageSrc = urlFor(selectedItem.image).width(1200).height(800).url();
+                      }
+                      return (
+                        <Image
+                          src={imageSrc}
+                          alt={selectedItem.title}
+                          fill
+                          className="object-cover"
+                          sizes="90vw"
+                        />
+                      );
+                    })()}
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                       <div className="text-center text-white">
                         <div className="bg-white/20 hover:bg-white/30 rounded-full p-6 mb-4 inline-block transition-colors cursor-pointer">
@@ -216,19 +260,27 @@ export default function EventsPage() {
                     </div>
                   </div>
                 ) : (
-                  <Image
-                    src={selectedItem.src}
-                    alt={selectedItem.title}
-                    fill
-                    className="object-contain"
-                    sizes="90vw"
-                  />
+                  (() => {
+                    let imageSrc = selectedItem._imagePath || '/images/DSC09213-large.webp';
+                    if (selectedItem.image && selectedItem.image.asset) {
+                      imageSrc = urlFor(selectedItem.image).width(1200).height(800).url();
+                    }
+                    return (
+                      <Image
+                        src={imageSrc}
+                        alt={selectedItem.title}
+                        fill
+                        className="object-contain"
+                        sizes="90vw"
+                      />
+                    );
+                  })()
                 )}
               </div>
               
               <div className="mt-4 text-center text-white">
                 <h3 className="text-2xl font-bold mb-2">{selectedItem.title}</h3>
-                <p className="text-white/80">{selectedItem.category}</p>
+                <p className="text-white/80">{selectedItem.filters?.[0] || selectedItem.eventType}</p>
               </div>
             </motion.div>
           </motion.div>
@@ -237,4 +289,3 @@ export default function EventsPage() {
     </div>
   );
 }
-

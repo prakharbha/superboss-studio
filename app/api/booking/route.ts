@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { resend, emailConfig } from '@/lib/resend';
-import studiosData from '@/data/studios.json';
-import equipmentData from '@/data/equipment.json';
-import propsData from '@/data/props.json';
+import { client, studiosQuery, equipmentQuery, propsQuery } from '@/lib/sanity';
 import { formatCurrency } from '@/lib/utils';
 import { generateBookingReference, formatBookingReference } from '@/lib/booking-reference';
 
@@ -32,26 +30,33 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Fetch data from Sanity
+    const [studiosData, equipmentData, propsData] = await Promise.all([
+      client.fetch(studiosQuery),
+      client.fetch(equipmentQuery),
+      client.fetch(propsQuery),
+    ]);
+
     // Generate unique booking reference
     const bookingReference = generateBookingReference();
     const formattedReference = formatBookingReference(bookingReference);
 
     // Build email content
     const studiosDetails = studios.map((studioId: string) => {
-      const studio = studiosData.find((s) => s.id === studioId);
+      const studio = studiosData.find((s: any) => s.id === studioId);
       return studio ? `${studio.name} (${studio.size} ${studio.unit})` : studioId;
     }).join(', ');
 
     const equipmentDetails = equipment && equipment.length > 0
       ? equipment.map((item: { id: string; quantity: number }) => {
-          const eq = equipmentData.find((e) => e.id === item.id);
+          const eq = equipmentData.find((e: any) => e.id === item.id);
           return eq ? `${eq.name} (Qty: ${item.quantity})` : '';
         }).filter(Boolean).join(', ')
       : 'None';
 
     const propsDetails = props && props.length > 0
       ? props.map((item: { id: string; quantity: number }) => {
-          const prop = propsData.find((p) => p.id === item.id);
+          const prop = propsData.find((p: any) => p.id === item.id);
           return prop ? `${prop.name} (Qty: ${item.quantity})` : '';
         }).filter(Boolean).join(', ')
       : 'None';

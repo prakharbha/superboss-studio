@@ -5,9 +5,44 @@ import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
 import { Calendar, Clock, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import studiosData from '@/data/studios.json';
-import equipmentData from '@/data/equipment.json';
-import propsData from '@/data/props.json';
+
+interface Studio {
+  id: string;
+  name: string;
+  size: number;
+  unit: string;
+  description: string;
+  pricePerHour: number;
+  pricePerDay: number;
+  currency: string;
+}
+
+interface Equipment {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  pricePerHour: number;
+  pricePerDay: number;
+  currency: string;
+  available: boolean;
+}
+
+interface Prop {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  pricePerDay: number;
+  currency: string;
+  available: boolean;
+}
+
+interface BookingFormProps {
+  studios: Studio[];
+  equipment: Equipment[];
+  props: Prop[];
+}
 
 type FormData = {
   // Step 1: Studios
@@ -36,7 +71,7 @@ const steps = [
   { id: 5, name: 'Contact Details', description: 'Your information' },
 ];
 
-export default function BookingForm() {
+export default function BookingForm({ studios: studiosData, equipment: equipmentData, props: propsData }: BookingFormProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>();

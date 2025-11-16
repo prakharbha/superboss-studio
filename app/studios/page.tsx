@@ -2,23 +2,58 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
-import studiosData from '@/data/studios.json';
-import seoData from '@/data/seo.json';
+import { client, studiosQuery, seoByPageQuery } from '@/lib/sanity';
 import AnimatedSection from '@/components/AnimatedSection';
 import { formatCurrency } from '@/lib/utils';
 
-export const metadata: Metadata = {
-  title: seoData.pages['/studios'].title,
-  description: seoData.pages['/studios'].description,
-  keywords: seoData.pages['/studios'].keywords,
-  openGraph: {
-    title: seoData.pages['/studios'].title,
-    description: seoData.pages['/studios'].description,
-    type: 'website',
-  },
-};
+async function getStudios() {
+  try {
+    const studios = await client.fetch(studiosQuery);
+    return studios.map((studio: any) => ({
+      id: studio.id,
+      name: studio.name,
+      slug: studio.slug?.current || studio.slug,
+      size: studio.size,
+      unit: studio.unit,
+      description: studio.description,
+      pricePerHour: studio.pricePerHour,
+      pricePerDay: studio.pricePerDay,
+      currency: studio.currency,
+      suitableFor: studio.suitableFor || [],
+    })) || [];
+  } catch (error) {
+    console.error('Error fetching studios:', error);
+    return [];
+  }
+}
 
-export default function StudiosPage() {
+async function getSEO() {
+  try {
+    const seo = await client.fetch(seoByPageQuery, { page: '/studios' });
+    return seo || null;
+  } catch (error) {
+    console.error('Error fetching SEO:', error);
+    return null;
+  }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSEO();
+  
+  return {
+    title: seo?.title || 'Our Studios | SuperBoss Film Production & Studio',
+    description: seo?.description || 'Explore our professional studios',
+    keywords: seo?.keywords || [],
+    openGraph: {
+      title: seo?.title || 'Our Studios',
+      description: seo?.description || 'Explore our professional studios',
+      type: seo?.ogType || 'website',
+    },
+  };
+}
+
+export default async function StudiosPage() {
+  const studiosData = await getStudios();
   return (
     <div className="bg-white">
       {/* Hero Section */}

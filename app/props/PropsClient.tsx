@@ -31,7 +31,7 @@ export default function PropsClient({ propsData }: PropsClientProps) {
 
   // Get unique categories and styles
   const categories = ['All', ...Array.from(new Set(propsData.map((item) => item.category)))];
-  const styles = ['All', ...Array.from(new Set(propsData.map((item) => item.style).filter(Boolean)))];
+  const styles = ['All', ...Array.from(new Set(propsData.map((item) => item.style).filter((s): s is string => Boolean(s))))];
 
   // Filter props
   const filteredProps = propsData.filter((item) => {

@@ -98,13 +98,15 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
   // Calculate price breakdown
   const priceBreakdown = useMemo(() => {
     const breakdown = {
-      studios: [] as Array<{ name: string; quantity: number; unitPrice: number; total: number }>,
-      equipment: [] as Array<{ name: string; quantity: number; unitPrice: number; total: number }>,
-      props: [] as Array<{ name: string; quantity: number; unitPrice: number; total: number }>,
+      studios: [] as Array<{ name: string; quantity: number; unitPrice: number; total: number; needsTimeSelection: boolean }>,
+      equipment: [] as Array<{ name: string; quantity: number; unitPrice: number; total: number; needsTimeSelection: boolean }>,
+      props: [] as Array<{ name: string; quantity: number; unitPrice: number; total: number; needsTimeSelection: boolean }>,
       total: 0,
     };
 
-    const hours = bookingType === 'fullDay' ? 14 : selectedHours.length;
+    // Determine if we have time selection info
+    const hasTimeSelection = bookingType === 'fullDay' || (bookingType === 'hourly' && selectedHours.length > 0);
+    const hours = bookingType === 'fullDay' ? 14 : (selectedHours.length > 0 ? selectedHours.length : 1); // Use 1 as placeholder if no hours selected
     
     // Calculate studio prices
     if (Array.isArray(selectedStudios)) {
@@ -112,12 +114,16 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
         const studio = safeStudiosData.find(s => s.id === studioId);
         if (studio) {
           const unitPrice = bookingType === 'fullDay' ? studio.pricePerDay : studio.pricePerHour;
-          const total = bookingType === 'fullDay' ? studio.pricePerDay : studio.pricePerHour * hours;
+          const needsTimeSelection = bookingType === 'hourly' && selectedHours.length === 0;
+          const total = bookingType === 'fullDay' 
+            ? studio.pricePerDay 
+            : (needsTimeSelection ? 0 : studio.pricePerHour * selectedHours.length);
           breakdown.studios.push({
             name: studio.name,
             quantity: 1,
             unitPrice,
             total,
+            needsTimeSelection,
           });
           breakdown.total += total;
         }
@@ -130,12 +136,16 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
         const equip = safeEquipmentData.find(e => e.id === equipId);
         if (equip) {
           const unitPrice = bookingType === 'fullDay' ? equip.pricePerDay : equip.pricePerHour;
-          const total = bookingType === 'fullDay' ? equip.pricePerDay : equip.pricePerHour * hours;
+          const needsTimeSelection = bookingType === 'hourly' && selectedHours.length === 0;
+          const total = bookingType === 'fullDay' 
+            ? equip.pricePerDay 
+            : (needsTimeSelection ? 0 : equip.pricePerHour * selectedHours.length);
           breakdown.equipment.push({
             name: equip.name,
             quantity: 1,
             unitPrice,
             total,
+            needsTimeSelection,
           });
           breakdown.total += total;
         }
@@ -153,6 +163,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
             quantity: 1,
             unitPrice: prop.pricePerDay,
             total,
+            needsTimeSelection: false, // Props are always per day
           });
           breakdown.total += total;
         }
@@ -211,7 +222,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
       }
 
       console.log('Booking submitted successfully:', result);
-      setIsSubmitted(true);
+    setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting booking:', error);
       alert('An error occurred while submitting your booking. Please try again or contact us directly at +971 56 156 1570');
@@ -250,8 +261,8 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
         className="max-w-3xl mx-auto px-4 py-16"
       >
         <div className="text-center mb-8">
-          <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-6" />
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Booking Request Received!</h2>
+        <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-6" />
+        <h2 className="text-4xl font-bold text-gray-900 mb-4">Booking Request Received!</h2>
           <p className="text-xl text-gray-600 mb-2">
             Your booking ID: <span className="font-bold text-black">{bookingId}</span>
           </p>
@@ -484,13 +495,13 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                     )}
                     <div className="p-4">
                       <div className="flex items-start justify-between mb-2">
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-gray-900 mb-1">{item.name}</h4>
-                          <p className="text-xs text-gray-500 mb-2">{item.category}</p>
-                        </div>
-                        {selectedEquipment.includes(item.id) && (
-                          <CheckCircle className="w-5 h-5 text-black flex-shrink-0 ml-2" />
-                        )}
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-900 mb-1">{item.name}</h4>
+                        <p className="text-xs text-gray-500 mb-2">{item.category}</p>
+                      </div>
+                      {selectedEquipment.includes(item.id) && (
+                        <CheckCircle className="w-5 h-5 text-black flex-shrink-0 ml-2" />
+                      )}
                       </div>
                       <p className="text-sm font-semibold text-gray-900">{item.currency} {item.pricePerHour}/hr · {item.pricePerDay}/day</p>
                     </div>
@@ -540,13 +551,13 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                     )}
                     <div className="p-4">
                       <div className="flex items-start justify-between mb-2">
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-gray-900 mb-1">{item.name}</h4>
-                          <p className="text-xs text-gray-500 mb-2">{item.category}</p>
-                        </div>
-                        {selectedProps.includes(item.id) && (
-                          <CheckCircle className="w-5 h-5 text-black flex-shrink-0 ml-2" />
-                        )}
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-900 mb-1">{item.name}</h4>
+                        <p className="text-xs text-gray-500 mb-2">{item.category}</p>
+                      </div>
+                      {selectedProps.includes(item.id) && (
+                        <CheckCircle className="w-5 h-5 text-black flex-shrink-0 ml-2" />
+                      )}
                       </div>
                       <p className="text-sm font-semibold text-gray-900">{item.currency} {item.pricePerDay}/day</p>
                     </div>
@@ -694,7 +705,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                   <label className="block text-xl font-bold text-gray-900 mb-4">
                     <Clock className="inline w-6 h-6 mr-2" />
                     Select Hours
-                  </label>
+                    </label>
                   {bookingType === 'fullDay' ? (
                     <div className="bg-gray-100 p-8 rounded-2xl border-2 border-gray-300 h-[400px] flex items-center justify-center">
                       <div className="text-center">
@@ -703,7 +714,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                           Hour selection disabled for full day booking
                         </p>
                       </div>
-                    </div>
+                  </div>
                   ) : (
                     <>
                       <div className="bg-gradient-to-br from-gray-50 to-white p-4 rounded-2xl border-2 border-gray-200 shadow-sm h-[400px] overflow-y-auto">
@@ -751,7 +762,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                           })}
                         </div>
                       </div>
-                      <input
+                    <input
                         type="hidden"
                         {...register('selectedHours', {
                           required: bookingType === 'hourly' ? 'Please select at least one hour' : false,
@@ -874,7 +885,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
         {/* Price Summary & Navigation */}
         <div className="mt-12 pt-8 border-t-2 border-gray-200">
           {/* Price Summary */}
-          {totalPrice > 0 && (
+          {(priceBreakdown.studios.length > 0 || priceBreakdown.equipment.length > 0 || priceBreakdown.props.length > 0) && (
             <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-xl mb-6 border-2 border-gray-200">
               <div className="mb-4">
                 <p className="text-sm font-semibold text-gray-700 mb-3">Price Breakdown</p>
@@ -889,7 +900,9 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                           <span className="text-gray-900 font-medium">
                             {bookingType === 'fullDay' 
                               ? `AED ${studio.unitPrice.toLocaleString()} (Full Day)`
-                              : `AED ${studio.unitPrice.toLocaleString()}/hr × ${selectedHours.length} = AED ${studio.total.toLocaleString()}`
+                              : studio.needsTimeSelection
+                                ? `AED ${studio.unitPrice.toLocaleString()}/hr (Select hours)`
+                                : `AED ${studio.unitPrice.toLocaleString()}/hr × ${selectedHours.length} = AED ${studio.total.toLocaleString()}`
                             }
                           </span>
                         </div>
@@ -907,7 +920,9 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                           <span className="text-gray-900 font-medium">
                             {bookingType === 'fullDay' 
                               ? `AED ${equip.unitPrice.toLocaleString()} (Full Day)`
-                              : `AED ${equip.unitPrice.toLocaleString()}/hr × ${selectedHours.length} = AED ${equip.total.toLocaleString()}`
+                              : equip.needsTimeSelection
+                                ? `AED ${equip.unitPrice.toLocaleString()}/hr (Select hours)`
+                                : `AED ${equip.unitPrice.toLocaleString()}/hr × ${selectedHours.length} = AED ${equip.total.toLocaleString()}`
                             }
                           </span>
                         </div>
@@ -936,8 +951,17 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-600 mb-1">Estimated Total</p>
-                    <p className="text-3xl font-bold text-gray-900">AED {totalPrice.toLocaleString()}</p>
-                    <p className="text-xs text-gray-500 mt-1">Final price will be confirmed by our representative</p>
+                    {((bookingType === 'hourly' && selectedHours.length === 0) && (priceBreakdown.studios.length > 0 || priceBreakdown.equipment.length > 0)) ? (
+                      <>
+                        <p className="text-2xl font-bold text-gray-700">Select hours to calculate</p>
+                        <p className="text-xs text-gray-500 mt-1">Props: AED {priceBreakdown.props.reduce((sum, p) => sum + p.total, 0).toLocaleString()}</p>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-3xl font-bold text-gray-900">AED {totalPrice.toLocaleString()}</p>
+                        <p className="text-xs text-gray-500 mt-1">Final price will be confirmed by our representative</p>
+                      </>
+                    )}
                   </div>
                   <div className="text-right">
                     <p className="text-sm text-gray-600">Selected Items:</p>
@@ -952,40 +976,40 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
             </div>
           )}
 
-          {/* Navigation Buttons */}
+        {/* Navigation Buttons */}
           <div className="flex items-center justify-between">
+          <button
+            type="button"
+            onClick={prevStep}
+            disabled={currentStep === 1}
+            className={`flex items-center px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
+              currentStep === 1
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
+            }`}
+          >
+            <ArrowLeft className="w-5 h-5 mr-2" />
+            Previous
+          </button>
+
+          {currentStep < steps.length ? (
             <button
               type="button"
-              onClick={prevStep}
-              disabled={currentStep === 1}
-              className={`flex items-center px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
-                currentStep === 1
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                  : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
-              }`}
+              onClick={nextStep}
+              className="flex items-center bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all duration-200 font-semibold"
             >
-              <ArrowLeft className="w-5 h-5 mr-2" />
-              Previous
+              Next
+              <ArrowRight className="w-5 h-5 ml-2" />
             </button>
-
-            {currentStep < steps.length ? (
-              <button
-                type="button"
-                onClick={nextStep}
-                className="flex items-center bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all duration-200 font-semibold"
-              >
-                Next
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className="flex items-center bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition-all duration-200 font-semibold"
-              >
-                Submit Booking
-                <CheckCircle className="w-5 h-5 ml-2" />
-              </button>
-            )}
+          ) : (
+            <button
+              type="submit"
+              className="flex items-center bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition-all duration-200 font-semibold"
+            >
+              Submit Booking
+              <CheckCircle className="w-5 h-5 ml-2" />
+            </button>
+          )}
           </div>
         </div>
       </form>

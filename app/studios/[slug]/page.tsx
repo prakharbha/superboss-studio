@@ -96,8 +96,8 @@ export default async function StudioPage({ params }: StudioPageProps) {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="relative h-[60vh] min-h-[500px] bg-sb-grey">
-        <div className="absolute inset-0 z-0">
+      <section className="relative h-[60vh] min-h-[500px] bg-sb-grey -mt-24 md:-mt-28">
+        <div className="absolute inset-0 z-0 overflow-hidden">
           <Image
             src={getStudioMainImage(studio.slug)}
             alt={studio.name}
@@ -139,13 +139,17 @@ export default async function StudioPage({ params }: StudioPageProps) {
                     <h2 className="text-3xl font-bold text-sb-black mb-6">Studio Gallery</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {getStudioImages(studio.slug).map((imageSrc, index) => (
-                        <div key={index} className="aspect-[4/3] bg-sb-grey rounded-lg overflow-hidden">
+                        <div key={`${studio.slug}-${index}`} className="relative aspect-[4/3] bg-sb-grey rounded-lg overflow-hidden">
                           <Image
                             src={imageSrc}
                             alt={`${studio.name} - Image ${index + 1}`}
                             fill
                             className="object-cover"
                             sizes="(max-width: 768px) 100vw, 50vw"
+                            loading="lazy"
+                            onError={(e) => {
+                              console.error('Image failed to load:', imageSrc);
+                            }}
                           />
                         </div>
                       ))}

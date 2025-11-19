@@ -8,6 +8,7 @@ import AnimatedSection from '@/components/AnimatedSection';
 import { formatCurrency } from '@/lib/utils';
 import { getStudioImages, getStudioMainImage } from '@/lib/studio-images';
 import StudioGallery from '@/components/StudioGallery';
+import StudioVideoPlayer from '@/components/StudioVideoPlayer';
 
 interface StudioPageProps {
   params: Promise<{ slug: string }>;
@@ -144,38 +145,12 @@ export default async function StudioPage({ params }: StudioPageProps) {
               <AnimatedSection delay={0.2}>
                 <div>
                   <h2 className="text-3xl font-bold text-sb-black mb-6">Studio Tour</h2>
-                  <div className="relative w-full rounded-lg overflow-hidden shadow-xl bg-sb-black">
-                    <div className="aspect-video relative">
-                      <video
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        className="w-full h-full object-cover"
-                        aria-label={`${studio.name} studio tour video`}
-                        preload="metadata"
-                      >
-                        {/* WebM source for better compression (modern browsers prefer this) */}
-                        <source
-                          src="/videos/superboss-studio-tour-720p.webm"
-                          type="video/webm"
-                        />
-                        {/* MP4 720p as default - good balance of quality and file size */}
-                        <source
-                          src="/videos/superboss-studio-tour-720p.mp4"
-                          type="video/mp4"
-                        />
-                        {/* Fallback to original if optimized versions fail */}
-                        <source
-                          src="/superboss-studio-tour.mp4"
-                          type="video/mp4"
-                        />
-                        Your browser does not support the video tag.
-                      </video>
-                      {/* Subtle overlay for better visual appeal */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-sb-black/20 to-transparent pointer-events-none"></div>
-                    </div>
-                  </div>
+                  <StudioVideoPlayer
+                    videoSrc="/videos/superboss-studio-tour-720p.mp4"
+                    webmSrc="/videos/superboss-studio-tour-720p.webm"
+                    fallbackSrc="/superboss-studio-tour.mp4"
+                    studioName={studio.name}
+                  />
                 </div>
               </AnimatedSection>
 

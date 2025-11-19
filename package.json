@@ -25,7 +25,8 @@
     "remove:null-images": "node scripts/remove-null-images.js",
     "migrate:events": "node scripts/migrate-events.js",
     "optimize:gallery": "node scripts/optimize-gallery-images.js",
-    "optimize:studios": "node scripts/optimize-studio-images.js"
+    "optimize:studios": "node scripts/optimize-studio-images.js",
+    "optimize:video": "node scripts/optimize-video.js"
   },
   "dependencies": {
     "@sanity/client": "^7.12.1",
@@ -38,6 +39,7 @@
     "lucide-react": "^0.553.0",
     "next": "16.0.1",
     "next-sanity": "^11.6.6",
+    "pdf-parse": "^2.4.5",
     "react": "19.2.0",
     "react-day-picker": "^9.11.1",
     "react-dom": "19.2.0",

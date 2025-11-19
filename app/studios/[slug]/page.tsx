@@ -140,8 +140,47 @@ export default async function StudioPage({ params }: StudioPageProps) {
                 </AnimatedSection>
               )}
 
-              {/* Features */}
+              {/* Studio Video Tour */}
               <AnimatedSection delay={0.2}>
+                <div>
+                  <h2 className="text-3xl font-bold text-sb-black mb-6">Studio Tour</h2>
+                  <div className="relative w-full rounded-lg overflow-hidden shadow-xl bg-sb-black">
+                    <div className="aspect-video relative">
+                      <video
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="w-full h-full object-cover"
+                        aria-label={`${studio.name} studio tour video`}
+                        preload="metadata"
+                      >
+                        {/* WebM source for better compression (modern browsers prefer this) */}
+                        <source
+                          src="/videos/superboss-studio-tour-720p.webm"
+                          type="video/webm"
+                        />
+                        {/* MP4 720p as default - good balance of quality and file size */}
+                        <source
+                          src="/videos/superboss-studio-tour-720p.mp4"
+                          type="video/mp4"
+                        />
+                        {/* Fallback to original if optimized versions fail */}
+                        <source
+                          src="/superboss-studio-tour.mp4"
+                          type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                      </video>
+                      {/* Subtle overlay for better visual appeal */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-sb-black/20 to-transparent pointer-events-none"></div>
+                    </div>
+                  </div>
+                </div>
+              </AnimatedSection>
+
+              {/* Features */}
+              <AnimatedSection delay={0.25}>
                 <div>
                   <h2 className="text-3xl font-bold text-sb-black mb-6">Features</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -173,7 +212,7 @@ export default async function StudioPage({ params }: StudioPageProps) {
               </AnimatedSection>
 
               {/* Location Map */}
-              <AnimatedSection delay={0.4}>
+              <AnimatedSection delay={0.35}>
                 <div>
                   <h2 className="text-3xl font-bold text-sb-black mb-6">Location</h2>
                   <div className="bg-white rounded-lg overflow-hidden shadow-lg border border-sb-grey-light">

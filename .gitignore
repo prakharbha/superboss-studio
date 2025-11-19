@@ -42,3 +42,13 @@ next-env.d.ts
 
 # images folder
 superboss-images
+
+# Large video files (use optimized versions instead)
+public/superboss-studio-tour.mp4
+
+# Large PDF files
+public/Company-Profile-with-Prices.pdf
+
+# Extracted PDF images (temporary files)
+scripts/extracted-images/
+scripts/extracted-pdf-text.txt

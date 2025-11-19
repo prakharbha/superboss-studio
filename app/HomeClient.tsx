@@ -59,7 +59,7 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
     {
       icon: UsersRound,
       title: 'Inhouse Talent',
-      description: 'Connect with our network of creative professionals, photographers, and production experts ready to bring your vision to life',
+      description: 'Connect with our network of creative professionals and production experts',
       link: '/events',
     },
   ];
@@ -188,38 +188,38 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
       <section className="pt-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-sb-black mb-6">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold text-sb-black mb-4">
                 About SuperBoss Studio
               </h2>
-              <div className="w-24 h-1 bg-sb-black mx-auto mb-8"></div>
+              <div className="w-24 h-1 bg-sb-black mx-auto mb-6"></div>
             </div>
           </AnimatedSection>
 
           <AnimatedSection delay={0.2}>
-            <div className="max-w-4xl mx-auto text-center mb-16">
-              <p className="text-lg text-sb-grey leading-relaxed mb-6">
+            <div className="max-w-3xl mx-auto text-center mb-12">
+              <p className="text-base md:text-lg text-sb-grey leading-relaxed mb-4">
                 Built across 16,000 sq ft canvas, our studio blends artistry and architectural
                 excellence. Whether you're a filmmaker, performer, artist or designer - this is
                 your arena to convert bold ideas to life.
               </p>
-              <p className="text-lg text-sb-grey leading-relaxed">
+              <p className="text-base md:text-lg text-sb-grey leading-relaxed">
                 A versatile studio crafted to make a vision to reality.
               </p>
             </div>
           </AnimatedSection>
 
           {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {features.map((feature, index) => (
               <AnimatedSection key={index} delay={index * 0.1}>
                 <Link href={feature.link || '#'}>
-                  <div className="text-center p-8 rounded-lg hover:bg-sb-grey-light transition-all duration-300 group cursor-pointer">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-sb-black text-white rounded-full mb-4 group-hover:scale-110 transition-transform">
-                      <feature.icon className="w-8 h-8" />
+                  <div className="text-center p-6 lg:p-8 rounded-lg hover:bg-sb-grey-light transition-all duration-300 group cursor-pointer h-full flex flex-col items-center">
+                    <div className="inline-flex items-center justify-center w-14 h-14 lg:w-16 lg:h-16 bg-sb-black text-white rounded-full mb-4 group-hover:scale-110 transition-transform">
+                      <feature.icon className="w-7 h-7 lg:w-8 lg:h-8" />
                     </div>
-                    <h3 className="text-xl font-semibold text-sb-black mb-2">{feature.title}</h3>
-                    <p className="text-sb-grey">{feature.description}</p>
+                    <h3 className="text-lg lg:text-xl font-semibold text-sb-black mb-2">{feature.title}</h3>
+                    <p className="text-sm lg:text-base text-sb-grey leading-relaxed">{feature.description}</p>
                   </div>
                 </Link>
               </AnimatedSection>

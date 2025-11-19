@@ -6,6 +6,7 @@ import { ArrowRight, Check, MapPin, Clock, DollarSign } from 'lucide-react';
 import { client, studiosQuery, studioBySlugQuery, seoByPageQuery } from '@/lib/sanity';
 import AnimatedSection from '@/components/AnimatedSection';
 import { formatCurrency } from '@/lib/utils';
+import { getStudioImages, getStudioMainImage } from '@/lib/studio-images';
 
 interface StudioPageProps {
   params: Promise<{ slug: string }>;
@@ -96,17 +97,21 @@ export default async function StudioPage({ params }: StudioPageProps) {
     <div className="bg-white">
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[500px] bg-sb-grey">
-        <div className="absolute inset-0 bg-gradient-to-t from-sb-black/60 to-transparent z-10"></div>
-        <div className="absolute inset-0 z-0 flex items-center justify-center">
-          <div className="text-center text-white">
-            <div className="text-6xl mb-4">📸</div>
-            <p className="text-sm">Image placeholder</p>
-          </div>
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={getStudioMainImage(studio.slug)}
+            alt={studio.name}
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-sb-black/70 via-sb-black/40 to-transparent"></div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 z-20 pb-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">{studio.name}</h1>
-            <p className="text-xl text-white/90">
+            <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 drop-shadow-2xl">{studio.name}</h1>
+            <p className="text-xl text-white/90 drop-shadow-lg">
               {studio.size} {studio.unit} Creative Space
             </p>
           </div>
@@ -127,8 +132,30 @@ export default async function StudioPage({ params }: StudioPageProps) {
                 </div>
               </AnimatedSection>
 
+              {/* Studio Images Gallery */}
+              {getStudioImages(studio.slug).length > 0 && (
+                <AnimatedSection delay={0.15}>
+                  <div>
+                    <h2 className="text-3xl font-bold text-sb-black mb-6">Studio Gallery</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {getStudioImages(studio.slug).map((imageSrc, index) => (
+                        <div key={index} className="aspect-[4/3] bg-sb-grey rounded-lg overflow-hidden">
+                          <Image
+                            src={imageSrc}
+                            alt={`${studio.name} - Image ${index + 1}`}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </AnimatedSection>
+              )}
+
               {/* Features */}
-              <AnimatedSection delay={0.1}>
+              <AnimatedSection delay={0.2}>
                 <div>
                   <h2 className="text-3xl font-bold text-sb-black mb-6">Features</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -143,7 +170,7 @@ export default async function StudioPage({ params }: StudioPageProps) {
               </AnimatedSection>
 
               {/* Suitable For */}
-              <AnimatedSection delay={0.2}>
+              <AnimatedSection delay={0.3}>
                 <div>
                   <h2 className="text-3xl font-bold text-sb-black mb-6">Perfect For</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -160,7 +187,7 @@ export default async function StudioPage({ params }: StudioPageProps) {
               </AnimatedSection>
 
               {/* Location Map */}
-              <AnimatedSection delay={0.3}>
+              <AnimatedSection delay={0.4}>
                 <div>
                   <h2 className="text-3xl font-bold text-sb-black mb-6">Location</h2>
                   <div className="bg-white rounded-lg overflow-hidden shadow-lg border border-sb-grey-light">
@@ -198,7 +225,7 @@ export default async function StudioPage({ params }: StudioPageProps) {
             {/* Right Column - Booking Card */}
             <div className="lg:col-span-1">
               <div className="sticky top-24">
-                <AnimatedSection delay={0.4}>
+                <AnimatedSection delay={0.5}>
                   <div className="bg-sb-grey-light rounded-lg p-8 space-y-6">
                     <div>
                       <h3 className="text-2xl font-bold text-sb-black mb-4">Pricing</h3>
@@ -277,8 +304,14 @@ export default async function StudioPage({ params }: StudioPageProps) {
                 <AnimatedSection key={otherStudio.id} delay={index * 0.1}>
                   <Link href={`/studios/${otherStudio.slug}`}>
                     <div className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                      <div className="aspect-[4/3] bg-sb-grey flex items-center justify-center">
-                        <span className="text-4xl text-white">📸</span>
+                      <div className="aspect-[4/3] bg-sb-grey relative overflow-hidden">
+                        <Image
+                          src={getStudioMainImage(otherStudio.slug)}
+                          alt={otherStudio.name}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
                       </div>
                       <div className="p-6">
                         <h3 className="text-xl font-bold text-sb-black mb-2">

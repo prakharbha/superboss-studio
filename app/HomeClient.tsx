@@ -8,6 +8,7 @@ import BackgroundSlider from '@/components/BackgroundSlider';
 import RotatingText from '@/components/RotatingText';
 import AnimatedTagline from '@/components/AnimatedTagline';
 import ImageGallery from '@/components/ImageGallery';
+import { getStudioMainImage } from '@/lib/studio-images';
 import { Camera, Film, Palette, Users, Sparkles, ArrowRight } from 'lucide-react';
 
 interface Studio {
@@ -168,7 +169,7 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
       </section>
 
       {/* About Section */}
-      <section className="py-24 bg-white">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="text-center mb-16">
@@ -227,7 +228,7 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
       />
 
       {/* Use Cases Section */}
-      <section className="relative py-24 overflow-hidden">
+      <section className="relative py-16 overflow-hidden">
         <div className="absolute inset-0">
           <Image
             src="/images/DSC09230-large.webp"
@@ -263,7 +264,7 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
       </section>
 
       {/* Studios Preview */}
-      <section className="py-24 bg-white">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="text-center mb-16">
@@ -278,13 +279,14 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
             {studiosData.map((studio, index) => (
               <AnimatedSection key={studio.id} delay={index * 0.1}>
                 <Link href={`/studios/${studio.slug}`}>
-                  <div className="group relative overflow-hidden rounded-lg bg-sb-grey aspect-[4/3] hover:shadow-xl transition-all duration-300 flex items-center justify-center">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center text-sb-grey-light">
-                        <div className="text-6xl mb-4">📸</div>
-                        <p className="text-sm">Studio Image</p>
-                      </div>
-                    </div>
+                  <div className="group relative overflow-hidden rounded-lg bg-sb-grey aspect-[4/3] hover:shadow-xl transition-all duration-300">
+                    <Image
+                      src={getStudioMainImage(studio.slug)}
+                      alt={studio.name}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-sb-black/90 via-sb-black/40 to-transparent z-10"></div>
                     <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
                       <h3 className="text-2xl font-bold text-white mb-2">{studio.name}</h3>
@@ -316,7 +318,7 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-24 text-white overflow-hidden">
+      <section className="relative py-16 text-white overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image

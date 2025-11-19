@@ -64,7 +64,7 @@ export default function ImageGallery({
 
   return (
     <>
-      <section className="py-24 bg-gradient-to-b from-white to-sb-grey-light">
+      <section className="py-16 bg-gradient-to-b from-white to-sb-grey-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="text-center mb-12">
@@ -172,31 +172,35 @@ export default function ImageGallery({
 
             {/* Image Container */}
             <motion.div
+              key={selectedIndex}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="relative max-w-6xl w-full max-h-[90vh]"
+              className="relative max-w-6xl w-full max-h-[90vh] flex items-center justify-center"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="relative aspect-auto w-full h-full">
-                <Image
-                  src={images[selectedIndex].src}
-                  alt={images[selectedIndex].alt}
-                  fill
-                  className="object-contain"
-                  sizes="90vw"
-                  priority
-                />
-              </div>
-              
-              {/* Image Counter */}
-              {images.length > 1 && (
-                <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-full backdrop-blur-sm">
-                  <span className="text-sm">
-                    {selectedIndex + 1} / {images.length}
-                  </span>
-                </div>
+              {selectedIndex !== null && images[selectedIndex] && (
+                <>
+                  <div className="relative w-full flex items-center justify-center" style={{ minHeight: '400px', maxHeight: '85vh' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={images[selectedIndex].src}
+                      alt={images[selectedIndex].alt || 'Gallery image'}
+                      className="object-contain max-w-full max-h-[85vh]"
+                      style={{ width: 'auto', height: 'auto' }}
+                    />
+                  </div>
+                  
+                  {/* Image Counter */}
+                  {images.length > 1 && (
+                    <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-4 py-2 rounded-full backdrop-blur-sm z-[120]">
+                      <span className="text-sm">
+                        {selectedIndex + 1} / {images.length}
+                      </span>
+                    </div>
+                  )}
+                </>
               )}
             </motion.div>
           </motion.div>

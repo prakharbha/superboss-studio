@@ -5,6 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import { client, studiosQuery, seoByPageQuery } from '@/lib/sanity';
 import AnimatedSection from '@/components/AnimatedSection';
 import { formatCurrency } from '@/lib/utils';
+import { getStudioMainImage } from '@/lib/studio-images';
 
 async function getStudios() {
   try {
@@ -95,12 +96,17 @@ export default async function StudiosPage() {
                 >
                   {/* Image */}
                   <div className="w-full lg:w-1/2">
-                    <div className="aspect-[4/3] bg-sb-grey rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 flex items-center justify-center">
-                      <div className="text-center text-white">
-                        <div className="text-6xl mb-4">📸</div>
-                        <p className="text-sm">Studio Image</p>
+                    <Link href={`/studios/${studio.slug}`}>
+                      <div className="aspect-[4/3] bg-sb-grey rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                        <Image
+                          src={getStudioMainImage(studio.slug)}
+                          alt={studio.name}
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                        />
                       </div>
-                    </div>
+                    </Link>
                   </div>
 
                   {/* Content */}
@@ -172,8 +178,85 @@ export default async function StudiosPage() {
         </div>
       </section>
 
+      {/* Makeup & Styling Facilities */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatedSection>
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold text-sb-black mb-6">
+                Makeup & Styling Facilities
+              </h2>
+              <div className="w-24 h-1 bg-sb-black mx-auto mb-8"></div>
+            </div>
+          </AnimatedSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <AnimatedSection delay={0.1}>
+              <div className="bg-sb-grey-light rounded-lg p-8">
+                <h3 className="text-2xl font-bold text-sb-black mb-4">Makeup Stations</h3>
+                <p className="text-sb-grey leading-relaxed">
+                  Our studio features two spacious, fully equipped makeup stations available for use with any studio booking.
+                </p>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.2}>
+              <div className="bg-sb-grey-light rounded-lg p-8">
+                <h3 className="text-2xl font-bold text-sb-black mb-4">Luxury Makeup Room</h3>
+                <p className="text-sb-grey leading-relaxed">
+                  For premium shoots, we offer an exclusive luxury makeup room that includes a private green room and a dedicated stylist station - designed to provide maximum comfort and privacy for talent and clients.
+                </p>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.3}>
+              <div className="bg-sb-grey-light rounded-lg p-8">
+                <h3 className="text-2xl font-bold text-sb-black mb-4">Green Room</h3>
+                <p className="text-sb-grey leading-relaxed">
+                  A large, well-appointed green room with multiple changing areas ensures a smooth workflow during productions of any scale.
+                </p>
+              </div>
+            </AnimatedSection>
+          </div>
+        </div>
+      </section>
+
+      {/* Workstation & Office Space */}
+      <section className="py-16 bg-sb-grey-light">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatedSection>
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold text-sb-black mb-6">
+                Workstation & Office Space
+              </h2>
+              <div className="w-24 h-1 bg-sb-black mx-auto mb-8"></div>
+            </div>
+          </AnimatedSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <AnimatedSection delay={0.1}>
+              <div className="bg-white rounded-lg p-8">
+                <h3 className="text-2xl font-bold text-sb-black mb-4">Dedicated Workstation Area</h3>
+                <p className="text-sb-grey leading-relaxed">
+                  Our in-house workstation includes multiple private cabins designed for production teams, editors, and coordinators to work efficiently.
+                </p>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.2}>
+              <div className="bg-white rounded-lg p-8">
+                <h3 className="text-2xl font-bold text-sb-black mb-4">Conference Room</h3>
+                <p className="text-sb-grey leading-relaxed">
+                  A spacious conference room equipped with a projector, screen, and complete meeting setup is available for client presentations, planning sessions, and creative discussions.
+                </p>
+              </div>
+            </AnimatedSection>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
-      <section className="py-20 bg-sb-grey-light">
+      <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <AnimatedSection>
             <h2 className="text-4xl font-bold text-sb-black mb-6">

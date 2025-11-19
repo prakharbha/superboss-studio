@@ -6,22 +6,32 @@ import { client, studiosQuery, seoByPageQuery } from '@/lib/sanity';
 import AnimatedSection from '@/components/AnimatedSection';
 import { formatCurrency } from '@/lib/utils';
 import { getStudioMainImage } from '@/lib/studio-images';
+import { getImageUrl } from '@/lib/sanity';
 
 async function getStudios() {
   try {
     const studios = await client.fetch(studiosQuery);
-    return studios.map((studio: any) => ({
-      id: studio.id,
-      name: studio.name,
-      slug: studio.slug?.current || studio.slug,
-      size: studio.size,
-      unit: studio.unit,
-      description: studio.description,
-      pricePerHour: studio.pricePerHour,
-      pricePerDay: studio.pricePerDay,
-      currency: studio.currency,
-      suitableFor: studio.suitableFor || [],
-    })) || [];
+    return studios.map((studio: any) => {
+      // Get the first image from Sanity, or fallback to local image mapping
+      let mainImage = getStudioMainImage(studio.slug?.current || studio.slug);
+      if (studio.images && studio.images.length > 0 && studio.images[0]?.asset?.url) {
+        mainImage = getImageUrl(studio.images[0].asset, 800, 600);
+      }
+      
+      return {
+        id: studio.id,
+        name: studio.name,
+        slug: studio.slug?.current || studio.slug,
+        size: studio.size,
+        unit: studio.unit,
+        description: studio.description,
+        pricePerHour: studio.pricePerHour,
+        pricePerDay: studio.pricePerDay,
+        currency: studio.currency,
+        suitableFor: studio.suitableFor || [],
+        mainImage,
+      };
+    }) || [];
   } catch (error) {
     console.error('Error fetching studios:', error);
     return [];
@@ -58,8 +68,8 @@ export default async function StudiosPage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="relative py-32 overflow-hidden">
-        <div className="absolute inset-0">
+      <section className="relative h-[60vh] min-h-[500px] bg-sb-grey -mt-24 md:-mt-28">
+        <div className="absolute inset-0 z-0 overflow-hidden">
           <Image
             src="/images/DSC09213-large.webp"
             alt="Studios background"
@@ -68,16 +78,18 @@ export default async function StudiosPage() {
             sizes="100vw"
             priority
           />
-          <div className="absolute inset-0 bg-sb-black/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-sb-black/70 via-sb-black/40 to-transparent z-10"></div>
         </div>
         
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-2xl">Our Studios</h1>
-          <div className="w-24 h-1 bg-white mx-auto mb-8"></div>
-          <p className="text-xl text-white max-w-3xl mx-auto drop-shadow-lg">
-            Six versatile spaces designed for every creative vision. From intimate shoots to
-            large-scale productions, find your perfect studio.
-          </p>
+        <div className="absolute bottom-0 left-0 right-0 z-20 pb-12">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 drop-shadow-2xl">Our Studios</h1>
+            <div className="w-24 h-1 bg-white mx-auto mb-6"></div>
+            <p className="text-xl text-white/90 max-w-3xl mx-auto drop-shadow-lg">
+              Six versatile spaces designed for every creative vision. From intimate shoots to
+              large-scale productions, find your perfect studio.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -95,9 +107,9 @@ export default async function StudiosPage() {
                 {/* Image */}
                 <div className="w-full lg:w-1/2">
                   <Link href={`/studios/${studio.slug}`}>
-                    <div className="aspect-[4/3] bg-sb-grey rounded-lg overflow-hidden">
+                    <div className="aspect-[4/3] bg-sb-grey rounded-lg overflow-hidden relative">
                       <Image
-                        src={getStudioMainImage(studio.slug)}
+                        src={studio.mainImage}
                         alt={studio.name}
                         fill
                         className="object-cover"

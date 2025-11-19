@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import AnimatedSection from '@/components/AnimatedSection';
 import BackgroundSlider from '@/components/BackgroundSlider';
 import RotatingText from '@/components/RotatingText';
+import AnimatedTagline from '@/components/AnimatedTagline';
 import { Camera, Film, Palette, Users, Sparkles, ArrowRight } from 'lucide-react';
 
 interface Studio {
@@ -69,6 +70,13 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
     'Creations',
   ];
 
+  const taglines = [
+    '16,000 sq ft of Creative Energy in the Heart of Dubai',
+    'Dubai\'s Creative Epicenter — Where Stories Begin',
+    'A Hub of Innovation, Imagination, and Impact — Right Here in Dubai',
+    'Dubai\'s Destination for World-Class Storytelling',
+  ];
+
   return (
     <div className="bg-white">
       {/* Hero Section */}
@@ -104,14 +112,20 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
             </h1>
           </motion.div>
 
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl md:text-2xl text-white mb-12 max-w-3xl mx-auto drop-shadow-lg"
+            className="text-xl md:text-2xl text-white mb-12 max-w-3xl mx-auto drop-shadow-lg min-h-[3rem] flex items-center justify-center"
           >
-            16,000 sq ft of creative excellence in the heart of Dubai
-          </motion.p>
+            <AnimatedTagline
+              taglines={taglines}
+              typingSpeed={50}
+              deletingSpeed={30}
+              pauseDuration={2500}
+              className="text-center"
+            />
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}

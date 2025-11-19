@@ -9,7 +9,7 @@ import RotatingText from '@/components/RotatingText';
 import AnimatedTagline from '@/components/AnimatedTagline';
 import ImageGallery from '@/components/ImageGallery';
 import { getStudioMainImage } from '@/lib/studio-images';
-import { Camera, Film, Palette, Users, Sparkles, ArrowRight } from 'lucide-react';
+import { Camera, Film, Palette, Users, Sparkles, ArrowRight, Layout, UsersRound } from 'lucide-react';
 
 interface Studio {
   id: string;
@@ -30,21 +30,37 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
       icon: Camera,
       title: 'Professional Studios',
       description: '6 versatile studios ranging from 800 to 5000 sq ft',
+      link: '/studios',
+    },
+    {
+      icon: Layout,
+      title: 'Bespoke Setups',
+      description: 'Tailored spaces designed to fit your story!',
+      link: '/contact',
     },
     {
       icon: Film,
       title: 'Premium Equipment',
       description: 'State-of-the-art cameras, lighting, and production gear',
+      link: '/equipment',
     },
     {
       icon: Palette,
       title: 'Extensive Props',
       description: 'Curated collection of furniture, decor, and styling props',
+      link: '/props',
     },
     {
       icon: Users,
       title: 'Expert Support',
       description: 'Professional team to assist with your production needs',
+      link: '/contact',
+    },
+    {
+      icon: UsersRound,
+      title: 'Inhouse Talent',
+      description: 'Connect with our network of creative professionals, photographers, and production experts ready to bring your vision to life',
+      link: '/events',
     },
   ];
 
@@ -194,16 +210,18 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
           </AnimatedSection>
 
           {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {features.map((feature, index) => (
               <AnimatedSection key={index} delay={index * 0.1}>
-                <div className="text-center p-8 rounded-lg hover:bg-sb-grey-light transition-all duration-300 group">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-sb-black text-white rounded-full mb-4 group-hover:scale-110 transition-transform">
-                    <feature.icon className="w-8 h-8" />
+                <Link href={feature.link || '#'}>
+                  <div className="text-center p-8 rounded-lg hover:bg-sb-grey-light transition-all duration-300 group cursor-pointer">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-sb-black text-white rounded-full mb-4 group-hover:scale-110 transition-transform">
+                      <feature.icon className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-sb-black mb-2">{feature.title}</h3>
+                    <p className="text-sb-grey">{feature.description}</p>
                   </div>
-                  <h3 className="text-xl font-semibold text-sb-black mb-2">{feature.title}</h3>
-                  <p className="text-sb-grey">{feature.description}</p>
-                </div>
+                </Link>
               </AnimatedSection>
             ))}
           </div>

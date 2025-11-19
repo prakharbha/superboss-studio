@@ -7,6 +7,7 @@ import AnimatedSection from '@/components/AnimatedSection';
 import BackgroundSlider from '@/components/BackgroundSlider';
 import RotatingText from '@/components/RotatingText';
 import AnimatedTagline from '@/components/AnimatedTagline';
+import ImageGallery from '@/components/ImageGallery';
 import { Camera, Film, Palette, Users, Sparkles, ArrowRight } from 'lucide-react';
 
 interface Studio {
@@ -207,6 +208,23 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
           </div>
         </div>
       </section>
+
+      {/* Latest Events Gallery */}
+      <ImageGallery
+        images={[
+          { src: '/images/gallery/DSC08515.webp', alt: 'SuperBoss Studio Event' },
+          { src: '/images/gallery/DSC08520.webp', alt: 'SuperBoss Studio Event' },
+          { src: '/images/gallery/DSC08530.webp', alt: 'SuperBoss Studio Event' },
+          { src: '/images/gallery/DSC08539.webp', alt: 'SuperBoss Studio Event' },
+          { src: '/images/gallery/DSC08551.webp', alt: 'SuperBoss Studio Event' },
+          { src: '/images/gallery/DSC08575.webp', alt: 'SuperBoss Studio Event' },
+          { src: '/images/gallery/DSC08588.webp', alt: 'SuperBoss Studio Event' },
+          { src: '/images/gallery/DSC08660.webp', alt: 'SuperBoss Studio Event' },
+        ]}
+        title="Latest Events"
+        subtitle="Showcasing Our Creative Journey"
+        viewAllLink="/events"
+      />
 
       {/* Use Cases Section */}
       <section className="relative py-24 overflow-hidden">

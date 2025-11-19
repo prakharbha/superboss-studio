@@ -23,7 +23,8 @@
     "fix:images": "node scripts/quick-fix-images.js",
     "init:images": "node scripts/initialize-image-fields.js",
     "remove:null-images": "node scripts/remove-null-images.js",
-    "migrate:events": "node scripts/migrate-events.js"
+    "migrate:events": "node scripts/migrate-events.js",
+    "optimize:gallery": "node scripts/optimize-gallery-images.js"
   },
   "dependencies": {
     "@sanity/client": "^7.12.1",

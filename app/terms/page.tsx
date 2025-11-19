@@ -29,20 +29,83 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-bold text-sb-black mb-4">2. Studio Rental Services</h2>
+            <h2 className="text-2xl font-bold text-sb-black mb-4">2. Studio Time & Usage</h2>
+            <p className="text-sb-grey mb-4">
+              <strong>Session Timing:</strong> Your reserved session begins exactly at the scheduled start time, not when you begin shooting or arranging equipment. We recommend booking additional time if you require setup, preparation, or packing time.
+            </p>
+            <p className="text-sb-grey mb-4">
+              <strong>Full Duration Charges:</strong> Clients who end their shoot early will still be charged for the full duration booked, as the time slot has been reserved exclusively for you.
+            </p>
+            <p className="text-sb-grey mb-4">
+              <strong>Overtime Policy:</strong> If you exceed your booked ending time by more than 15 minutes, the system will automatically charge for an additional full hour. We appreciate your understanding in helping us maintain our schedule for all clients.
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-bold text-sb-black mb-4">3. Late Arrival Policy</h2>
+            <p className="text-sb-grey mb-4">
+              We understand that unexpected delays can occur. However, please note that client lateness reduces the available studio time, and unfortunately, we cannot extend your booking to compensate for late arrival.
+            </p>
+            <p className="text-sb-grey mb-4">
+              Late arrival does not qualify for cancellation, rescheduling, or refund, as the studio time has been reserved for your exclusive use.
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-bold text-sb-black mb-4">4. Advance Payment Requirements</h2>
+            <p className="text-sb-grey mb-4">
+              <strong>Booking Confirmation:</strong> To confirm any studio reservation, we require a 50% advance payment, which includes 5% VAT as per UAE regulations.
+            </p>
+            <p className="text-sb-grey mb-4">
+              <strong>Non-Refundable Policy:</strong> The advance payment is non-refundable if the booking is changed or canceled within 72 hours of the reserved time. This policy helps us manage our schedule and ensure availability for all clients.
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-bold text-sb-black mb-4">5. Cancellation & Rescheduling</h2>
+            <p className="text-sb-grey mb-4">
+              <strong>Request Process:</strong> Any request to cancel or reschedule must be made by contacting us directly at <a href="tel:+971561561570" className="text-sb-black font-semibold hover:underline">+971 56 156 1570</a>.
+            </p>
+            <p className="text-sb-grey mb-4">
+              <strong>72-Hour Policy:</strong> For cancellations or rescheduling requests made later than 72 hours before your appointment, the advance payment will be fully forfeited. This policy applies to all circumstances, including health conditions, traffic delays, weather conditions, or personal emergencies.
+            </p>
+            <p className="text-sb-grey mb-4">
+              We recommend planning ahead and contacting us as soon as possible if you anticipate any changes to your booking.
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-bold text-sb-black mb-4">6. Studio Care & Damage</h2>
+            <p className="text-sb-grey mb-4">
+              <strong>Client Responsibility:</strong> Clients are financially responsible for any damage to studio equipment, furniture, décor, walls, floors, or props during their rental period.
+            </p>
+            <p className="text-sb-grey mb-4">
+              <strong>Compensation:</strong> Compensation will be charged according to the actual purchase or production cost of the damaged item. We appreciate your care in helping us maintain our facilities in excellent condition for all clients.
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-bold text-sb-black mb-4">7. Cleanliness & Additional Charges</h2>
+            <p className="text-sb-grey mb-4">
+              <strong>Studio Condition:</strong> We kindly ask that the studio be left in a clean and orderly condition after your session, just as you found it.
+            </p>
+            <p className="text-sb-grey mb-4">
+              <strong>Cleaning Fee:</strong> Excessive dirt, disorder, or mess will incur an additional cleaning fee of 150 AED. This helps us maintain our high standards and ensures the next client enjoys a pristine workspace.
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-bold text-sb-black mb-4">8. Studio Rental Services</h2>
             <p className="text-sb-grey mb-4">
               <strong>Booking and Reservations:</strong> All studio bookings must be confirmed in writing. A booking reference number will be provided upon confirmation.
             </p>
             <p className="text-sb-grey mb-4">
               <strong>Payment Terms:</strong> Payment is required as per the agreed terms at the time of booking. Full payment may be required before studio access is granted.
             </p>
-            <p className="text-sb-grey mb-4">
-              <strong>Cancellation Policy:</strong> Cancellations must be made in accordance with our cancellation policy. Fees may apply for late cancellations.
-            </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-bold text-sb-black mb-4">3. Studio Usage Rules</h2>
+            <h2 className="text-2xl font-bold text-sb-black mb-4">9. Studio Usage Rules</h2>
             <p className="text-sb-grey mb-4">
               <strong>Permitted Use:</strong> Studios are to be used only for professional photography, videography, and creative production purposes.
             </p>
@@ -55,7 +118,7 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-bold text-sb-black mb-4">4. Equipment and Props Rental</h2>
+            <h2 className="text-2xl font-bold text-sb-black mb-4">10. Equipment and Props Rental</h2>
             <p className="text-sb-grey mb-4">
               <strong>Condition:</strong> All equipment and props are provided in good working condition. Clients must report any issues immediately.
             </p>
@@ -68,7 +131,7 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-bold text-sb-black mb-4">5. Liability and Insurance</h2>
+            <h2 className="text-2xl font-bold text-sb-black mb-4">11. Liability and Insurance</h2>
             <p className="text-sb-grey mb-4">
               <strong>Client Responsibility:</strong> Clients are responsible for their own equipment, crew, and talent during the rental period.
             </p>
@@ -81,7 +144,7 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-bold text-sb-black mb-4">6. Safety and Security</h2>
+            <h2 className="text-2xl font-bold text-sb-black mb-4">12. Safety and Security</h2>
             <p className="text-sb-grey mb-4">
               <strong>Safety Compliance:</strong> All clients must comply with safety regulations and guidelines provided by SuperBoss Studio.
             </p>
@@ -94,7 +157,7 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-bold text-sb-black mb-4">7. Intellectual Property</h2>
+            <h2 className="text-2xl font-bold text-sb-black mb-4">13. Intellectual Property</h2>
             <p className="text-sb-grey mb-4">
               <strong>Content Ownership:</strong> All content created by clients remains their intellectual property.
             </p>
@@ -104,21 +167,28 @@ export default function TermsPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-bold text-sb-black mb-4">8. Modifications to Terms</h2>
+            <h2 className="text-2xl font-bold text-sb-black mb-4">14. Agreement to Terms</h2>
+            <p className="text-sb-grey mb-4">
+              By reserving a time slot at SuperBoss Film Production & Studio, you confirm that you understand and accept all the rules and conditions outlined in this document.
+            </p>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-bold text-sb-black mb-4">15. Modifications to Terms</h2>
             <p className="text-sb-grey mb-4">
               SuperBoss Studio reserves the right to modify these terms at any time. Continued use of our services constitutes acceptance of modified terms.
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-bold text-sb-black mb-4">9. Governing Law</h2>
+            <h2 className="text-2xl font-bold text-sb-black mb-4">16. Governing Law</h2>
             <p className="text-sb-grey mb-4">
               These terms shall be governed by and construed in accordance with the laws of the United Arab Emirates.
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-bold text-sb-black mb-4">10. Contact Information</h2>
+            <h2 className="text-2xl font-bold text-sb-black mb-4">17. Contact Information</h2>
             <p className="text-sb-grey mb-4">
               For questions about these Terms of Service, please contact us:
             </p>

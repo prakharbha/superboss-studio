@@ -5,9 +5,12 @@ import Image from 'next/image';
 
 export default function RulesPage() {
   const generalRules = [
-    'All bookings must be confirmed at least 24 hours in advance',
+    'Your reserved session begins exactly at the scheduled start time, not when you begin shooting',
+    'If you need setup or preparation time, please book additional hours',
+    'Clients who end early will still be charged for the full duration booked',
+    'Late arrival reduces available studio time; bookings cannot be extended',
+    'Late arrival does not qualify for cancellation, rescheduling, or refund',
     'Valid ID required for all studio bookings',
-    'Studio access is granted only during booked hours',
     'Maximum occupancy limits must be respected',
     'All equipment must be returned in the same condition',
     'Smoking is strictly prohibited inside all studio spaces',
@@ -16,9 +19,10 @@ export default function RulesPage() {
   ];
 
   const dosList = [
-    'Arrive on time for your booking',
-    'Treat all equipment and props with care',
-    'Clean up your workspace before leaving',
+    'Arrive on time for your booking to maximize your studio time',
+    'Book extra hours if you need setup, preparation, or packing time',
+    'Treat all equipment, furniture, décor, walls, floors, and props with care',
+    'Leave the studio in clean and orderly condition after your session',
     'Report any damages or issues immediately',
     'Follow fire safety and emergency procedures',
     'Keep noise levels reasonable',
@@ -38,20 +42,21 @@ export default function RulesPage() {
   ];
 
   const cancellationPolicy = [
-    'Cancellations made 48+ hours before booking: Full refund',
-    'Cancellations made 24-48 hours before: 50% refund',
-    'Cancellations made less than 24 hours: No refund',
+    'Cancellations or rescheduling requests made more than 72 hours before booking: Advance payment may be refundable',
+    'Cancellations or rescheduling requests made within 72 hours: Advance payment is fully forfeited',
+    'This policy applies to all circumstances including health conditions, traffic, weather, or personal emergencies',
+    'All cancellation requests must be made by contacting us at +971 56 156 1570',
     'No-shows will be charged the full booking amount',
-    'Rescheduling is subject to availability',
   ];
 
   const paymentTerms = [
-    'Payment must be confirmed before studio access',
+    'A 50% advance payment (including 5% VAT) is required to confirm any studio reservation',
+    'Payment must be confirmed before studio access is granted',
     'We accept bank transfer, credit card, and cash',
-    'Deposits may be required for large bookings',
-    'Security deposits are refundable upon inspection',
-    'Additional charges apply for overtime usage',
-    'Equipment damage will be charged separately',
+    'The advance payment is non-refundable if booking is changed or canceled within 72 hours',
+    'Additional charges apply for overtime usage (automatic charge for exceeding booked time by 15+ minutes)',
+    'Equipment damage will be charged according to actual purchase or production cost',
+    'Excessive mess or disorder will incur a 150 AED cleaning fee',
   ];
 
   return (

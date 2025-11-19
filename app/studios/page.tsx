@@ -72,14 +72,12 @@ export default async function StudiosPage() {
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <AnimatedSection>
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-2xl">Our Studios</h1>
-            <div className="w-24 h-1 bg-white mx-auto mb-8"></div>
-            <p className="text-xl text-white max-w-3xl mx-auto drop-shadow-lg">
-              Six versatile spaces designed for every creative vision. From intimate shoots to
-              large-scale productions, find your perfect studio.
-            </p>
-          </AnimatedSection>
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-2xl">Our Studios</h1>
+          <div className="w-24 h-1 bg-white mx-auto mb-8"></div>
+          <p className="text-xl text-white max-w-3xl mx-auto drop-shadow-lg">
+            Six versatile spaces designed for every creative vision. From intimate shoots to
+            large-scale productions, find your perfect studio.
+          </p>
         </div>
       </section>
 
@@ -88,26 +86,26 @@ export default async function StudiosPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-16">
             {studiosData.map((studio: any, index: number) => (
-              <AnimatedSection key={studio.id} delay={index * 0.1}>
-                <div
-                  className={`flex flex-col ${
-                    index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
-                  } gap-8 lg:gap-12 items-center`}
-                >
-                  {/* Image */}
-                  <div className="w-full lg:w-1/2">
-                    <Link href={`/studios/${studio.slug}`}>
-                      <div className="aspect-[4/3] bg-sb-grey rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 group">
-                        <Image
-                          src={getStudioMainImage(studio.slug)}
-                          alt={studio.name}
-                          fill
-                          className="object-cover group-hover:scale-110 transition-transform duration-500"
-                          sizes="(max-width: 1024px) 100vw, 50vw"
-                        />
-                      </div>
-                    </Link>
-                  </div>
+              <div
+                key={studio.id}
+                className={`flex flex-col ${
+                  index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
+                } gap-8 lg:gap-12 items-center`}
+              >
+                {/* Image */}
+                <div className="w-full lg:w-1/2">
+                  <Link href={`/studios/${studio.slug}`}>
+                    <div className="aspect-[4/3] bg-sb-grey rounded-lg overflow-hidden">
+                      <Image
+                        src={getStudioMainImage(studio.slug)}
+                        alt={studio.name}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                      />
+                    </div>
+                  </Link>
+                </div>
 
                   {/* Content */}
                   <div className="w-full lg:w-1/2 space-y-6">
@@ -172,7 +170,7 @@ export default async function StudiosPage() {
                 {index < studiosData.length - 1 && (
                   <div className="mt-16 border-t border-sb-grey-light"></div>
                 )}
-              </AnimatedSection>
+              </div>
             ))}
           </div>
         </div>

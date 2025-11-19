@@ -106,7 +106,7 @@ export default async function StudioPage({ params }: StudioPageProps) {
             sizes="100vw"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-sb-black/70 via-sb-black/40 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-sb-black/70 via-sb-black/40 to-transparent z-10"></div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 z-20 pb-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

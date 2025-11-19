@@ -147,9 +147,6 @@ export default async function StudioPage({ params }: StudioPageProps) {
                             className="object-cover"
                             sizes="(max-width: 768px) 100vw, 50vw"
                             loading="lazy"
-                            onError={(e) => {
-                              console.error('Image failed to load:', imageSrc);
-                            }}
                           />
                         </div>
                       ))}

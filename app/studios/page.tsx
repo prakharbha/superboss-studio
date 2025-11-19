@@ -164,13 +164,12 @@ export default async function StudiosPage() {
                       </Link>
                     </div>
                   </div>
+                  
+                  {/* Divider */}
+                  {index < studiosData.length - 1 && (
+                    <div className="mt-16 border-t border-sb-grey-light"></div>
+                  )}
                 </div>
-
-                {/* Divider */}
-                {index < studiosData.length - 1 && (
-                  <div className="mt-16 border-t border-sb-grey-light"></div>
-                )}
-              </div>
             ))}
           </div>
         </div>

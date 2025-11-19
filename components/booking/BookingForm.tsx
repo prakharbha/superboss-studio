@@ -95,20 +95,31 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
   const safeEquipmentData = Array.isArray(equipmentData) ? equipmentData : [];
   const safePropsData = Array.isArray(propsData) ? propsData : [];
 
-  // Calculate total price
-  const totalPrice = useMemo(() => {
-    let total = 0;
+  // Calculate price breakdown
+  const priceBreakdown = useMemo(() => {
+    const breakdown = {
+      studios: [] as Array<{ name: string; quantity: number; unitPrice: number; total: number }>,
+      equipment: [] as Array<{ name: string; quantity: number; unitPrice: number; total: number }>,
+      props: [] as Array<{ name: string; quantity: number; unitPrice: number; total: number }>,
+      total: 0,
+    };
+
+    const hours = bookingType === 'fullDay' ? 14 : selectedHours.length;
     
     // Calculate studio prices
     if (Array.isArray(selectedStudios)) {
       selectedStudios.forEach((studioId: string) => {
         const studio = safeStudiosData.find(s => s.id === studioId);
         if (studio) {
-          if (bookingType === 'fullDay') {
-            total += studio.pricePerDay;
-          } else {
-            total += studio.pricePerHour * selectedHours.length;
-          }
+          const unitPrice = bookingType === 'fullDay' ? studio.pricePerDay : studio.pricePerHour;
+          const total = bookingType === 'fullDay' ? studio.pricePerDay : studio.pricePerHour * hours;
+          breakdown.studios.push({
+            name: studio.name,
+            quantity: 1,
+            unitPrice,
+            total,
+          });
+          breakdown.total += total;
         }
       });
     }
@@ -118,11 +129,15 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
       selectedEquipment.forEach((equipId: string) => {
         const equip = safeEquipmentData.find(e => e.id === equipId);
         if (equip) {
-          if (bookingType === 'fullDay') {
-            total += equip.pricePerDay;
-          } else {
-            total += equip.pricePerHour * selectedHours.length;
-          }
+          const unitPrice = bookingType === 'fullDay' ? equip.pricePerDay : equip.pricePerHour;
+          const total = bookingType === 'fullDay' ? equip.pricePerDay : equip.pricePerHour * hours;
+          breakdown.equipment.push({
+            name: equip.name,
+            quantity: 1,
+            unitPrice,
+            total,
+          });
+          breakdown.total += total;
         }
       });
     }
@@ -132,13 +147,22 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
       selectedProps.forEach((propId: string) => {
         const prop = safePropsData.find(p => p.id === propId);
         if (prop) {
-          total += prop.pricePerDay;
+          const total = prop.pricePerDay;
+          breakdown.props.push({
+            name: prop.name,
+            quantity: 1,
+            unitPrice: prop.pricePerDay,
+            total,
+          });
+          breakdown.total += total;
         }
       });
     }
 
-    return total;
+    return breakdown;
   }, [selectedStudios, selectedEquipment, selectedProps, bookingType, selectedHours, safeStudiosData, safeEquipmentData, safePropsData]);
+
+  const totalPrice = priceBreakdown.total;
 
   // Generate booking ID
   const generateBookingId = () => {
@@ -244,6 +268,59 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
               <span className="font-semibold text-gray-700">Booking Type:</span>
               <span className="text-gray-900">{bookingType === 'fullDay' ? 'Full Day' : `Hourly (${selectedHours.length} hours)`}</span>
             </div>
+            
+            {/* Price Breakdown */}
+            {totalPrice > 0 && (
+              <div className="py-3 border-b border-gray-300">
+                <p className="font-semibold text-gray-700 mb-2">Price Breakdown:</p>
+                <div className="space-y-2 text-sm">
+                  {priceBreakdown.studios.length > 0 && (
+                    <div className="bg-white/60 rounded p-2">
+                      <p className="font-medium text-gray-600 mb-1">Studios</p>
+                      {priceBreakdown.studios.map((studio, idx) => (
+                        <div key={idx} className="flex justify-between text-gray-700">
+                          <span>{studio.name}</span>
+                          <span className="font-medium">
+                            {bookingType === 'fullDay' 
+                              ? `AED ${studio.unitPrice.toLocaleString()}`
+                              : `AED ${studio.unitPrice.toLocaleString()}/hr × ${selectedHours.length} = AED ${studio.total.toLocaleString()}`
+                            }
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {priceBreakdown.equipment.length > 0 && (
+                    <div className="bg-white/60 rounded p-2">
+                      <p className="font-medium text-gray-600 mb-1">Equipment</p>
+                      {priceBreakdown.equipment.map((equip, idx) => (
+                        <div key={idx} className="flex justify-between text-gray-700">
+                          <span>{equip.name}</span>
+                          <span className="font-medium">
+                            {bookingType === 'fullDay' 
+                              ? `AED ${equip.unitPrice.toLocaleString()}`
+                              : `AED ${equip.unitPrice.toLocaleString()}/hr × ${selectedHours.length} = AED ${equip.total.toLocaleString()}`
+                            }
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {priceBreakdown.props.length > 0 && (
+                    <div className="bg-white/60 rounded p-2">
+                      <p className="font-medium text-gray-600 mb-1">Props</p>
+                      {priceBreakdown.props.map((prop, idx) => (
+                        <div key={idx} className="flex justify-between text-gray-700">
+                          <span>{prop.name}</span>
+                          <span className="font-medium">AED {prop.unitPrice.toLocaleString()}/day</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            
             <div className="flex justify-between items-center py-3 bg-black text-white px-4 rounded-lg mt-4">
               <span className="font-bold text-lg">Estimated Total:</span>
               <span className="font-bold text-2xl">AED {totalPrice.toLocaleString()}</span>
@@ -799,19 +876,77 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
           {/* Price Summary */}
           {totalPrice > 0 && (
             <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-xl mb-6 border-2 border-gray-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">Estimated Total</p>
-                  <p className="text-3xl font-bold text-gray-900">AED {totalPrice.toLocaleString()}</p>
-                  <p className="text-xs text-gray-500 mt-1">Final price will be confirmed by our representative</p>
+              <div className="mb-4">
+                <p className="text-sm font-semibold text-gray-700 mb-3">Price Breakdown</p>
+                <div className="space-y-2">
+                  {/* Studios Breakdown */}
+                  {priceBreakdown.studios.length > 0 && (
+                    <div className="bg-white/60 rounded-lg p-3">
+                      <p className="text-xs font-semibold text-gray-600 mb-2">Studios</p>
+                      {priceBreakdown.studios.map((studio, idx) => (
+                        <div key={idx} className="flex justify-between items-center text-sm mb-1 last:mb-0">
+                          <span className="text-gray-700">{studio.name}</span>
+                          <span className="text-gray-900 font-medium">
+                            {bookingType === 'fullDay' 
+                              ? `AED ${studio.unitPrice.toLocaleString()} (Full Day)`
+                              : `AED ${studio.unitPrice.toLocaleString()}/hr × ${selectedHours.length} = AED ${studio.total.toLocaleString()}`
+                            }
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Equipment Breakdown */}
+                  {priceBreakdown.equipment.length > 0 && (
+                    <div className="bg-white/60 rounded-lg p-3">
+                      <p className="text-xs font-semibold text-gray-600 mb-2">Equipment</p>
+                      {priceBreakdown.equipment.map((equip, idx) => (
+                        <div key={idx} className="flex justify-between items-center text-sm mb-1 last:mb-0">
+                          <span className="text-gray-700">{equip.name}</span>
+                          <span className="text-gray-900 font-medium">
+                            {bookingType === 'fullDay' 
+                              ? `AED ${equip.unitPrice.toLocaleString()} (Full Day)`
+                              : `AED ${equip.unitPrice.toLocaleString()}/hr × ${selectedHours.length} = AED ${equip.total.toLocaleString()}`
+                            }
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Props Breakdown */}
+                  {priceBreakdown.props.length > 0 && (
+                    <div className="bg-white/60 rounded-lg p-3">
+                      <p className="text-xs font-semibold text-gray-600 mb-2">Props</p>
+                      {priceBreakdown.props.map((prop, idx) => (
+                        <div key={idx} className="flex justify-between items-center text-sm mb-1 last:mb-0">
+                          <span className="text-gray-700">{prop.name}</span>
+                          <span className="text-gray-900 font-medium">
+                            AED {prop.unitPrice.toLocaleString()}/day
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <div className="text-right">
-                  <p className="text-sm text-gray-600">Selected Items:</p>
-                  <p className="text-lg font-semibold text-gray-900">
-                    {selectedStudios.length} Studio{selectedStudios.length !== 1 ? 's' : ''}
-                    {selectedEquipment.length > 0 && `, ${selectedEquipment.length} Equipment`}
-                    {selectedProps.length > 0 && `, ${selectedProps.length} Props`}
-                  </p>
+              </div>
+              
+              <div className="pt-4 border-t border-gray-300">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">Estimated Total</p>
+                    <p className="text-3xl font-bold text-gray-900">AED {totalPrice.toLocaleString()}</p>
+                    <p className="text-xs text-gray-500 mt-1">Final price will be confirmed by our representative</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-gray-600">Selected Items:</p>
+                    <p className="text-lg font-semibold text-gray-900">
+                      {selectedStudios.length} Studio{selectedStudios.length !== 1 ? 's' : ''}
+                      {selectedEquipment.length > 0 && `, ${selectedEquipment.length} Equipment`}
+                      {selectedProps.length > 0 && `, ${selectedProps.length} Props`}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

@@ -7,6 +7,7 @@ import { client, studiosQuery, studioBySlugQuery, seoByPageQuery } from '@/lib/s
 import AnimatedSection from '@/components/AnimatedSection';
 import { formatCurrency } from '@/lib/utils';
 import { getStudioImages, getStudioMainImage } from '@/lib/studio-images';
+import StudioGallery from '@/components/StudioGallery';
 
 interface StudioPageProps {
   params: Promise<{ slug: string }>;
@@ -135,23 +136,7 @@ export default async function StudioPage({ params }: StudioPageProps) {
               {/* Studio Images Gallery */}
               {getStudioImages(studio.slug).length > 0 && (
                 <AnimatedSection delay={0.15}>
-                  <div>
-                    <h2 className="text-3xl font-bold text-sb-black mb-6">Studio Gallery</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {getStudioImages(studio.slug).map((imageSrc, index) => (
-                        <div key={`${studio.slug}-${index}`} className="relative aspect-[4/3] bg-sb-grey rounded-lg overflow-hidden">
-                          <Image
-                            src={imageSrc}
-                            alt={`${studio.name} - Image ${index + 1}`}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                            loading="lazy"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <StudioGallery images={getStudioImages(studio.slug)} studioName={studio.name} />
                 </AnimatedSection>
               )}
 

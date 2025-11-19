@@ -52,3 +52,5 @@ public/Company-Profile-with-Prices.pdf
 # Extracted PDF images (temporary files)
 scripts/extracted-images/
 scripts/extracted-pdf-text.txt
+
+# Note: catalogue.pdf (small placeholder) is kept in repo

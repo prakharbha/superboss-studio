@@ -708,13 +708,13 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
             >
               <h2 className="text-3xl font-bold text-gray-900 mb-2">Add Equipment</h2>
               <p className="text-gray-600 mb-6">Optional - Skip if not needed</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-h-[600px] overflow-y-auto pr-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 max-h-[600px] overflow-y-auto pr-2">
                 {safeEquipmentData.map((item) => (
                   <label
                     key={item.id}
                     className={`relative rounded-lg border-2 cursor-pointer transition-all duration-200 overflow-hidden ${
                       selectedEquipment.includes(item.id)
-                        ? 'border-black bg-gray-50'
+                        ? 'border-black bg-gray-50 shadow-md'
                         : 'border-gray-200 hover:border-gray-400'
                     }`}
                   >
@@ -766,17 +766,17 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                         </div>
                       );
                     })()}
-                    <div className="p-4">
+                    <div className="p-3 md:p-4">
                       <div className="flex items-start justify-between mb-2">
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 mb-1">{item.name}</h4>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-sm md:text-base text-gray-900 mb-1 line-clamp-2">{item.name}</h4>
                         <p className="text-xs text-gray-500 mb-2">{item.category}</p>
                       </div>
                       {selectedEquipment.includes(item.id) && (
-                        <CheckCircle className="w-5 h-5 text-black flex-shrink-0 ml-2" />
+                        <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-black flex-shrink-0 ml-2 mt-0.5" />
                       )}
                       </div>
-                      <p className="text-sm font-semibold text-gray-900">{item.currency} {item.pricePerDay}/day</p>
+                      <p className="text-xs md:text-sm font-semibold text-gray-900">{item.currency} {item.pricePerDay}/day</p>
                     </div>
                   </label>
                 ))}
@@ -795,13 +795,13 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
             >
               <h2 className="text-3xl font-bold text-gray-900 mb-2">Add Props</h2>
               <p className="text-gray-600 mb-6">Optional - Skip if not needed</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[600px] overflow-y-auto pr-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 max-h-[600px] overflow-y-auto pr-2">
                 {safePropsData.map((item) => (
                   <label
                     key={item.id}
                     className={`relative rounded-lg border-2 cursor-pointer transition-all duration-200 overflow-hidden ${
                       selectedProps.includes(item.id)
-                        ? 'border-black bg-gray-50'
+                        ? 'border-black bg-gray-50 shadow-md'
                         : 'border-gray-200 hover:border-gray-400'
                     }`}
                   >

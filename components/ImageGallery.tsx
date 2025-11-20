@@ -64,7 +64,7 @@ export default function ImageGallery({
 
   return (
     <>
-      <section className="pt-2.5 pb-5 bg-gradient-to-b from-white to-sb-grey-light">
+      <section className="pt-2.5 pb-5 bg-gradient-to-b from-sb-grey-light to-sb-grey-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
             <div className="text-center mb-12">

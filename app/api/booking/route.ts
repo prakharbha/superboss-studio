@@ -14,6 +14,8 @@ export async function POST(request: NextRequest) {
       date,
       bookingType,
       timeSlots,
+      startTime,
+      endTime,
       name,
       email,
       phone,
@@ -61,24 +63,32 @@ export async function POST(request: NextRequest) {
         }).filter(Boolean).join(', ')
       : 'None';
 
-    // Format time slots for display
-    const formatTimeSlots = (slots: string[]) => {
-      if (!slots || slots.length === 0) return 'Not specified';
-      return slots.map(slot => {
-        const hour = parseInt(slot.split(':')[0]);
-        return hour < 12 
-          ? `${hour}:00 AM` 
-          : hour === 12 
-          ? '12:00 PM' 
-          : `${hour - 12}:00 PM`;
-      }).join(', ');
+    // Format time range for display
+    const formatTimeRange = (start: string, end: string) => {
+      if (!start || !end) return 'Not specified';
+      const startHour = parseInt(start.split(':')[0]);
+      const endHour = parseInt(end.split(':')[0]);
+      const hours = endHour - startHour;
+      const startLabel = startHour < 12 
+        ? `${startHour}:00 AM` 
+        : startHour === 12 
+        ? '12:00 PM' 
+        : `${startHour - 12}:00 PM`;
+      const endLabel = endHour < 12 
+        ? `${endHour}:00 AM` 
+        : endHour === 12 
+        ? '12:00 PM' 
+        : `${endHour - 12}:00 PM`;
+      return `${startLabel} - ${endLabel} (${hours} hour${hours !== 1 ? 's' : ''})`;
     };
 
     const timeInfo = bookingType === 'fullday' || bookingType === 'fullDay'
       ? '8 Hours (Full Day)'
-      : timeSlots && timeSlots.length > 0
-        ? `${timeSlots.length} hour${timeSlots.length !== 1 ? 's' : ''} (${formatTimeSlots(timeSlots)})`
-        : 'Not specified';
+      : startTime && endTime
+        ? formatTimeRange(startTime, endTime)
+        : timeSlots && timeSlots.length > 0
+          ? `${timeSlots.length} hour${timeSlots.length !== 1 ? 's' : ''}`
+          : 'Not specified';
 
     // Send email using Resend
     const { data, error } = await resend.emails.send({

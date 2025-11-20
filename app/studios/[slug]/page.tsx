@@ -27,6 +27,10 @@ async function getStudioBySlug(slug: string) {
       unit: studio.unit,
       description: studio.description,
       pricePerHour: studio.pricePerHour,
+      price2Hours: studio.price2Hours,
+      price4Hours: studio.price4Hours,
+      price6Hours: studio.price6Hours,
+      price8Hours: studio.price8Hours,
       pricePerDay: studio.pricePerDay,
       currency: studio.currency,
       features: studio.features || [],
@@ -233,7 +237,7 @@ export default async function StudioPage({ params }: StudioPageProps) {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             <Clock className="w-5 h-5 text-sb-grey" />
-                            <span className="text-sb-grey">Per Hour</span>
+                            <span className="text-sb-grey">1 Hour</span>
                           </div>
                           <span className="text-xl font-bold text-sb-black">
                             {formatCurrency(studio.pricePerHour, studio.currency)}
@@ -241,11 +245,38 @@ export default async function StudioPage({ params }: StudioPageProps) {
                         </div>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
-                            <DollarSign className="w-5 h-5 text-sb-grey" />
-                            <span className="text-sb-grey">Per Day</span>
+                            <Clock className="w-5 h-5 text-sb-grey" />
+                            <span className="text-sb-grey">2 Hours</span>
                           </div>
                           <span className="text-xl font-bold text-sb-black">
-                            {formatCurrency(studio.pricePerDay, studio.currency)}
+                            {formatCurrency(studio.price2Hours || (studio.pricePerHour * 2), studio.currency)}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <Clock className="w-5 h-5 text-sb-grey" />
+                            <span className="text-sb-grey">4 Hours</span>
+                          </div>
+                          <span className="text-xl font-bold text-sb-black">
+                            {formatCurrency(studio.price4Hours || (studio.pricePerHour * 4), studio.currency)}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <Clock className="w-5 h-5 text-sb-grey" />
+                            <span className="text-sb-grey">6 Hours</span>
+                          </div>
+                          <span className="text-xl font-bold text-sb-black">
+                            {formatCurrency(studio.price6Hours || (studio.pricePerHour * 6), studio.currency)}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <DollarSign className="w-5 h-5 text-sb-grey" />
+                            <span className="text-sb-grey">Full Day (8 Hours)</span>
+                          </div>
+                          <span className="text-xl font-bold text-sb-black">
+                            {formatCurrency(studio.price8Hours || studio.pricePerDay, studio.currency)}
                           </span>
                         </div>
                       </div>

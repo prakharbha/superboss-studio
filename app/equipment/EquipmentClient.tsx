@@ -136,8 +136,7 @@ export default function EquipmentClient({ equipmentData }: EquipmentClientProps)
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredEquipment.map((item, index) => (
-                <AnimatedSection key={item.id} delay={index * 0.05}>
-                  <div className="bg-white border border-sb-grey-light rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div key={item.id} className="bg-white border border-sb-grey-light rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                     {/* Image */}
                     <div className="aspect-[4/3] bg-sb-grey-light relative overflow-hidden">
                       {item.image ? (
@@ -180,12 +179,6 @@ export default function EquipmentClient({ equipmentData }: EquipmentClientProps)
 
                       {/* Pricing */}
                       <div className="pt-4 border-t border-sb-grey-light">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm text-sb-grey">Per Hour</span>
-                          <span className="text-lg font-bold text-sb-black">
-                            {formatCurrency(item.pricePerHour, item.currency)}
-                          </span>
-                        </div>
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-sb-grey">Per Day</span>
                           <span className="text-lg font-bold text-sb-black">
@@ -206,7 +199,7 @@ export default function EquipmentClient({ equipmentData }: EquipmentClientProps)
                       </div>
                     </div>
                   </div>
-                </AnimatedSection>
+                </div>
               ))}
             </div>
           )}

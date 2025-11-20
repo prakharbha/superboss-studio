@@ -219,7 +219,7 @@ export default function PropsClient({ propsData }: PropsClientProps) {
                       </div>
                     </div>
                   </div>
-                </AnimatedSection>
+                </div>
               ))}
             </div>
           )}

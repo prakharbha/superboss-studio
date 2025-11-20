@@ -254,21 +254,23 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
       </section>
 
       {/* Latest Events Gallery */}
-      <ImageGallery
-        images={[
-          { src: '/images/gallery/DSC08515.webp', alt: 'SuperBoss Studio Event' },
-          { src: '/images/gallery/DSC08520.webp', alt: 'SuperBoss Studio Event' },
-          { src: '/images/gallery/DSC08530.webp', alt: 'SuperBoss Studio Event' },
-          { src: '/images/gallery/DSC08539.webp', alt: 'SuperBoss Studio Event' },
-          { src: '/images/gallery/DSC08551.webp', alt: 'SuperBoss Studio Event' },
-          { src: '/images/gallery/DSC08575.webp', alt: 'SuperBoss Studio Event' },
-          { src: '/images/gallery/DSC08588.webp', alt: 'SuperBoss Studio Event' },
-          { src: '/images/gallery/DSC08660.webp', alt: 'SuperBoss Studio Event' },
-        ]}
-        title="Latest Events"
-        subtitle="Showcasing Our Creative Journey"
-        viewAllLink="/events"
-      />
+      <div className="pt-16 pb-16">
+        <ImageGallery
+          images={[
+            { src: '/images/gallery/DSC08515.webp', alt: 'SuperBoss Studio Event' },
+            { src: '/images/gallery/DSC08520.webp', alt: 'SuperBoss Studio Event' },
+            { src: '/images/gallery/DSC08530.webp', alt: 'SuperBoss Studio Event' },
+            { src: '/images/gallery/DSC08539.webp', alt: 'SuperBoss Studio Event' },
+            { src: '/images/gallery/DSC08551.webp', alt: 'SuperBoss Studio Event' },
+            { src: '/images/gallery/DSC08575.webp', alt: 'SuperBoss Studio Event' },
+            { src: '/images/gallery/DSC08588.webp', alt: 'SuperBoss Studio Event' },
+            { src: '/images/gallery/DSC08660.webp', alt: 'SuperBoss Studio Event' },
+          ]}
+          title="Latest Events"
+          subtitle="Showcasing Our Creative Journey"
+          viewAllLink="/events"
+        />
+      </div>
 
       {/* Use Cases Section */}
       <section className="relative py-16 overflow-hidden">

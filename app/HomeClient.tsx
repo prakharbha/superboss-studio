@@ -239,7 +239,7 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
             {features.map((feature, index) => (
               <AnimatedSection key={index} delay={index * 0.1}>
                 <Link href={feature.link || '#'}>
-                  <div className="text-center p-6 lg:p-8 rounded-lg hover:bg-sb-grey-light transition-all duration-300 group cursor-pointer h-full flex flex-col items-center">
+                  <div className="text-center p-6 lg:p-8 rounded-lg bg-gray-50 hover:bg-sb-grey-light transition-all duration-300 group cursor-pointer h-full flex flex-col items-center">
                     <div className="inline-flex items-center justify-center w-14 h-14 lg:w-16 lg:h-16 bg-sb-black text-white rounded-full mb-4 group-hover:scale-110 transition-transform">
                       <feature.icon className="w-7 h-7 lg:w-8 lg:h-8" />
                     </div>

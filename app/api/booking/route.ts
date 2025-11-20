@@ -64,6 +64,33 @@ export async function POST(request: NextRequest) {
     // Format time slots for display
     const formatTimeSlots = (slots: string[]) => {
       if (!slots || slots.length === 0) return 'Not specified';
+      
+      // Check if it's a time range format (e.g., "09:00-17:00")
+      if (slots.length === 1 && slots[0].includes('-')) {
+        const [startTime, endTime] = slots[0].split('-');
+        const [startHour, startMin] = startTime.split(':').map(Number);
+        const [endHour, endMin] = endTime.split(':').map(Number);
+        
+        const startLabel = startHour < 12 
+          ? `${startHour}:${startMin.toString().padStart(2, '0')} AM` 
+          : startHour === 12 
+          ? `12:${startMin.toString().padStart(2, '0')} PM` 
+          : `${startHour - 12}:${startMin.toString().padStart(2, '0')} PM`;
+        
+        const endLabel = endHour < 12 
+          ? `${endHour}:${endMin.toString().padStart(2, '0')} AM` 
+          : endHour === 12 
+          ? `12:${endMin.toString().padStart(2, '0')} PM` 
+          : `${endHour - 12}:${endMin.toString().padStart(2, '0')} PM`;
+        
+        // Calculate hours
+        let hours = endHour - startHour;
+        if (hours < 0) hours += 24; // Handle midnight crossover
+        
+        return `${startLabel} - ${endLabel} (${hours} hours)`;
+      }
+      
+      // Legacy format: single hour slots
       if (slots.length === 1) {
         const hour = parseInt(slots[0].split(':')[0]);
         const hourLabel = hour < 12 
@@ -79,6 +106,7 @@ export async function POST(request: NextRequest) {
           : `${nextHour - 12}:00 PM`;
         return `${hourLabel} - ${nextHourLabel} (1 hour)`;
       }
+      
       // For multiple slots, show first and last
       const firstHour = parseInt(slots[0].split(':')[0]);
       const lastHour = parseInt(slots[slots.length - 1].split(':')[0]);
@@ -96,7 +124,9 @@ export async function POST(request: NextRequest) {
     };
 
     const timeInfo = bookingType === 'fullday' || bookingType === 'fullDay'
-      ? '8 Hours (Full Day)'
+      ? (timeSlots && timeSlots.length > 0 && timeSlots[0].includes('-'))
+        ? formatTimeSlots(timeSlots)
+        : '8 Hours (Full Day)'
       : timeSlots && timeSlots.length > 0
         ? formatTimeSlots(timeSlots)
         : 'Not specified';

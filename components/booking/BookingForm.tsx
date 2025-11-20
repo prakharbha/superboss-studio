@@ -87,6 +87,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedHours, setSelectedHours] = useState<string[]>([]);
   const [selectedTimeRanges, setSelectedTimeRanges] = useState<string[]>([]);
+  const [fullDayStartTime, setFullDayStartTime] = useState<string>('9:00');
   const [bookingId, setBookingId] = useState<string>('');
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormData>();
 
@@ -280,7 +281,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
         date: selectedDate ? format(selectedDate, 'yyyy-MM-dd') : data.date,
         bookingType: data.bookingType || 'hourly',
         timeSlots: bookingType === 'fullDay' 
-          ? [] 
+          ? selectedHours.length > 0 ? selectedHours : ['fullDay']
           : generateTimeSlotsFromRanges(selectedTimeRanges),
         name: data.name,
         email: data.email,
@@ -328,6 +329,10 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
       }
       if (bookingType === 'hourly' && selectedTimeRanges.length === 0) {
         alert('Please select at least one time range');
+        return;
+      }
+      if (bookingType === 'fullDay' && !fullDayStartTime) {
+        alert('Please select a start time for full day booking');
         return;
       }
     }
@@ -709,6 +714,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                         setValue('bookingType', 'hourly');
                         setSelectedHours([]);
                         setSelectedTimeRanges([]);
+                        setFullDayStartTime('9:00');
                       }}
                     />
                     <div className={`p-6 rounded-xl border-3 transition-all duration-300 shadow-md hover:shadow-xl ${
@@ -745,6 +751,17 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                         setValue('bookingType', 'fullDay');
                         setSelectedHours([]);
                         setSelectedTimeRanges([]);
+                        // Set default start time and calculate end time
+                        const defaultStart = '9:00';
+                        setFullDayStartTime(defaultStart);
+                        const [startHour] = defaultStart.split(':').map(Number);
+                        let endHour = startHour + 8;
+                        if (endHour >= 24) {
+                          endHour = endHour - 24;
+                        }
+                        const endTime = `${endHour.toString().padStart(2, '0')}:00`;
+                        setSelectedHours([`${defaultStart}-${endTime}`]);
+                        setValue('selectedHours', [`${defaultStart}-${endTime}`], { shouldValidate: true });
                       }}
                     />
                     <div className={`p-6 rounded-xl border-3 transition-all duration-300 shadow-md hover:shadow-xl ${
@@ -824,23 +841,80 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                     Select Time Ranges
                   </label>
                   {bookingType === 'fullDay' ? (
-                    <div className="bg-gray-100 p-8 rounded-2xl border-2 border-gray-300 h-[400px] flex items-center justify-center">
-                      <div className="text-center">
-                        <Clock className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                        <p className="text-gray-500 text-lg font-medium">
-                          8 Hours (Full Day) selected
-                        </p>
-                      </div>
-                  </div>
+                    <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-gray-200 shadow-sm">
+                      <label className="block text-sm font-semibold text-gray-700 mb-4">
+                        <Clock className="inline w-5 h-5 mr-2" />
+                        Select Start Time (8 Hours Full Day)
+                      </label>
+                      <select
+                        value={fullDayStartTime}
+                        onChange={(e) => {
+                          setFullDayStartTime(e.target.value);
+                          // Calculate end time (start + 8 hours)
+                          const [startHour, startMin] = e.target.value.split(':').map(Number);
+                          let endHour = startHour + 8;
+                          let endMin = startMin;
+                          if (endHour >= 24) {
+                            endHour = endHour - 24;
+                          }
+                          const endTime = `${endHour.toString().padStart(2, '0')}:${endMin.toString().padStart(2, '0')}`;
+                          // Set selected hours for API
+                          setSelectedHours([`${e.target.value}-${endTime}`]);
+                          setValue('selectedHours', [`${e.target.value}-${endTime}`], { shouldValidate: true });
+                        }}
+                        className="w-full p-4 rounded-lg border-2 border-gray-300 bg-white text-gray-900 font-medium text-lg focus:border-black focus:outline-none"
+                      >
+                        {Array.from({ length: 17 }, (_, i) => {
+                          const hour = 7 + i;
+                          const timeValue = `${hour.toString().padStart(2, '0')}:00`;
+                          const timeLabel = hour < 12 
+                            ? `${hour}:00 AM` 
+                            : hour === 12 
+                            ? '12:00 PM' 
+                            : `${hour - 12}:00 PM`;
+                          return (
+                            <option key={timeValue} value={timeValue}>
+                              {timeLabel}
+                            </option>
+                          );
+                        })}
+                      </select>
+                      {fullDayStartTime && (
+                        <div className="mt-4 p-4 bg-black text-white rounded-lg">
+                          <p className="text-sm font-medium mb-2">Booking Duration</p>
+                          <p className="text-lg font-bold">
+                            {(() => {
+                              const [startHour, startMin] = fullDayStartTime.split(':').map(Number);
+                              let endHour = startHour + 8;
+                              let endMin = startMin;
+                              if (endHour >= 24) {
+                                endHour = endHour - 24;
+                              }
+                              const startLabel = startHour < 12 
+                                ? `${startHour}:00 AM` 
+                                : startHour === 12 
+                                ? '12:00 PM' 
+                                : `${startHour - 12}:00 PM`;
+                              const endLabel = endHour < 12 
+                                ? `${endHour}:00 AM` 
+                                : endHour === 12 
+                                ? '12:00 PM' 
+                                : `${endHour - 12}:00 PM`;
+                              return `${startLabel} - ${endLabel} (8 Hours)`;
+                            })()}
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   ) : (
                     <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-gray-200 shadow-sm">
                       <p className="text-sm text-gray-600 mb-4">
-                        Select the time ranges you need (9:00 AM - 6:00 PM)
+                        Select the time ranges you need (7:00 AM - 12:00 AM)
                       </p>
                       <div className="space-y-2 max-h-[400px] overflow-y-auto">
-                        {Array.from({ length: 9 }, (_, i) => {
-                          const startHour = 9 + i;
-                          const endHour = 10 + i;
+                        {Array.from({ length: 17 }, (_, i) => {
+                          const startHour = 7 + i;
+                          const endHour = 8 + i;
                           const startLabel = startHour < 12 
                             ? `${startHour}:00 AM` 
                             : startHour === 12 

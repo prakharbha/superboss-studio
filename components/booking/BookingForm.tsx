@@ -215,22 +215,18 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
       });
     }
 
-    // Calculate equipment prices
+    // Calculate equipment prices (always per day)
     if (Array.isArray(selectedEquipment)) {
       selectedEquipment.forEach((equipId: string) => {
         const equip = safeEquipmentData.find(e => e.id === equipId);
         if (equip) {
-          const unitPrice = bookingType === 'fullDay' ? equip.pricePerDay : equip.pricePerHour;
-          const needsTimeSelection = bookingType === 'hourly' && hours === 0;
-          const total = bookingType === 'fullDay' 
-            ? equip.pricePerDay 
-            : (needsTimeSelection ? 0 : equip.pricePerHour * hours);
+          const total = equip.pricePerDay;
           breakdown.equipment.push({
             name: equip.name,
             quantity: 1,
-            unitPrice,
+            unitPrice: equip.pricePerDay,
             total,
-            needsTimeSelection,
+            needsTimeSelection: false,
           });
           breakdown.total += total;
         }
@@ -602,17 +598,48 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                       {...register('equipment')}
                       className="sr-only"
                     />
-                    {item.image?.asset && (
-                      <div className="relative w-full h-40 bg-gray-100">
-                        <Image
-                          src={urlFor(item.image).width(400).height(300).url()}
-                          alt={item.image.alt || item.name}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        />
-                      </div>
-                    )}
+                    {(() => {
+                      // Get image URL - handle both direct URL string and Sanity image object
+                      let imageUrl = null;
+                      let imageAlt = item.name;
+                      
+                      if (item.image) {
+                        if (typeof item.image === 'string') {
+                          imageUrl = item.image;
+                        } else if (item.image.asset?.url) {
+                          imageUrl = item.image.asset.url;
+                          imageAlt = item.image.alt || item.name;
+                        } else if (item.image.asset) {
+                          // Use urlFor for Sanity image objects
+                          try {
+                            imageUrl = urlFor(item.image).width(400).height(300).url();
+                            imageAlt = item.image.alt || item.name;
+                          } catch (e) {
+                            // Fallback if urlFor fails
+                            imageUrl = null;
+                          }
+                        }
+                      }
+                      
+                      return imageUrl ? (
+                        <div className="relative w-full h-40 bg-gray-100 overflow-hidden">
+                          <Image
+                            src={imageUrl}
+                            alt={imageAlt}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-full h-40 bg-gray-100 flex items-center justify-center">
+                          <div className="text-center text-gray-400">
+                            <div className="text-3xl mb-1">📷</div>
+                            <p className="text-xs">{item.category}</p>
+                          </div>
+                        </div>
+                      );
+                    })()}
                     <div className="p-4">
                       <div className="flex items-start justify-between mb-2">
                       <div className="flex-1">
@@ -623,7 +650,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                         <CheckCircle className="w-5 h-5 text-black flex-shrink-0 ml-2" />
                       )}
                       </div>
-                      <p className="text-sm font-semibold text-gray-900">{item.currency} {item.pricePerHour}/hr · {item.pricePerDay}/day</p>
+                      <p className="text-sm font-semibold text-gray-900">{item.currency} {item.pricePerDay}/day</p>
                     </div>
                   </label>
                 ))}
@@ -658,17 +685,48 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                       {...register('props')}
                       className="sr-only"
                     />
-                    {item.image?.asset && (
-                      <div className="relative w-full h-40 bg-gray-100">
-                        <Image
-                          src={urlFor(item.image).width(400).height(300).url()}
-                          alt={item.image.alt || item.name}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        />
-                      </div>
-                    )}
+                    {(() => {
+                      // Get image URL - handle both direct URL string and Sanity image object
+                      let imageUrl = null;
+                      let imageAlt = item.name;
+                      
+                      if (item.image) {
+                        if (typeof item.image === 'string') {
+                          imageUrl = item.image;
+                        } else if (item.image.asset?.url) {
+                          imageUrl = item.image.asset.url;
+                          imageAlt = item.image.alt || item.name;
+                        } else if (item.image.asset) {
+                          // Use urlFor for Sanity image objects
+                          try {
+                            imageUrl = urlFor(item.image).width(400).height(300).url();
+                            imageAlt = item.image.alt || item.name;
+                          } catch (e) {
+                            // Fallback if urlFor fails
+                            imageUrl = null;
+                          }
+                        }
+                      }
+                      
+                      return imageUrl ? (
+                        <div className="relative w-full h-40 bg-gray-100 overflow-hidden">
+                          <Image
+                            src={imageUrl}
+                            alt={imageAlt}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-full h-40 bg-gray-100 flex items-center justify-center">
+                          <div className="text-center text-gray-400">
+                            <div className="text-3xl mb-1">🎨</div>
+                            <p className="text-xs">{item.category}</p>
+                          </div>
+                        </div>
+                      );
+                    })()}
                     <div className="p-4">
                       <div className="flex items-start justify-between mb-2">
                       <div className="flex-1">

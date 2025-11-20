@@ -134,15 +134,8 @@ export default async function StudioPage({ params }: StudioPageProps) {
                 </div>
               </AnimatedSection>
 
-              {/* Studio Images Gallery */}
-              {getStudioImages(studio.slug).length > 0 && (
-                <AnimatedSection delay={0.15}>
-                  <StudioGallery images={getStudioImages(studio.slug)} studioName={studio.name} />
-                </AnimatedSection>
-              )}
-
               {/* Studio Video Tour */}
-              <AnimatedSection delay={0.2}>
+              <AnimatedSection delay={0.15}>
                 <div>
                   <h2 className="text-3xl font-bold text-sb-black mb-6">Studio Tour</h2>
                   <StudioVideoPlayer
@@ -153,6 +146,13 @@ export default async function StudioPage({ params }: StudioPageProps) {
                   />
                 </div>
               </AnimatedSection>
+
+              {/* Studio Images Gallery */}
+              {getStudioImages(studio.slug).length > 0 && (
+                <AnimatedSection delay={0.2}>
+                  <StudioGallery images={getStudioImages(studio.slug)} studioName={studio.name} />
+                </AnimatedSection>
+              )}
 
               {/* Features */}
               <AnimatedSection delay={0.25}>

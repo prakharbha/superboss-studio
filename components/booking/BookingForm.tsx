@@ -912,6 +912,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                           const [startHour, startMin] = e.target.value.split(':').map(Number);
                           let endHour = startHour + 8;
                           let endMin = startMin;
+                          // Handle midnight crossover
                           if (endHour >= 24) {
                             endHour = endHour - 24;
                           }
@@ -922,7 +923,8 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                         }}
                         className="w-full p-4 rounded-lg border-2 border-gray-300 bg-white text-gray-900 font-medium text-lg focus:border-black focus:outline-none"
                       >
-                        {Array.from({ length: 17 }, (_, i) => {
+                        {Array.from({ length: 10 }, (_, i) => {
+                          // Start from 7 AM (7) to 4 PM (16), which is 10 options
                           const hour = 7 + i;
                           const timeValue = `${hour.toString().padStart(2, '0')}:00`;
                           const timeLabel = hour < 12 
@@ -945,6 +947,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                               const [startHour, startMin] = fullDayStartTime.split(':').map(Number);
                               let endHour = startHour + 8;
                               let endMin = startMin;
+                              // Handle midnight crossover
                               if (endHour >= 24) {
                                 endHour = endHour - 24;
                               }
@@ -953,7 +956,10 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                                 : startHour === 12 
                                 ? '12:00 PM' 
                                 : `${startHour - 12}:00 PM`;
-                              const endLabel = endHour < 12 
+                              // Format end time - if it's 0 (midnight), show as 12:00 AM
+                              const endLabel = endHour === 0
+                                ? '12:00 AM'
+                                : endHour < 12 
                                 ? `${endHour}:00 AM` 
                                 : endHour === 12 
                                 ? '12:00 PM' 

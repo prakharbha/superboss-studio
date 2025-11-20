@@ -385,35 +385,41 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                   {priceBreakdown.studios.length > 0 && (
                     <div className="bg-white/60 rounded p-2">
                       <p className="font-medium text-gray-600 mb-1">Studios</p>
-                      {priceBreakdown.studios.map((studio: any, idx: number) => (
-                        <div key={idx} className="flex justify-between text-gray-700">
-                          <span>{studio.name}</span>
-                          <span className="font-medium">
-                            {bookingType === 'fullDay' 
-                              ? `AED ${studio.unitPrice.toLocaleString()} (8 Hours)`
-                              : studio.needsTimeSelection
-                                ? `Select hour package`
-                                : `AED ${studio.unitPrice.toLocaleString()} (${studio.hourLabel || `${hours} hour${hours !== 1 ? 's' : ''}`})`
-                            }
-                          </span>
-                        </div>
-                      ))}
+                      {priceBreakdown.studios.map((studio: any, idx: number) => {
+                        const calculatedHours = startTime && endTime ? calculateHoursFromRange(startTime, endTime) : 0;
+                        return (
+                          <div key={idx} className="flex justify-between text-gray-700">
+                            <span>{studio.name}</span>
+                            <span className="font-medium">
+                              {bookingType === 'fullDay' 
+                                ? `AED ${studio.unitPrice.toLocaleString()} (8 Hours)`
+                                : studio.needsTimeSelection
+                                  ? `Select time range`
+                                  : `AED ${studio.unitPrice.toLocaleString()} (${studio.hourLabel || `${calculatedHours} hour${calculatedHours !== 1 ? 's' : ''}`})`
+                              }
+                            </span>
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                   {priceBreakdown.equipment.length > 0 && (
                     <div className="bg-white/60 rounded p-2">
                       <p className="font-medium text-gray-600 mb-1">Equipment</p>
-                      {priceBreakdown.equipment.map((equip, idx) => (
-                        <div key={idx} className="flex justify-between text-gray-700">
-                          <span>{equip.name}</span>
-                          <span className="font-medium">
-                            {bookingType === 'fullDay' 
-                              ? `AED ${equip.unitPrice.toLocaleString()}`
-                              : `AED ${equip.unitPrice.toLocaleString()}/hr × ${hours} = AED ${equip.total.toLocaleString()}`
-                            }
-                          </span>
-                        </div>
-                      ))}
+                      {priceBreakdown.equipment.map((equip, idx) => {
+                        const calculatedHours = startTime && endTime ? calculateHoursFromRange(startTime, endTime) : 0;
+                        return (
+                          <div key={idx} className="flex justify-between text-gray-700">
+                            <span>{equip.name}</span>
+                            <span className="font-medium">
+                              {bookingType === 'fullDay' 
+                                ? `AED ${equip.unitPrice.toLocaleString()}`
+                                : `AED ${equip.unitPrice.toLocaleString()}/hr × ${calculatedHours} = AED ${equip.total.toLocaleString()}`
+                              }
+                            </span>
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                   {priceBreakdown.props.length > 0 && (
@@ -1065,19 +1071,22 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                   {priceBreakdown.studios.length > 0 && (
                     <div className="bg-white/60 rounded-lg p-3">
                       <p className="text-xs font-semibold text-gray-600 mb-2">Studios</p>
-                      {priceBreakdown.studios.map((studio: any, idx: number) => (
-                        <div key={idx} className="flex justify-between items-center text-sm mb-1 last:mb-0">
-                          <span className="text-gray-700">{studio.name}</span>
-                          <span className="text-gray-900 font-medium">
-                            {bookingType === 'fullDay' 
-                              ? `AED ${studio.unitPrice.toLocaleString()} (8 Hours)`
-                              : studio.needsTimeSelection
-                                ? `AED ${studio.unitPrice.toLocaleString()}/hr (Select hour package)`
-                                : `AED ${studio.unitPrice.toLocaleString()} (${studio.hourLabel || `${hours} hour${hours !== 1 ? 's' : ''}`})`
-                            }
-                          </span>
-                        </div>
-                      ))}
+                      {priceBreakdown.studios.map((studio: any, idx: number) => {
+                        const calculatedHours = startTime && endTime ? calculateHoursFromRange(startTime, endTime) : 0;
+                        return (
+                          <div key={idx} className="flex justify-between items-center text-sm mb-1 last:mb-0">
+                            <span className="text-gray-700">{studio.name}</span>
+                            <span className="text-gray-900 font-medium">
+                              {bookingType === 'fullDay' 
+                                ? `AED ${studio.unitPrice.toLocaleString()} (8 Hours)`
+                                : studio.needsTimeSelection
+                                  ? `AED ${studio.unitPrice.toLocaleString()}/hr (Select time range)`
+                                  : `AED ${studio.unitPrice.toLocaleString()} (${studio.hourLabel || `${calculatedHours} hour${calculatedHours !== 1 ? 's' : ''}`})`
+                              }
+                            </span>
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
 
@@ -1085,19 +1094,22 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                   {priceBreakdown.equipment.length > 0 && (
                     <div className="bg-white/60 rounded-lg p-3">
                       <p className="text-xs font-semibold text-gray-600 mb-2">Equipment</p>
-                      {priceBreakdown.equipment.map((equip, idx) => (
-                        <div key={idx} className="flex justify-between items-center text-sm mb-1 last:mb-0">
-                          <span className="text-gray-700">{equip.name}</span>
-                          <span className="text-gray-900 font-medium">
-                            {bookingType === 'fullDay' 
-                              ? `AED ${equip.unitPrice.toLocaleString()} (Full Day)`
-                              : equip.needsTimeSelection
-                                ? `AED ${equip.unitPrice.toLocaleString()}/hr (Select hours)`
-                                : `AED ${equip.unitPrice.toLocaleString()}/hr × ${hours} = AED ${equip.total.toLocaleString()}`
-                            }
-                          </span>
-                        </div>
-                      ))}
+                      {priceBreakdown.equipment.map((equip, idx) => {
+                        const calculatedHours = startTime && endTime ? calculateHoursFromRange(startTime, endTime) : 0;
+                        return (
+                          <div key={idx} className="flex justify-between items-center text-sm mb-1 last:mb-0">
+                            <span className="text-gray-700">{equip.name}</span>
+                            <span className="text-gray-900 font-medium">
+                              {bookingType === 'fullDay' 
+                                ? `AED ${equip.unitPrice.toLocaleString()} (Full Day)`
+                                : equip.needsTimeSelection
+                                  ? `AED ${equip.unitPrice.toLocaleString()}/hr (Select time range)`
+                                  : `AED ${equip.unitPrice.toLocaleString()}/hr × ${calculatedHours} = AED ${equip.total.toLocaleString()}`
+                              }
+                            </span>
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
 

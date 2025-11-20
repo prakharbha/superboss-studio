@@ -28,7 +28,9 @@
     "optimize:studios": "node scripts/optimize-studio-images.js",
     "optimize:video": "node scripts/optimize-video.js",
     "optimize:banner-video": "node scripts/optimize-video-banner.js",
-    "update:pricing": "node scripts/update-studio-pricing.js"
+    "update:pricing": "node scripts/update-studio-pricing.js",
+    "extract:equipment": "node scripts/extract-equipment-from-pdf.js",
+    "add:profoto": "node scripts/add-profoto-equipment.js"
   },
   "dependencies": {
     "@sanity/client": "^7.12.1",

@@ -134,7 +134,7 @@ export default function EquipmentClient({ equipmentData }: EquipmentClientProps)
               <p className="text-xl text-sb-grey">No equipment found matching your criteria.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {filteredEquipment.map((item, index) => (
                 <div key={item.id} className="bg-white border border-sb-grey-light rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                     {/* Image */}
@@ -145,7 +145,7 @@ export default function EquipmentClient({ equipmentData }: EquipmentClientProps)
                           alt={item.imageAlt || item.name}
                           fill
                           className="object-cover"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">

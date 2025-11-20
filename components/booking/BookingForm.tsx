@@ -1011,10 +1011,10 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                 </div>
 
                 {/* Time Range Selection Section - 50% */}
-                <div className={`${bookingType === 'fullDay' ? 'opacity-40 pointer-events-none' : ''}`}>
+                <div>
                   <label className="block text-xl font-bold text-gray-900 mb-4">
                     <Clock className="inline w-6 h-6 mr-2" />
-                    Select Time Ranges
+                    {bookingType === 'fullDay' ? 'Select Start Time' : 'Select Time Ranges'}
                   </label>
                   {bookingType === 'fullDay' ? (
                     <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-gray-200 shadow-sm">

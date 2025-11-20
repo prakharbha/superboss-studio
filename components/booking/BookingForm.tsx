@@ -835,17 +835,17 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                       }
                       
                       return imageUrl ? (
-                        <div className="relative w-full h-40 bg-gray-100 overflow-hidden">
+                        <div className="relative w-full aspect-[4/3] bg-gray-100 overflow-hidden">
                           <Image
                             src={imageUrl}
                             alt={imageAlt}
                             fill
                             className="object-cover"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                           />
                         </div>
                       ) : (
-                        <div className="w-full h-40 bg-gray-100 flex items-center justify-center">
+                        <div className="w-full aspect-[4/3] bg-gray-100 flex items-center justify-center">
                           <div className="text-center text-gray-400">
                             <div className="text-3xl mb-1">🎨</div>
                             <p className="text-xs">{item.category}</p>

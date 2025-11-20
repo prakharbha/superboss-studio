@@ -369,7 +369,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                     <div className="bg-white/60 rounded p-2">
                       <p className="font-medium text-gray-600 mb-1">Studios</p>
                       {priceBreakdown.studios.map((studio: any, idx: number) => {
-                        const calculatedHours = startTime && endTime ? calculateHoursFromRange(startTime, endTime) : 0;
+                        const calculatedHours = selectedTimeRanges.length;
                         return (
                           <div key={idx} className="flex justify-between text-gray-700">
                             <span>{studio.name}</span>
@@ -1010,7 +1010,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                     <div className="bg-white/60 rounded-lg p-3">
                       <p className="text-xs font-semibold text-gray-600 mb-2">Studios</p>
                       {priceBreakdown.studios.map((studio: any, idx: number) => {
-                        const calculatedHours = startTime && endTime ? calculateHoursFromRange(startTime, endTime) : 0;
+                        const calculatedHours = selectedTimeRanges.length;
                         return (
                           <div key={idx} className="flex justify-between items-center text-sm mb-1 last:mb-0">
                             <span className="text-gray-700">{studio.name}</span>

@@ -27,7 +27,8 @@
     "optimize:gallery": "node scripts/optimize-gallery-images.js",
     "optimize:studios": "node scripts/optimize-studio-images.js",
     "optimize:video": "node scripts/optimize-video.js",
-    "optimize:banner-video": "node scripts/optimize-video-banner.js"
+    "optimize:banner-video": "node scripts/optimize-video-banner.js",
+    "update:pricing": "node scripts/update-studio-pricing.js"
   },
   "dependencies": {
     "@sanity/client": "^7.12.1",

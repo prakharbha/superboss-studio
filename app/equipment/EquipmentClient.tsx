@@ -198,7 +198,6 @@ export default function EquipmentClient({ equipmentData }: EquipmentClientProps)
                         </span>
                       </div>
                     </div>
-                  </div>
                 </div>
               ))}
             </div>

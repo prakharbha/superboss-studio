@@ -168,8 +168,7 @@ export default function PropsClient({ propsData }: PropsClientProps) {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {filteredProps.map((item, index) => (
-                <AnimatedSection key={item.id} delay={index * 0.03}>
-                  <div className="bg-white border border-sb-grey-light rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div key={item.id} className="bg-white border border-sb-grey-light rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                     {/* Image */}
                     <div className="aspect-square bg-sb-grey-light flex items-center justify-center">
                       <div className="text-center text-sb-grey">
@@ -218,7 +217,6 @@ export default function PropsClient({ propsData }: PropsClientProps) {
                         </div>
                       </div>
                     </div>
-                  </div>
                 </div>
               ))}
             </div>

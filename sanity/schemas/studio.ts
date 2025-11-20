@@ -53,10 +53,35 @@ export default defineType({
       validation: (Rule) => Rule.required().positive(),
     }),
     defineField({
-      name: 'pricePerDay',
-      title: 'Price Per Day (AED)',
+      name: 'price2Hours',
+      title: 'Price for 2 Hours (AED)',
+      type: 'number',
+      validation: (Rule) => Rule.positive(),
+    }),
+    defineField({
+      name: 'price4Hours',
+      title: 'Price for 4 Hours (AED)',
+      type: 'number',
+      validation: (Rule) => Rule.positive(),
+    }),
+    defineField({
+      name: 'price6Hours',
+      title: 'Price for 6 Hours (AED)',
+      type: 'number',
+      validation: (Rule) => Rule.positive(),
+    }),
+    defineField({
+      name: 'price8Hours',
+      title: 'Price for 8 Hours / Full Day (AED)',
       type: 'number',
       validation: (Rule) => Rule.required().positive(),
+    }),
+    defineField({
+      name: 'pricePerDay',
+      title: 'Price Per Day (AED) - Legacy',
+      type: 'number',
+      description: 'Deprecated - use price8Hours instead',
+      validation: (Rule) => Rule.positive(),
     }),
     defineField({
       name: 'currency',

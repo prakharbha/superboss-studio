@@ -14,6 +14,7 @@ export async function POST(request: NextRequest) {
       date,
       bookingType,
       timeSlots,
+      hourPackage,
       name,
       email,
       phone,
@@ -62,10 +63,12 @@ export async function POST(request: NextRequest) {
       : 'None';
 
     const timeInfo = bookingType === 'fullday' || bookingType === 'fullDay'
-      ? '8:00 AM - 10:00 PM (Full Day - 14 hours)'
-      : timeSlots && timeSlots.length > 0
-        ? `${timeSlots[0]} - ${timeSlots[timeSlots.length - 1]} (${timeSlots.length} hours)`
-        : 'Not specified';
+      ? '8 Hours (Full Day)'
+      : hourPackage
+        ? `${hourPackage} Hour${hourPackage !== '1' ? 's' : ''}`
+        : timeSlots && timeSlots.length > 0
+          ? `${timeSlots.length} hour${timeSlots.length !== 1 ? 's' : ''}`
+          : 'Not specified';
 
     // Send email using Resend
     const { data, error } = await resend.emails.send({

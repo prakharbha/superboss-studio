@@ -17,7 +17,11 @@ interface Studio {
   unit: string;
   description: string;
   pricePerHour: number;
-  pricePerDay: number;
+  price2Hours?: number;
+  price4Hours?: number;
+  price6Hours?: number;
+  price8Hours: number;
+  pricePerDay: number; // Legacy field
   currency: string;
 }
 
@@ -61,6 +65,7 @@ type FormData = {
   bookingType: 'fullDay' | 'hourly';
   date: string;
   selectedHours: string[];
+  selectedHourPackage?: '1' | '2' | '4' | '6' | '8';
   // Step 5: Contact
   name: string;
   email: string;
@@ -89,6 +94,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
   const selectedEquipment = watch('equipment') || [];
   const selectedProps = watch('props') || [];
   const bookingType = watch('bookingType') || 'hourly';
+  const selectedHourPackage = watch('selectedHourPackage');
 
   // Ensure data is always arrays
   const safeStudiosData = Array.isArray(studiosData) ? studiosData : [];
@@ -108,23 +114,67 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
     const hasTimeSelection = bookingType === 'fullDay' || (bookingType === 'hourly' && selectedHours.length > 0);
     const hours = bookingType === 'fullDay' ? 14 : (selectedHours.length > 0 ? selectedHours.length : 1); // Use 1 as placeholder if no hours selected
     
-    // Calculate studio prices
+    // Calculate studio prices using hour packages
     if (Array.isArray(selectedStudios)) {
       selectedStudios.forEach((studioId: string) => {
         const studio = safeStudiosData.find(s => s.id === studioId);
         if (studio) {
-          const unitPrice = bookingType === 'fullDay' ? studio.pricePerDay : studio.pricePerHour;
-          const needsTimeSelection = bookingType === 'hourly' && selectedHours.length === 0;
-          const total = bookingType === 'fullDay' 
-            ? studio.pricePerDay 
-            : (needsTimeSelection ? 0 : studio.pricePerHour * selectedHours.length);
+          let unitPrice = 0;
+          let total = 0;
+          let needsTimeSelection = false;
+          let hourLabel = '';
+
+          // Full day and 8 hours are the same - use 8 hours price
+          if (bookingType === 'fullDay') {
+            total = studio.price8Hours || studio.pricePerDay;
+            unitPrice = studio.price8Hours || studio.pricePerDay;
+            hourLabel = '8 Hours';
+          } else if (selectedHourPackage === '8') {
+            // 8 hour package is the same as full day
+            total = studio.price8Hours || studio.pricePerDay;
+            unitPrice = studio.price8Hours || studio.pricePerDay;
+            hourLabel = '8 Hours';
+          } else if (selectedHourPackage) {
+            // Use package pricing
+            switch (selectedHourPackage) {
+              case '1':
+                total = studio.pricePerHour;
+                unitPrice = studio.pricePerHour;
+                hourLabel = '1 Hour';
+                break;
+              case '2':
+                total = studio.price2Hours || (studio.pricePerHour * 2);
+                unitPrice = studio.price2Hours || (studio.pricePerHour * 2);
+                hourLabel = '2 Hours';
+                break;
+              case '4':
+                total = studio.price4Hours || (studio.pricePerHour * 4);
+                unitPrice = studio.price4Hours || (studio.pricePerHour * 4);
+                hourLabel = '4 Hours';
+                break;
+              case '6':
+                total = studio.price6Hours || (studio.pricePerHour * 6);
+                unitPrice = studio.price6Hours || (studio.pricePerHour * 6);
+                hourLabel = '6 Hours';
+                break;
+              case '8':
+                total = studio.price8Hours || studio.pricePerDay;
+                unitPrice = studio.price8Hours || studio.pricePerDay;
+                hourLabel = '8 Hours';
+                break;
+            }
+          } else {
+            needsTimeSelection = true;
+          }
+
           breakdown.studios.push({
             name: studio.name,
             quantity: 1,
             unitPrice,
             total,
             needsTimeSelection,
-          });
+            hourLabel,
+          } as any);
           breakdown.total += total;
         }
       });
@@ -171,7 +221,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
     }
 
     return breakdown;
-  }, [selectedStudios, selectedEquipment, selectedProps, bookingType, selectedHours, safeStudiosData, safeEquipmentData, safePropsData]);
+  }, [selectedStudios, selectedEquipment, selectedProps, bookingType, selectedHours, selectedHourPackage, safeStudiosData, safeEquipmentData, safePropsData]);
 
   const totalPrice = priceBreakdown.total;
 
@@ -196,6 +246,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
         date: selectedDate ? format(selectedDate, 'yyyy-MM-dd') : data.date,
         bookingType: data.bookingType || 'hourly',
         timeSlots: data.selectedHours || [],
+        hourPackage: data.selectedHourPackage || (data.bookingType === 'fullDay' ? '8' : undefined),
         name: data.name,
         email: data.email,
         phone: data.phone,
@@ -288,13 +339,15 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                   {priceBreakdown.studios.length > 0 && (
                     <div className="bg-white/60 rounded p-2">
                       <p className="font-medium text-gray-600 mb-1">Studios</p>
-                      {priceBreakdown.studios.map((studio, idx) => (
+                      {priceBreakdown.studios.map((studio: any, idx: number) => (
                         <div key={idx} className="flex justify-between text-gray-700">
                           <span>{studio.name}</span>
                           <span className="font-medium">
                             {bookingType === 'fullDay' 
-                              ? `AED ${studio.unitPrice.toLocaleString()}`
-                              : `AED ${studio.unitPrice.toLocaleString()}/hr × ${selectedHours.length} = AED ${studio.total.toLocaleString()}`
+                              ? `AED ${studio.unitPrice.toLocaleString()} (8 Hours)`
+                              : studio.needsTimeSelection
+                                ? `Select hour package`
+                                : `AED ${studio.unitPrice.toLocaleString()} (${studio.hourLabel || `${selectedHours.length} hour${selectedHours.length !== 1 ? 's' : ''}`})`
                             }
                           </span>
                         </div>
@@ -592,6 +645,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                       className="sr-only"
                       onChange={() => {
                         setValue('bookingType', 'hourly');
+                        setValue('selectedHourPackage', undefined);
                         setSelectedHours([]);
                       }}
                     />
@@ -627,6 +681,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                       className="sr-only"
                       onChange={() => {
                         setValue('bookingType', 'fullDay');
+                        setValue('selectedHourPackage', '8');
                         setSelectedHours([]);
                       }}
                     />
@@ -640,12 +695,12 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                           <h3 className={`text-xl font-bold mb-2 ${
                             bookingType === 'fullDay' ? 'text-white' : 'text-gray-900'
                           }`}>
-                            Full Day Booking
+                            Full Day Booking (8 Hours)
                           </h3>
                           <p className={`text-base ${
                             bookingType === 'fullDay' ? 'text-gray-200' : 'text-gray-600'
                           }`}>
-                            Book for the entire day
+                            8 Hours - Full Day
                           </p>
                         </div>
                         {bookingType === 'fullDay' && (
@@ -700,92 +755,105 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                   )}
                 </div>
 
-                {/* Hour Selection Section - 50% */}
+                {/* Hour Package Selection Section - 50% */}
                 <div className={`${bookingType === 'fullDay' ? 'opacity-40 pointer-events-none' : ''}`}>
                   <label className="block text-xl font-bold text-gray-900 mb-4">
                     <Clock className="inline w-6 h-6 mr-2" />
-                    Select Hours
+                    Select Hour Package
                     </label>
                   {bookingType === 'fullDay' ? (
                     <div className="bg-gray-100 p-8 rounded-2xl border-2 border-gray-300 h-[400px] flex items-center justify-center">
                       <div className="text-center">
                         <Clock className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                         <p className="text-gray-500 text-lg font-medium">
-                          Hour selection disabled for full day booking
+                          8 Hours (Full Day) selected
                         </p>
                       </div>
                   </div>
                   ) : (
-                    <>
-                      <div className="bg-gradient-to-br from-gray-50 to-white p-4 rounded-2xl border-2 border-gray-200 shadow-sm h-[400px] overflow-y-auto">
-                        <p className="text-sm text-gray-600 mb-3 sticky top-0 bg-white/90 backdrop-blur-sm py-2 px-2 rounded-lg">
-                          Click to select multiple hours
-                        </p>
-                        <div className="grid grid-cols-1 gap-2">
-                          {Array.from({ length: 24 }, (_, i) => {
-                            const hour = i.toString().padStart(2, '0') + ':00';
-                            const nextHour = ((i + 1) % 24).toString().padStart(2, '0') + ':00';
-                            const isSelected = selectedHours.includes(hour);
-                            
-                            // Format time with AM/PM
-                            const formatTime = (h: number) => {
-                              const period = h >= 12 ? 'PM' : 'AM';
-                              const displayHour = h === 0 ? 12 : h > 12 ? h - 12 : h;
-                              return `${displayHour}:00 ${period}`;
-                            };
-                            
-                            return (
-                              <button
-                                key={hour}
-                                type="button"
-                                onClick={() => {
-                                  if (bookingType === 'hourly' && selectedDate) {
-                                    const newHours = isSelected
-                                      ? selectedHours.filter(h => h !== hour)
-                                      : [...selectedHours, hour].sort();
-                                    setSelectedHours(newHours);
-                                    setValue('selectedHours', newHours, { shouldValidate: true });
-                                  }
-                                }}
-                                disabled={!selectedDate}
-                                className={`px-4 py-3 rounded-lg text-base font-medium transition-all text-left ${
-                                  !selectedDate
-                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                    : isSelected
-                                    ? 'bg-black text-white shadow-md'
-                                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300 hover:border-gray-400'
-                                }`}
-                              >
-                                {formatTime(i)} - {formatTime(i + 1)}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    <input
-                        type="hidden"
-                        {...register('selectedHours', {
-                          required: bookingType === 'hourly' ? 'Please select at least one hour' : false,
-                          validate: (value) => {
-                            if (bookingType === 'hourly' && (!value || value.length === 0)) {
-                              return 'Please select at least one hour';
+                    <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-gray-200 shadow-sm">
+                      <p className="text-sm text-gray-600 mb-4">
+                        Choose your rental duration
+                      </p>
+                      <div className="grid grid-cols-1 gap-3">
+                        {[
+                          { value: '1', label: '1 Hour', hours: 1 },
+                          { value: '2', label: '2 Hours', hours: 2 },
+                          { value: '4', label: '4 Hours', hours: 4 },
+                          { value: '6', label: '6 Hours', hours: 6 },
+                          { value: '8', label: '8 Hours', hours: 8 },
+                        ].map((packageOption) => {
+                          const isSelected = selectedHourPackage === packageOption.value;
+                          const studio = safeStudiosData.find(s => selectedStudios.includes(s.id));
+                          let price = 0;
+                          if (studio) {
+                            switch (packageOption.value) {
+                              case '1':
+                                price = studio.pricePerHour;
+                                break;
+                              case '2':
+                                price = studio.price2Hours || (studio.pricePerHour * 2);
+                                break;
+                              case '4':
+                                price = studio.price4Hours || (studio.pricePerHour * 4);
+                                break;
+                              case '6':
+                                price = studio.price6Hours || (studio.pricePerHour * 6);
+                                break;
+                              case '8':
+                                price = studio.price8Hours || studio.pricePerDay;
+                                break;
                             }
-                            return true;
                           }
+                          
+                          return (
+                            <button
+                              key={packageOption.value}
+                              type="button"
+                              onClick={() => {
+                                setValue('selectedHourPackage', packageOption.value as '1' | '2' | '4' | '6' | '8');
+                                // Set selectedHours for compatibility
+                                setSelectedHours(Array.from({ length: packageOption.hours }, (_, i) => `${i}:00`));
+                              }}
+                              className={`p-4 rounded-xl border-2 transition-all duration-200 text-left ${
+                                isSelected
+                                  ? 'border-black bg-black text-white shadow-lg scale-105'
+                                  : 'border-gray-300 bg-white hover:border-gray-500 hover:bg-gray-50'
+                              }`}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <h4 className={`font-bold text-lg mb-1 ${
+                                    isSelected ? 'text-white' : 'text-gray-900'
+                                  }`}>
+                                    {packageOption.label}
+                                  </h4>
+                                  {studio && (
+                                    <p className={`text-sm ${
+                                      isSelected ? 'text-gray-200' : 'text-gray-600'
+                                    }`}>
+                                      {studio.currency} {price.toLocaleString()}
+                                    </p>
+                                  )}
+                                </div>
+                                {isSelected && (
+                                  <CheckCircle className="w-6 h-6 text-white flex-shrink-0" />
+                                )}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <input
+                        type="hidden"
+                        {...register('selectedHourPackage', { 
+                          required: bookingType === 'hourly' ? 'Please select an hour package' : false 
                         })}
                       />
-                      {selectedHours.length > 0 && (
-                        <div className="mt-4 p-4 bg-black text-white rounded-lg">
-                          <p className="text-sm font-medium mb-1">Selected Hours</p>
-                          <p className="text-lg font-bold">
-                            {selectedHours.length} hour{selectedHours.length !== 1 ? 's' : ''}: {selectedHours.join(', ')}
-                          </p>
-                        </div>
+                      {errors.selectedHourPackage && (
+                        <p className="text-red-500 text-sm mt-2">{errors.selectedHourPackage.message}</p>
                       )}
-                      {errors.selectedHours && (
-                        <p className="text-red-500 text-sm mt-2">{errors.selectedHours.message}</p>
-                      )}
-                    </>
+                    </div>
                   )}
                 </div>
               </div>
@@ -894,15 +962,15 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                   {priceBreakdown.studios.length > 0 && (
                     <div className="bg-white/60 rounded-lg p-3">
                       <p className="text-xs font-semibold text-gray-600 mb-2">Studios</p>
-                      {priceBreakdown.studios.map((studio, idx) => (
+                      {priceBreakdown.studios.map((studio: any, idx: number) => (
                         <div key={idx} className="flex justify-between items-center text-sm mb-1 last:mb-0">
                           <span className="text-gray-700">{studio.name}</span>
                           <span className="text-gray-900 font-medium">
                             {bookingType === 'fullDay' 
-                              ? `AED ${studio.unitPrice.toLocaleString()} (Full Day)`
+                              ? `AED ${studio.unitPrice.toLocaleString()} (8 Hours)`
                               : studio.needsTimeSelection
-                                ? `AED ${studio.unitPrice.toLocaleString()}/hr (Select hours)`
-                                : `AED ${studio.unitPrice.toLocaleString()}/hr × ${selectedHours.length} = AED ${studio.total.toLocaleString()}`
+                                ? `AED ${studio.unitPrice.toLocaleString()}/hr (Select hour package)`
+                                : `AED ${studio.unitPrice.toLocaleString()} (${studio.hourLabel || `${selectedHours.length} hour${selectedHours.length !== 1 ? 's' : ''}`})`
                             }
                           </span>
                         </div>
@@ -951,9 +1019,9 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-600 mb-1">Estimated Total</p>
-                    {((bookingType === 'hourly' && selectedHours.length === 0) && (priceBreakdown.studios.length > 0 || priceBreakdown.equipment.length > 0)) ? (
+                    {((bookingType === 'hourly' && !selectedHourPackage) && (priceBreakdown.studios.length > 0 || priceBreakdown.equipment.length > 0)) ? (
                       <>
-                        <p className="text-2xl font-bold text-gray-700">Select hours to calculate</p>
+                        <p className="text-2xl font-bold text-gray-700">Select hour package to calculate</p>
                         <p className="text-xs text-gray-500 mt-1">Props: AED {priceBreakdown.props.reduce((sum, p) => sum + p.total, 0).toLocaleString()}</p>
                       </>
                     ) : (

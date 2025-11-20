@@ -1,0 +1,103 @@
+================================================================================
+SUPERBOSS STUDIO - PRICING REFERENCE FOR SANITY CMS
+================================================================================
+Please update each studio in Sanity CMS with the following pricing information.
+All prices are in AED (United Arab Emirates Dirham).
+================================================================================
+
+BOSS UNIT (800 sq ft)
+================================================================================
+Price Per Hour (1 hour): AED 300
+Price for 2 Hours: AED 500
+Price for 4 Hours: AED 700
+Price for 6 Hours: AED 900
+Price for 8 Hours / Full Day: AED 1250
+
+================================================================================
+
+BOSS FRAME (800 sq ft)
+================================================================================
+Price Per Hour (1 hour): AED 300
+Price for 2 Hours: AED 500
+Price for 4 Hours: AED 700
+Price for 6 Hours: AED 900
+Price for 8 Hours / Full Day: AED 1250
+
+================================================================================
+
+BOSS CELL (800 sq ft)
+================================================================================
+Price Per Hour (1 hour): AED 300
+Price for 2 Hours: AED 500
+Price for 4 Hours: AED 700
+Price for 6 Hours: AED 900
+Price for 8 Hours / Full Day: AED 1250
+
+================================================================================
+
+SUPER CELL (1600 sq ft)
+================================================================================
+Price Per Hour (1 hour): AED 500
+Price for 2 Hours: AED 800
+Price for 4 Hours: AED 1200
+Price for 6 Hours: AED 1700
+Price for 8 Hours / Full Day: AED 2400
+
+================================================================================
+
+SUPER FRAME (2400 sq ft)
+================================================================================
+Price Per Hour (1 hour): AED 700
+Price for 2 Hours: AED 1000
+Price for 4 Hours: AED 1800
+Price for 6 Hours: AED 2200
+Price for 8 Hours / Full Day: AED 2800
+
+================================================================================
+
+SUPER VAULT (2100 sq ft)
+================================================================================
+Price Per Hour (1 hour): AED 600
+Price for 2 Hours: AED 900
+Price for 4 Hours: AED 1100
+Price for 6 Hours: AED 1200
+Price for 8 Hours / Full Day: AED 2000
+
+NOTE: Super Vault may need to be added to Sanity CMS if it doesn't exist yet.
+
+================================================================================
+
+INSTRUCTIONS FOR UPDATING SANITY CMS
+================================================================================
+1. Go to http://your-domain.com/studio (or localhost:3000/studio)
+2. Navigate to "Studio" in the content types
+3. For each studio listed above:
+   a. Find the studio by name
+   b. Update the following fields:
+      - pricePerHour: [1 hour price]
+      - price2Hours: [2 hours price]
+      - price4Hours: [4 hours price]
+      - price6Hours: [6 hours price]
+      - price8Hours: [8 hours / Full day price]
+   c. Save the changes
+
+Note: price8Hours is REQUIRED and will be used for both "8 Hours" and "Full Day" bookings.
+The other hour packages (2, 4, 6) are optional - if not set, the system will calculate
+them as pricePerHour × number of hours.
+
+================================================================================
+
+PRICING SUMMARY BY STUDIO
+================================================================================
+
+Studio Name          | 1hr  | 2hr  | 4hr  | 6hr  | 8hr/Full Day
+---------------------|------|------|------|------|-------------
+Boss Unit (800)      | 300  | 500  | 700  | 900  | 1250
+Boss Frame (800)     | 300  | 500  | 700  | 900  | 1250
+Boss Cell (800)      | 300  | 500  | 700  | 900  | 1250
+Super Cell (1600)    | 500  | 800  | 1200 | 1700 | 2400
+Super Frame (2400)   | 700  | 1000 | 1800 | 2200 | 2800
+Super Vault (2100)   | 600  | 900  | 1100 | 1200 | 2000
+
+================================================================================
+

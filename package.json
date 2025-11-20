@@ -26,7 +26,8 @@
     "migrate:events": "node scripts/migrate-events.js",
     "optimize:gallery": "node scripts/optimize-gallery-images.js",
     "optimize:studios": "node scripts/optimize-studio-images.js",
-    "optimize:video": "node scripts/optimize-video.js"
+    "optimize:video": "node scripts/optimize-video.js",
+    "optimize:banner-video": "node scripts/optimize-video-banner.js"
   },
   "dependencies": {
     "@sanity/client": "^7.12.1",

@@ -14,7 +14,6 @@ export async function POST(request: NextRequest) {
       date,
       bookingType,
       timeSlots,
-      hourPackage,
       name,
       email,
       phone,
@@ -62,13 +61,24 @@ export async function POST(request: NextRequest) {
         }).filter(Boolean).join(', ')
       : 'None';
 
+    // Format time slots for display
+    const formatTimeSlots = (slots: string[]) => {
+      if (!slots || slots.length === 0) return 'Not specified';
+      return slots.map(slot => {
+        const hour = parseInt(slot.split(':')[0]);
+        return hour < 12 
+          ? `${hour}:00 AM` 
+          : hour === 12 
+          ? '12:00 PM' 
+          : `${hour - 12}:00 PM`;
+      }).join(', ');
+    };
+
     const timeInfo = bookingType === 'fullday' || bookingType === 'fullDay'
       ? '8 Hours (Full Day)'
-      : hourPackage
-        ? `${hourPackage} Hour${hourPackage !== '1' ? 's' : ''}`
-        : timeSlots && timeSlots.length > 0
-          ? `${timeSlots.length} hour${timeSlots.length !== 1 ? 's' : ''}`
-          : 'Not specified';
+      : timeSlots && timeSlots.length > 0
+        ? `${timeSlots.length} hour${timeSlots.length !== 1 ? 's' : ''} (${formatTimeSlots(timeSlots)})`
+        : 'Not specified';
 
     // Send email using Resend
     const { data, error } = await resend.emails.send({

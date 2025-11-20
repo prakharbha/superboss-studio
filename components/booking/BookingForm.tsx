@@ -86,8 +86,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedHours, setSelectedHours] = useState<string[]>([]);
-  const [startTime, setStartTime] = useState<string>('');
-  const [endTime, setEndTime] = useState<string>('');
+  const [selectedTimeRanges, setSelectedTimeRanges] = useState<string[]>([]);
   const [bookingId, setBookingId] = useState<string>('');
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormData>();
 
@@ -129,24 +128,17 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
     }
   };
 
-  // Calculate hours from time range
-  const calculateHoursFromRange = (start: string, end: string): number => {
-    if (!start || !end) return 0;
-    const startHour = parseInt(start.split(':')[0]);
-    const endHour = parseInt(end.split(':')[0]);
-    return endHour > startHour ? endHour - startHour : 0;
+  // Calculate hours from selected time ranges
+  const calculateHoursFromRanges = (ranges: string[]): number => {
+    return ranges.length; // Each range is 1 hour
   };
 
-  // Generate time slots array from range for API compatibility
-  const generateTimeSlotsFromRange = (start: string, end: string): string[] => {
-    if (!start || !end) return [];
-    const startHour = parseInt(start.split(':')[0]);
-    const endHour = parseInt(end.split(':')[0]);
-    const slots: string[] = [];
-    for (let i = startHour; i < endHour; i++) {
-      slots.push(`${i}:00`);
-    }
-    return slots;
+  // Generate time slots array from ranges for API compatibility
+  const generateTimeSlotsFromRanges = (ranges: string[]): string[] => {
+    return ranges.map(range => {
+      const startHour = parseInt(range.split('-')[0].trim());
+      return `${startHour}:00`;
+    });
   };
 
   // Calculate price breakdown
@@ -161,7 +153,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
     // Determine number of hours
     const hours = bookingType === 'fullDay' 
       ? 8 
-      : (startTime && endTime ? calculateHoursFromRange(startTime, endTime) : 0);
+      : calculateHoursFromRanges(selectedTimeRanges);
     
     // Calculate studio prices
     if (Array.isArray(selectedStudios)) {
@@ -245,7 +237,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
     }
 
     return breakdown;
-  }, [selectedStudios, selectedEquipment, selectedProps, bookingType, startTime, endTime, safeStudiosData, safeEquipmentData, safePropsData]);
+  }, [selectedStudios, selectedEquipment, selectedProps, bookingType, selectedTimeRanges, safeStudiosData, safeEquipmentData, safePropsData]);
 
   const totalPrice = priceBreakdown.total;
 
@@ -271,9 +263,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
         bookingType: data.bookingType || 'hourly',
         timeSlots: bookingType === 'fullDay' 
           ? [] 
-          : (startTime && endTime ? generateTimeSlotsFromRange(startTime, endTime) : []),
-        startTime: startTime || '',
-        endTime: endTime || '',
+          : generateTimeSlotsFromRanges(selectedTimeRanges),
         name: data.name,
         email: data.email,
         phone: data.phone,
@@ -318,16 +308,9 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
         setValue('date', '', { shouldValidate: true });
         return;
       }
-      if (bookingType === 'hourly' && (!startTime || !endTime)) {
-        alert('Please select both start and end time');
+      if (bookingType === 'hourly' && selectedTimeRanges.length === 0) {
+        alert('Please select at least one time range');
         return;
-      }
-      if (bookingType === 'hourly' && startTime && endTime) {
-        const hours = calculateHoursFromRange(startTime, endTime);
-        if (hours <= 0) {
-          alert('End time must be after start time');
-          return;
-        }
       }
     }
     
@@ -371,8 +354,8 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
               <span className="text-gray-900">
                 {bookingType === 'fullDay' 
                   ? 'Full Day' 
-                  : startTime && endTime 
-                    ? `Hourly (${calculateHoursFromRange(startTime, endTime)} hours)` 
+                  : selectedTimeRanges.length > 0
+                    ? `Hourly (${selectedTimeRanges.length} hour${selectedTimeRanges.length !== 1 ? 's' : ''})` 
                     : 'Hourly'}
               </span>
             </div>
@@ -407,7 +390,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                     <div className="bg-white/60 rounded p-2">
                       <p className="font-medium text-gray-600 mb-1">Equipment</p>
                       {priceBreakdown.equipment.map((equip, idx) => {
-                        const calculatedHours = startTime && endTime ? calculateHoursFromRange(startTime, endTime) : 0;
+                        const calculatedHours = selectedTimeRanges.length;
                         return (
                           <div key={idx} className="flex justify-between text-gray-700">
                             <span>{equip.name}</span>
@@ -707,8 +690,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                       onChange={() => {
                         setValue('bookingType', 'hourly');
                         setSelectedHours([]);
-                        setStartTime('');
-                        setEndTime('');
+                        setSelectedTimeRanges([]);
                       }}
                     />
                     <div className={`p-6 rounded-xl border-3 transition-all duration-300 shadow-md hover:shadow-xl ${
@@ -744,8 +726,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                       onChange={() => {
                         setValue('bookingType', 'fullDay');
                         setSelectedHours([]);
-                        setStartTime('');
-                        setEndTime('');
+                        setSelectedTimeRanges([]);
                       }}
                     />
                     <div className={`p-6 rounded-xl border-3 transition-all duration-300 shadow-md hover:shadow-xl ${
@@ -822,7 +803,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                 <div className={`${bookingType === 'fullDay' ? 'opacity-40 pointer-events-none' : ''}`}>
                   <label className="block text-xl font-bold text-gray-900 mb-4">
                     <Clock className="inline w-6 h-6 mr-2" />
-                    Select Time Range
+                    Select Time Ranges
                   </label>
                   {bookingType === 'fullDay' ? (
                     <div className="bg-gray-100 p-8 rounded-2xl border-2 border-gray-300 h-[400px] flex items-center justify-center">
@@ -836,127 +817,84 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                   ) : (
                     <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl border-2 border-gray-200 shadow-sm">
                       <p className="text-sm text-gray-600 mb-4">
-                        Select your booking time range (9:00 AM - 6:00 PM)
+                        Select the time ranges you need (9:00 AM - 6:00 PM)
                       </p>
-                      
-                      <div className="space-y-4">
-                        {/* Start Time */}
-                        <div>
-                          <label className="block text-sm font-semibold text-gray-700 mb-2">
-                            Start Time *
-                          </label>
-                          <select
-                            value={startTime}
-                            onChange={(e) => {
-                              setStartTime(e.target.value);
-                              // Generate time slots for compatibility
-                              if (e.target.value && endTime) {
-                                const slots = generateTimeSlotsFromRange(e.target.value, endTime);
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[300px] overflow-y-auto">
+                        {Array.from({ length: 9 }, (_, i) => {
+                          const startHour = 9 + i;
+                          const endHour = 10 + i;
+                          const startLabel = startHour < 12 
+                            ? `${startHour}:00 AM` 
+                            : startHour === 12 
+                            ? '12:00 PM' 
+                            : `${startHour - 12}:00 PM`;
+                          const endLabel = endHour < 12 
+                            ? `${endHour}:00 AM` 
+                            : endHour === 12 
+                            ? '12:00 PM' 
+                            : `${endHour - 12}:00 PM`;
+                          const rangeValue = `${startHour}:00-${endHour}:00`;
+                          const isSelected = selectedTimeRanges.includes(rangeValue);
+                          
+                          return (
+                            <button
+                              key={rangeValue}
+                              type="button"
+                              onClick={() => {
+                                const newRanges = isSelected
+                                  ? selectedTimeRanges.filter(r => r !== rangeValue)
+                                  : [...selectedTimeRanges, rangeValue].sort();
+                                setSelectedTimeRanges(newRanges);
+                                const slots = generateTimeSlotsFromRanges(newRanges);
                                 setSelectedHours(slots);
                                 setValue('selectedHours', slots, { shouldValidate: true });
-                              }
-                            }}
-                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none transition-colors"
-                          >
-                            <option value="">Select start time</option>
-                            {Array.from({ length: 10 }, (_, i) => {
-                              const hour = 9 + i;
-                              const hourLabel = hour < 12 
-                                ? `${hour}:00 AM` 
-                                : hour === 12 
-                                ? '12:00 PM' 
-                                : `${hour - 12}:00 PM`;
-                              const hourValue = `${hour}:00`;
-                              return (
-                                <option key={hourValue} value={hourValue}>
-                                  {hourLabel}
-                                </option>
-                              );
-                            })}
-                          </select>
-                        </div>
-
-                        {/* End Time */}
-                        <div>
-                          <label className="block text-sm font-semibold text-gray-700 mb-2">
-                            End Time *
-                          </label>
-                          <select
-                            value={endTime}
-                            onChange={(e) => {
-                              setEndTime(e.target.value);
-                              // Generate time slots for compatibility
-                              if (startTime && e.target.value) {
-                                const slots = generateTimeSlotsFromRange(startTime, e.target.value);
-                                setSelectedHours(slots);
-                                setValue('selectedHours', slots, { shouldValidate: true });
-                              }
-                            }}
-                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-black focus:outline-none transition-colors"
-                            disabled={!startTime}
-                          >
-                            <option value="">{startTime ? 'Select end time' : 'Select start time first'}</option>
-                            {Array.from({ length: 10 }, (_, i) => {
-                              const hour = 9 + i;
-                              if (startTime) {
-                                const startHour = parseInt(startTime.split(':')[0]);
-                                if (hour <= startHour) return null; // Don't show times before or equal to start
-                              }
-                              const hourLabel = hour < 12 
-                                ? `${hour}:00 AM` 
-                                : hour === 12 
-                                ? '12:00 PM' 
-                                : `${hour - 12}:00 PM`;
-                              const hourValue = `${hour}:00`;
-                              return (
-                                <option key={hourValue} value={hourValue}>
-                                  {hourLabel}
-                                </option>
-                              );
-                            }).filter(Boolean)}
-                          </select>
-                        </div>
-
-                        {/* Selected Range Display */}
-                        {startTime && endTime && (
-                          <div className="mt-4 p-4 bg-black text-white rounded-lg">
-                            <p className="text-sm font-medium mb-1">
-                              Selected Range
-                            </p>
-                            <p className="text-lg font-bold">
-                              {(() => {
-                                const startHour = parseInt(startTime.split(':')[0]);
-                                const endHour = parseInt(endTime.split(':')[0]);
-                                const startLabel = startHour < 12 
-                                  ? `${startHour}:00 AM` 
-                                  : startHour === 12 
-                                  ? '12:00 PM' 
-                                  : `${startHour - 12}:00 PM`;
-                                const endLabel = endHour < 12 
-                                  ? `${endHour}:00 AM` 
-                                  : endHour === 12 
-                                  ? '12:00 PM' 
-                                  : `${endHour - 12}:00 PM`;
-                                const hours = calculateHoursFromRange(startTime, endTime);
-                                return `${startLabel} - ${endLabel} (${hours} hour${hours !== 1 ? 's' : ''})`;
-                              })()}
-                            </p>
-                          </div>
-                        )}
+                              }}
+                              className={`p-3 rounded-lg border-2 transition-all duration-200 text-center ${
+                                isSelected
+                                  ? 'border-black bg-black text-white shadow-md'
+                                  : 'border-gray-300 bg-white hover:border-gray-500 hover:bg-gray-50'
+                              }`}
+                            >
+                              <div className="text-sm font-medium">{startLabel}</div>
+                              <div className="text-xs text-gray-400">-</div>
+                              <div className="text-sm font-medium">{endLabel}</div>
+                              {isSelected && (
+                                <CheckCircle className="w-4 h-4 mx-auto mt-1" />
+                              )}
+                            </button>
+                          );
+                        })}
                       </div>
-                      
+                      {selectedTimeRanges.length > 0 && (
+                        <div className="mt-4 p-3 bg-black text-white rounded-lg">
+                          <p className="text-sm font-medium">
+                            Selected: {selectedTimeRanges.length} hour{selectedTimeRanges.length !== 1 ? 's' : ''}
+                          </p>
+                          <p className="text-xs text-gray-300 mt-1">
+                            {selectedTimeRanges.map(range => {
+                              const [start, end] = range.split('-');
+                              const startHour = parseInt(start.split(':')[0]);
+                              const endHour = parseInt(end.split(':')[0]);
+                              const startLabel = startHour < 12 
+                                ? `${startHour}:00 AM` 
+                                : startHour === 12 
+                                ? '12:00 PM' 
+                                : `${startHour - 12}:00 PM`;
+                              const endLabel = endHour < 12 
+                                ? `${endHour}:00 AM` 
+                                : endHour === 12 
+                                ? '12:00 PM' 
+                                : `${endHour - 12}:00 PM`;
+                              return `${startLabel} - ${endLabel}`;
+                            }).join(', ')}
+                          </p>
+                        </div>
+                      )}
                       <input
                         type="hidden"
                         {...register('selectedHours', { 
-                          required: bookingType === 'hourly' ? 'Please select time range' : false,
-                          validate: (value) => {
-                            if (bookingType === 'hourly') {
-                              if (!startTime || !endTime) return 'Please select both start and end time';
-                              const hours = calculateHoursFromRange(startTime, endTime);
-                              if (hours <= 0) return 'End time must be after start time';
-                            }
-                            return true;
-                          }
+                          required: bookingType === 'hourly' ? 'Please select at least one time range' : false,
+                          validate: (value) => bookingType === 'hourly' ? selectedTimeRanges.length > 0 : true
                         })}
                       />
                       {errors.selectedHours && (
@@ -1095,7 +1033,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                     <div className="bg-white/60 rounded-lg p-3">
                       <p className="text-xs font-semibold text-gray-600 mb-2">Equipment</p>
                       {priceBreakdown.equipment.map((equip, idx) => {
-                        const calculatedHours = startTime && endTime ? calculateHoursFromRange(startTime, endTime) : 0;
+                        const calculatedHours = selectedTimeRanges.length;
                         return (
                           <div key={idx} className="flex justify-between items-center text-sm mb-1 last:mb-0">
                             <span className="text-gray-700">{equip.name}</span>
@@ -1134,7 +1072,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-600 mb-1">Estimated Total</p>
-                    {((bookingType === 'hourly' && (!startTime || !endTime)) && (priceBreakdown.studios.length > 0 || priceBreakdown.equipment.length > 0)) ? (
+                    {((bookingType === 'hourly' && selectedTimeRanges.length === 0) && (priceBreakdown.studios.length > 0 || priceBreakdown.equipment.length > 0)) ? (
                       <>
                         <p className="text-2xl font-bold text-gray-700">Select hours to calculate</p>
                         <p className="text-xs text-gray-500 mt-1">Props: AED {priceBreakdown.props.reduce((sum, p) => sum + p.total, 0).toLocaleString()}</p>

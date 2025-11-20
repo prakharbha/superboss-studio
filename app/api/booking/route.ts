@@ -14,8 +14,6 @@ export async function POST(request: NextRequest) {
       date,
       bookingType,
       timeSlots,
-      startTime,
-      endTime,
       name,
       email,
       phone,
@@ -63,32 +61,45 @@ export async function POST(request: NextRequest) {
         }).filter(Boolean).join(', ')
       : 'None';
 
-    // Format time range for display
-    const formatTimeRange = (start: string, end: string) => {
-      if (!start || !end) return 'Not specified';
-      const startHour = parseInt(start.split(':')[0]);
-      const endHour = parseInt(end.split(':')[0]);
-      const hours = endHour - startHour;
-      const startLabel = startHour < 12 
-        ? `${startHour}:00 AM` 
-        : startHour === 12 
+    // Format time slots for display
+    const formatTimeSlots = (slots: string[]) => {
+      if (!slots || slots.length === 0) return 'Not specified';
+      if (slots.length === 1) {
+        const hour = parseInt(slots[0].split(':')[0]);
+        const hourLabel = hour < 12 
+          ? `${hour}:00 AM` 
+          : hour === 12 
+          ? '12:00 PM' 
+          : `${hour - 12}:00 PM`;
+        const nextHour = hour + 1;
+        const nextHourLabel = nextHour < 12 
+          ? `${nextHour}:00 AM` 
+          : nextHour === 12 
+          ? '12:00 PM' 
+          : `${nextHour - 12}:00 PM`;
+        return `${hourLabel} - ${nextHourLabel} (1 hour)`;
+      }
+      // For multiple slots, show first and last
+      const firstHour = parseInt(slots[0].split(':')[0]);
+      const lastHour = parseInt(slots[slots.length - 1].split(':')[0]);
+      const firstLabel = firstHour < 12 
+        ? `${firstHour}:00 AM` 
+        : firstHour === 12 
         ? '12:00 PM' 
-        : `${startHour - 12}:00 PM`;
-      const endLabel = endHour < 12 
-        ? `${endHour}:00 AM` 
-        : endHour === 12 
+        : `${firstHour - 12}:00 PM`;
+      const lastLabel = (lastHour + 1) < 12 
+        ? `${lastHour + 1}:00 AM` 
+        : (lastHour + 1) === 12 
         ? '12:00 PM' 
-        : `${endHour - 12}:00 PM`;
-      return `${startLabel} - ${endLabel} (${hours} hour${hours !== 1 ? 's' : ''})`;
+        : `${(lastHour + 1) - 12}:00 PM`;
+      return `${firstLabel} - ${lastLabel} (${slots.length} hours)`;
     };
 
     const timeInfo = bookingType === 'fullday' || bookingType === 'fullDay'
       ? '8 Hours (Full Day)'
-      : startTime && endTime
-        ? formatTimeRange(startTime, endTime)
-        : timeSlots && timeSlots.length > 0
-          ? `${timeSlots.length} hour${timeSlots.length !== 1 ? 's' : ''}`
-          : 'Not specified';
+      : timeSlots && timeSlots.length > 0
+        ? formatTimeSlots(timeSlots)
+        : 'Not specified';
 
     // Send email using Resend
     const { data, error } = await resend.emails.send({

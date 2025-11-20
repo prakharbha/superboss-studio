@@ -49,8 +49,11 @@ public/superboss-studio-tour.mp4
 # Large PDF files
 public/Company-Profile-with-Prices.pdf
 
-# Extracted PDF images (temporary files)
+# Extracted PDF images and temporary data files
 scripts/extracted-images/
 scripts/extracted-pdf-text.txt
+scripts/equipment-details.txt
+scripts/equipment-pdf-full-text.txt
 
 # Note: catalogue.pdf (small placeholder) is kept in repo
+# Note: Utility scripts (migrations, optimizations) are kept in git for team use

@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
-import { Calendar, Clock, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Calendar, Clock, CheckCircle, ArrowRight, ArrowLeft, CalendarPlus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
@@ -95,6 +95,117 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
   const selectedEquipment = watch('equipment') || [];
   const selectedProps = watch('props') || [];
   const bookingType = watch('bookingType') || 'hourly';
+
+  // Function to generate ICS calendar file
+  const generateCalendarFile = () => {
+    if (!selectedDate) return;
+
+    // Get studio names
+    const studioNames = selectedStudios
+      .map((studioId: string) => {
+        const studio = safeStudiosData.find((s: Studio) => s.id === studioId);
+        return studio ? studio.name : studioId;
+      })
+      .join(', ');
+
+    // Calculate start and end times
+    let startTime: Date;
+    let endTime: Date;
+
+    if (bookingType === 'fullDay' && fullDayStartTime) {
+      const [startHour, startMin] = fullDayStartTime.split(':').map(Number);
+      startTime = new Date(selectedDate);
+      startTime.setHours(startHour, startMin, 0, 0);
+      
+      // End time is 8 hours later
+      endTime = new Date(startTime);
+      endTime.setHours(endTime.getHours() + 8);
+    } else if (selectedTimeRanges.length > 0) {
+      // For hourly bookings, use the first and last time range
+      const firstRange = selectedTimeRanges[0];
+      const lastRange = selectedTimeRanges[selectedTimeRanges.length - 1];
+      
+      const [firstStart] = firstRange.split('-');
+      const [, lastEnd] = lastRange.split('-');
+      
+      const [startHour, startMin] = firstStart.split(':').map(Number);
+      const [endHour, endMin] = lastEnd.split(':').map(Number);
+      
+      startTime = new Date(selectedDate);
+      startTime.setHours(startHour, startMin, 0, 0);
+      
+      endTime = new Date(selectedDate);
+      endTime.setHours(endHour, endMin, 0, 0);
+    } else {
+      // Default fallback
+      startTime = new Date(selectedDate);
+      startTime.setHours(9, 0, 0, 0);
+      endTime = new Date(startTime);
+      endTime.setHours(endTime.getHours() + 8);
+    }
+
+    // Format dates for ICS (YYYYMMDDTHHMMSS)
+    const formatICSDate = (date: Date): string => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+      return `${year}${month}${day}T${hours}${minutes}${seconds}`;
+    };
+
+    // Get equipment and props details
+    const equipmentDetails = selectedEquipment.length > 0
+      ? selectedEquipment.map((equipId: string) => {
+          const eq = safeEquipmentData.find((e: Equipment) => e.id === equipId);
+          return eq ? eq.name : '';
+        }).filter(Boolean).join(', ')
+      : 'None';
+
+    const propsDetails = selectedProps.length > 0
+      ? selectedProps.map((propId: string) => {
+          const prop = safePropsData.find((p: Prop) => p.id === propId);
+          return prop ? prop.name : '';
+        }).filter(Boolean).join(', ')
+      : 'None';
+
+    // Create ICS content
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//SuperBoss Studio//Booking Calendar//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      `UID:${bookingId}@superbossstudio.com`,
+      `DTSTAMP:${formatICSDate(new Date())}`,
+      `DTSTART:${formatICSDate(startTime)}`,
+      `DTEND:${formatICSDate(endTime)}`,
+      `SUMMARY:Studio Booking - ${studioNames}`,
+      `DESCRIPTION:Booking Reference: ${bookingId}\\n\\nStudios: ${studioNames}\\nEquipment: ${equipmentDetails}\\nProps: ${propsDetails}\\n\\nTotal: AED ${totalPrice.toLocaleString()}\\n\\nContact: +971 56 156 1570`,
+      `LOCATION:Umm Ramool, St. 17, Warehouse No. 4, Dubai`,
+      'STATUS:CONFIRMED',
+      'SEQUENCE:0',
+      'BEGIN:VALARM',
+      'TRIGGER:-PT1H',
+      'ACTION:DISPLAY',
+      'DESCRIPTION:Reminder: Studio booking in 1 hour',
+      'END:VALARM',
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\r\n');
+
+    // Create blob and download
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `superboss-booking-${bookingId}.ics`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+  };
 
   // Ensure data is always arrays
   const safeStudiosData = Array.isArray(studiosData) ? studiosData : [];
@@ -359,6 +470,13 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
           <p className="text-xl text-gray-600 mb-2">
             Your booking ID: <span className="font-bold text-black">{bookingId}</span>
           </p>
+          <button
+            onClick={generateCalendarFile}
+            className="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-gray-800 transition-colors duration-200 shadow-md hover:shadow-lg"
+          >
+            <CalendarPlus className="w-5 h-5" />
+            Add to Calendar
+          </button>
         </div>
 
         <div className="bg-gray-50 p-8 rounded-xl mb-6 border-2 border-gray-200">

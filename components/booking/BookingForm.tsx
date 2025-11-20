@@ -700,7 +700,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
             >
               <h2 className="text-3xl font-bold text-gray-900 mb-2">Add Equipment</h2>
               <p className="text-gray-600 mb-6">Optional - Skip if not needed</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[600px] overflow-y-auto pr-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-h-[600px] overflow-y-auto pr-2">
                 {safeEquipmentData.map((item) => (
                   <label
                     key={item.id}

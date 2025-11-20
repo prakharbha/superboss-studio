@@ -17,6 +17,8 @@ interface Equipment {
   currency: string;
   specifications: string[];
   available: boolean;
+  image?: string | null;
+  imageAlt?: string;
 }
 
 interface EquipmentClientProps {
@@ -137,11 +139,23 @@ export default function EquipmentClient({ equipmentData }: EquipmentClientProps)
                 <AnimatedSection key={item.id} delay={index * 0.05}>
                   <div className="bg-white border border-sb-grey-light rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                     {/* Image */}
-                    <div className="aspect-[4/3] bg-sb-grey-light flex items-center justify-center">
-                      <div className="text-center text-sb-grey">
-                        <div className="text-5xl mb-2">📷</div>
-                        <p className="text-xs">{item.category}</p>
-                      </div>
+                    <div className="aspect-[4/3] bg-sb-grey-light relative overflow-hidden">
+                      {item.image ? (
+                        <Image
+                          src={item.image}
+                          alt={item.imageAlt || item.name}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <div className="text-center text-sb-grey">
+                            <div className="text-5xl mb-2">📷</div>
+                            <p className="text-xs">{item.category}</p>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Content */}

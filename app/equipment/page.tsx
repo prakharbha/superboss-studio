@@ -14,6 +14,8 @@ async function getEquipment() {
       currency: item.currency,
       specifications: item.specifications || [],
       available: item.available !== false,
+      image: item.image?.asset?.url || null,
+      imageAlt: item.image?.alt || item.name,
     })) || [];
   } catch (error) {
     console.error('Error fetching equipment:', error);

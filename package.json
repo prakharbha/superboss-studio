@@ -31,7 +31,8 @@
     "update:pricing": "node scripts/update-studio-pricing.js",
     "extract:equipment": "node scripts/extract-equipment-from-pdf.js",
     "add:profoto": "node scripts/add-profoto-equipment.js",
-    "add:all-equipment": "node scripts/add-all-equipment.js"
+    "add:all-equipment": "node scripts/add-all-equipment.js",
+    "delete:equipment-placeholders": "node scripts/delete-equipment-without-images.js"
   },
   "dependencies": {
     "@sanity/client": "^7.12.1",

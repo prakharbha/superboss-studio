@@ -1,10 +1,20 @@
 import { client, equipmentQuery } from '@/lib/sanity';
 import EquipmentClient from './EquipmentClient';
 
+export const revalidate = 0; // Always fetch fresh data
+
 async function getEquipment() {
   try {
-    const equipment = await client.fetch(equipmentQuery);
-    return equipment.map((item: any) => ({
+    const equipment = await client.fetch(equipmentQuery, {}, {
+      cache: 'no-store', // Don't cache, always fetch fresh
+    });
+    
+    // Filter out equipment without images
+    const equipmentWithImages = equipment.filter((item: any) => {
+      return item.image && item.image.asset && item.image.asset.url;
+    });
+    
+    return equipmentWithImages.map((item: any) => ({
       id: item.id,
       name: item.name,
       category: item.category,

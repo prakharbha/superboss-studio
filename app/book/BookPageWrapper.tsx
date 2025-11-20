@@ -41,6 +41,7 @@ async function getBookingData() {
         name: item.name,
         category: item.category,
         description: item.description,
+        priceHalfDay: item.priceHalfDay,
         pricePerDay: item.pricePerDay,
         currency: item.currency,
         available: item.available !== false,

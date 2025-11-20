@@ -12,11 +12,13 @@ interface Prop {
   name: string;
   category: string;
   description: string;
+  priceHalfDay?: number;
   pricePerDay: number;
   currency: string;
   color?: string;
   style?: string;
   available: boolean;
+  image?: any;
 }
 
 interface PropsClientProps {
@@ -170,11 +172,23 @@ export default function PropsClient({ propsData }: PropsClientProps) {
               {filteredProps.map((item, index) => (
                 <div key={item.id} className="bg-white border border-sb-grey-light rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                     {/* Image */}
-                    <div className="aspect-square bg-sb-grey-light flex items-center justify-center">
-                      <div className="text-center text-sb-grey">
-                        <div className="text-4xl mb-2">🎨</div>
-                        <p className="text-xs">{item.category}</p>
-                      </div>
+                    <div className="aspect-square bg-sb-grey-light relative overflow-hidden">
+                      {item.image?.asset?.url ? (
+                        <Image
+                          src={item.image.asset.url}
+                          alt={item.image.alt || item.name}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <div className="text-center text-sb-grey">
+                            <div className="text-4xl mb-2">🎨</div>
+                            <p className="text-xs">{item.category}</p>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Content */}
@@ -208,9 +222,17 @@ export default function PropsClient({ propsData }: PropsClientProps) {
                       </div>
 
                       {/* Pricing */}
-                      <div className="pt-3 border-t border-sb-grey-light">
+                      <div className="pt-3 border-t border-sb-grey-light space-y-1">
+                        {item.priceHalfDay && (
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs text-sb-grey">Half Day (≤4 hrs)</span>
+                            <span className="text-sm font-semibold text-sb-black">
+                              {formatCurrency(item.priceHalfDay, item.currency)}
+                            </span>
+                          </div>
+                        )}
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-sb-grey">Per Day</span>
+                          <span className="text-sm text-sb-grey">Full Day</span>
                           <span className="text-xl font-bold text-sb-black">
                             {formatCurrency(item.pricePerDay, item.currency)}
                           </span>

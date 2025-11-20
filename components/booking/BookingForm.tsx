@@ -42,6 +42,7 @@ interface Prop {
   name: string;
   category: string;
   description: string;
+  priceHalfDay?: number;
   pricePerDay: number;
   currency: string;
   available: boolean;
@@ -276,7 +277,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
     const breakdown = {
       studios: [] as Array<{ name: string; quantity: number; unitPrice: number; total: number; needsTimeSelection: boolean; hourLabel: string }>,
       equipment: [] as Array<{ name: string; quantity: number; unitPrice: number; total: number; needsTimeSelection: boolean }>,
-      props: [] as Array<{ name: string; quantity: number; unitPrice: number; total: number; needsTimeSelection: boolean }>,
+      props: [] as Array<{ name: string; quantity: number; unitPrice: number; total: number; needsTimeSelection: boolean; priceLabel?: string }>,
       total: 0,
     };
 
@@ -344,18 +345,23 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
       });
     }
 
-    // Calculate props prices (always per day)
+    // Calculate props prices (half day for ≤4 hours, full day for >4 hours)
     if (Array.isArray(selectedProps)) {
       selectedProps.forEach((propId: string) => {
         const prop = safePropsData.find(p => p.id === propId);
         if (prop) {
-          const total = prop.pricePerDay;
+          // Use half-day pricing for bookings ≤4 hours, full day for >4 hours
+          const useHalfDay = hours <= 4 && prop.priceHalfDay;
+          const total = useHalfDay && prop.priceHalfDay ? prop.priceHalfDay : prop.pricePerDay;
+          const unitPrice = useHalfDay && prop.priceHalfDay ? prop.priceHalfDay : prop.pricePerDay;
+          
           breakdown.props.push({
             name: prop.name,
             quantity: 1,
-            unitPrice: prop.pricePerDay,
-            total,
-            needsTimeSelection: false, // Props are always per day
+            unitPrice: unitPrice,
+            total: total,
+            needsTimeSelection: false,
+            priceLabel: useHalfDay ? 'Half Day (≤4 hours)' : 'Full Day (>4 hours)',
           });
           breakdown.total += total;
         }
@@ -545,10 +551,12 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                   {priceBreakdown.props.length > 0 && (
                     <div className="bg-white/60 rounded p-2">
                       <p className="font-medium text-gray-600 mb-1">Props</p>
-                      {priceBreakdown.props.map((prop, idx) => (
+                      {priceBreakdown.props.map((prop: any, idx) => (
                         <div key={idx} className="flex justify-between text-gray-700">
                           <span>{prop.name}</span>
-                          <span className="font-medium">AED {prop.unitPrice.toLocaleString()}/day</span>
+                          <span className="font-medium">
+                            AED {prop.total.toLocaleString()} {prop.priceLabel ? `(${prop.priceLabel})` : '/day'}
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -1341,7 +1349,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                         <div key={idx} className="flex justify-between items-center text-sm mb-1 last:mb-0">
                           <span className="text-gray-700">{prop.name}</span>
                           <span className="text-gray-900 font-medium">
-                            AED {prop.unitPrice.toLocaleString()}/day
+                            AED {prop.total.toLocaleString()} {prop.priceLabel ? `(${prop.priceLabel})` : '/day'}
                           </span>
                         </div>
                       ))}

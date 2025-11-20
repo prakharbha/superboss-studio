@@ -41,8 +41,14 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'priceHalfDay',
+      title: 'Price Half Day (AED) - Up to 4 hours',
+      type: 'number',
+      validation: (Rule) => Rule.positive(),
+    }),
+    defineField({
       name: 'pricePerDay',
-      title: 'Price Per Day (AED)',
+      title: 'Price Full Day (AED) - Over 4 hours',
       type: 'number',
       validation: (Rule) => Rule.required().positive(),
     }),

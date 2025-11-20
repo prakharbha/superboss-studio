@@ -9,11 +9,13 @@ async function getProps() {
       name: item.name,
       category: item.category,
       description: item.description,
+      priceHalfDay: item.priceHalfDay,
       pricePerDay: item.pricePerDay,
       currency: item.currency,
       color: item.color,
       style: item.style,
       available: item.available !== false,
+      image: item.image,
     })) || [];
   } catch (error) {
     console.error('Error fetching props:', error);

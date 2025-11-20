@@ -119,6 +119,7 @@ export const propsQuery = `*[_type == "prop"] | order(name asc) {
   name,
   category,
   description,
+  priceHalfDay,
   pricePerDay,
   currency,
   color,

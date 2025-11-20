@@ -129,39 +129,37 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
             total = studio.price8Hours || studio.pricePerDay;
             unitPrice = studio.price8Hours || studio.pricePerDay;
             hourLabel = '8 Hours';
-          } else if (selectedHourPackage === '8') {
-            // 8 hour package is the same as full day
-            total = studio.price8Hours || studio.pricePerDay;
-            unitPrice = studio.price8Hours || studio.pricePerDay;
-            hourLabel = '8 Hours';
           } else if (selectedHourPackage) {
             // Use package pricing
-            switch (selectedHourPackage) {
-              case '1':
-                total = studio.pricePerHour;
-                unitPrice = studio.pricePerHour;
-                hourLabel = '1 Hour';
-                break;
-              case '2':
-                total = studio.price2Hours || (studio.pricePerHour * 2);
-                unitPrice = studio.price2Hours || (studio.pricePerHour * 2);
-                hourLabel = '2 Hours';
-                break;
-              case '4':
-                total = studio.price4Hours || (studio.pricePerHour * 4);
-                unitPrice = studio.price4Hours || (studio.pricePerHour * 4);
-                hourLabel = '4 Hours';
-                break;
-              case '6':
-                total = studio.price6Hours || (studio.pricePerHour * 6);
-                unitPrice = studio.price6Hours || (studio.pricePerHour * 6);
-                hourLabel = '6 Hours';
-                break;
-              case '8':
-                total = studio.price8Hours || studio.pricePerDay;
-                unitPrice = studio.price8Hours || studio.pricePerDay;
-                hourLabel = '8 Hours';
-                break;
+            if (selectedHourPackage === '8') {
+              // 8 hour package is the same as full day
+              total = studio.price8Hours || studio.pricePerDay;
+              unitPrice = studio.price8Hours || studio.pricePerDay;
+              hourLabel = '8 Hours';
+            } else {
+              // Handle other hour packages
+              switch (selectedHourPackage) {
+                case '1':
+                  total = studio.pricePerHour;
+                  unitPrice = studio.pricePerHour;
+                  hourLabel = '1 Hour';
+                  break;
+                case '2':
+                  total = studio.price2Hours || (studio.pricePerHour * 2);
+                  unitPrice = studio.price2Hours || (studio.pricePerHour * 2);
+                  hourLabel = '2 Hours';
+                  break;
+                case '4':
+                  total = studio.price4Hours || (studio.pricePerHour * 4);
+                  unitPrice = studio.price4Hours || (studio.pricePerHour * 4);
+                  hourLabel = '4 Hours';
+                  break;
+                case '6':
+                  total = studio.price6Hours || (studio.pricePerHour * 6);
+                  unitPrice = studio.price6Hours || (studio.pricePerHour * 6);
+                  hourLabel = '6 Hours';
+                  break;
+              }
             }
           } else {
             needsTimeSelection = true;

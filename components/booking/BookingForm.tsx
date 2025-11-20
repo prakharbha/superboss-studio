@@ -112,17 +112,35 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
     } else if (hours === 2) {
       const price = studio.price2Hours || (studio.pricePerHour * 2);
       return { total: price, unitPrice: price, hourLabel: '2 Hours' };
+    } else if (hours === 3) {
+      // 3 hours = 1 hour price + 2 hour price
+      const price1 = studio.pricePerHour;
+      const price2 = studio.price2Hours || (studio.pricePerHour * 2);
+      const price = price1 + price2;
+      return { total: price, unitPrice: studio.pricePerHour, hourLabel: '3 Hours' };
     } else if (hours === 4) {
       const price = studio.price4Hours || (studio.pricePerHour * 4);
       return { total: price, unitPrice: price, hourLabel: '4 Hours' };
+    } else if (hours === 5) {
+      // 5 hours = 4 hour price + 1 hour price
+      const price4 = studio.price4Hours || (studio.pricePerHour * 4);
+      const price1 = studio.pricePerHour;
+      const price = price4 + price1;
+      return { total: price, unitPrice: studio.pricePerHour, hourLabel: '5 Hours' };
     } else if (hours === 6) {
       const price = studio.price6Hours || (studio.pricePerHour * 6);
       return { total: price, unitPrice: price, hourLabel: '6 Hours' };
+    } else if (hours === 7) {
+      // 7 hours = 6 hour price + 1 hour price
+      const price6 = studio.price6Hours || (studio.pricePerHour * 6);
+      const price1 = studio.pricePerHour;
+      const price = price6 + price1;
+      return { total: price, unitPrice: studio.pricePerHour, hourLabel: '7 Hours' };
     } else if (hours === 8 || hours >= 8) {
       const price = studio.price8Hours || studio.pricePerDay;
       return { total: price, unitPrice: price, hourLabel: '8 Hours (Full Day)' };
     } else {
-      // For other hour counts, calculate from hourly rate
+      // For other hour counts (9+), calculate from hourly rate
       const price = studio.pricePerHour * hours;
       return { total: price, unitPrice: studio.pricePerHour, hourLabel: `${hours} Hours` };
     }

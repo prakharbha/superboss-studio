@@ -46,6 +46,14 @@ const pricingData = {
     price8Hours: 1250,
     pricePerDay: 1250,
   },
+  'Boss Arena': {
+    pricePerHour: 2000,
+    price2Hours: 3800,
+    price4Hours: 7500,
+    price6Hours: 10000,
+    price8Hours: 16000,
+    pricePerDay: 16000,
+  },
   'Super Cell': {
     pricePerHour: 500,
     price2Hours: 800,
@@ -69,6 +77,22 @@ const pricingData = {
     price6Hours: 1200,
     price8Hours: 2000,
     pricePerDay: 2000,
+  },
+  'Super Feast': {
+    pricePerHour: 400,
+    price2Hours: 700,
+    price4Hours: 1000,
+    price6Hours: 1200,
+    price8Hours: 1400,
+    pricePerDay: 1400,
+  },
+  'Super Voice': {
+    pricePerHour: 300,
+    price2Hours: 500,
+    price4Hours: 700,
+    price6Hours: 900,
+    price8Hours: 1250,
+    pricePerDay: 1250,
   },
 };
 

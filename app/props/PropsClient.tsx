@@ -172,7 +172,7 @@ export default function PropsClient({ propsData }: PropsClientProps) {
               {filteredProps.map((item, index) => (
                 <div key={item.id} className="bg-white border border-sb-grey-light rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                     {/* Image */}
-                    <div className="aspect-square bg-sb-grey-light relative overflow-hidden">
+                    <div className="aspect-[4/3] bg-sb-grey-light relative overflow-hidden">
                       {item.image?.asset?.url ? (
                         <Image
                           src={item.image.asset.url}

@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import AnimatedSection from '@/components/AnimatedSection';
+import BackgroundSlider from '@/components/BackgroundSlider';
 import RotatingText from '@/components/RotatingText';
 import AnimatedTagline from '@/components/AnimatedTagline';
 import ImageGallery from '@/components/ImageGallery';
@@ -25,17 +25,6 @@ interface HomeClientProps {
 }
 
 export default function HomeClient({ studiosData }: HomeClientProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    // Ensure video plays and loops
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // Autoplay failed, will require user interaction
-      });
-    }
-  }, []);
-
   const features = [
     {
       icon: Camera,
@@ -108,36 +97,22 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
 
   return (
     <div className="bg-white">
-      {/* Hero Section with Video Background */}
+      {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Video Background */}
-        <div className="absolute inset-0 z-0">
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover"
-            preload="auto"
-          >
-            {/* Use 720p version for better performance */}
-            <source
-              src="/videos/superboss-studio-tour-banner-720p.mp4"
-              type="video/mp4"
-            />
-            {/* Fallback to 1080p if needed */}
-            <source
-              src="/videos/superboss-studio-tour-banner-1080p.mp4"
-              type="video/mp4"
-            />
-            Your browser does not support the video tag.
-          </video>
-          {/* Overlay for better text readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-sb-black/70 via-sb-black/50 to-sb-black/70 z-10"></div>
-        </div>
+        {/* Background Slider */}
+        <BackgroundSlider 
+          images={[
+            '/images/home-banner-2.webp',
+            '/images/home-banner-1.webp',
+          ]}
+          mobileImages={[
+            '/images/home-banner-2-mobile.webp',
+            '/images/home-banner-1-mobile.webp',
+          ]}
+          interval={6000}
+        />
         
-        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -197,7 +172,7 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 1 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
         >
           <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
             <motion.div
@@ -395,3 +370,4 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
     </div>
   );
 }
+

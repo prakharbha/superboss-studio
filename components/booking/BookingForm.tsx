@@ -375,10 +375,10 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                             <span>{studio.name}</span>
                             <span className="font-medium">
                               {bookingType === 'fullDay' 
-                                ? `AED ${studio.unitPrice.toLocaleString()} (8 Hours)`
+                                ? `AED ${studio.total.toLocaleString()} (8 Hours)`
                                 : studio.needsTimeSelection
                                   ? `Select time range`
-                                  : `AED ${studio.unitPrice.toLocaleString()} (${studio.hourLabel || `${calculatedHours} hour${calculatedHours !== 1 ? 's' : ''}`})`
+                                  : `AED ${studio.total.toLocaleString()} (${studio.hourLabel || `${calculatedHours} hour${calculatedHours !== 1 ? 's' : ''}`})`
                               }
                             </span>
                           </div>
@@ -819,7 +819,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                       <p className="text-sm text-gray-600 mb-4">
                         Select the time ranges you need (9:00 AM - 6:00 PM)
                       </p>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[300px] overflow-y-auto">
+                      <div className="space-y-2 max-h-[400px] overflow-y-auto">
                         {Array.from({ length: 9 }, (_, i) => {
                           const startHour = 9 + i;
                           const endHour = 10 + i;
@@ -849,18 +849,26 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                                 setSelectedHours(slots);
                                 setValue('selectedHours', slots, { shouldValidate: true });
                               }}
-                              className={`p-3 rounded-lg border-2 transition-all duration-200 text-center ${
+                              className={`w-full p-4 rounded-lg border-2 transition-all duration-200 flex items-center justify-between ${
                                 isSelected
                                   ? 'border-black bg-black text-white shadow-md'
                                   : 'border-gray-300 bg-white hover:border-gray-500 hover:bg-gray-50'
                               }`}
                             >
-                              <div className="text-sm font-medium">{startLabel}</div>
-                              <div className="text-xs text-gray-400">-</div>
-                              <div className="text-sm font-medium">{endLabel}</div>
-                              {isSelected && (
-                                <CheckCircle className="w-4 h-4 mx-auto mt-1" />
-                              )}
+                              <div className="flex items-center space-x-3">
+                                <div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
+                                  isSelected 
+                                    ? 'border-white bg-white' 
+                                    : 'border-gray-400 bg-white'
+                                }`}>
+                                  {isSelected && (
+                                    <CheckCircle className="w-4 h-4 text-black" />
+                                  )}
+                                </div>
+                                <span className="text-base font-medium">
+                                  {startLabel} - {endLabel}
+                                </span>
+                              </div>
                             </button>
                           );
                         })}
@@ -1016,10 +1024,10 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                             <span className="text-gray-700">{studio.name}</span>
                             <span className="text-gray-900 font-medium">
                               {bookingType === 'fullDay' 
-                                ? `AED ${studio.unitPrice.toLocaleString()} (8 Hours)`
+                                ? `AED ${studio.total.toLocaleString()} (8 Hours)`
                                 : studio.needsTimeSelection
                                   ? `AED ${studio.unitPrice.toLocaleString()}/hr (Select time range)`
-                                  : `AED ${studio.unitPrice.toLocaleString()} (${studio.hourLabel || `${calculatedHours} hour${calculatedHours !== 1 ? 's' : ''}`})`
+                                  : `AED ${studio.total.toLocaleString()} (${studio.hourLabel || `${calculatedHours} hour${calculatedHours !== 1 ? 's' : ''}`})`
                               }
                             </span>
                           </div>

@@ -42,10 +42,9 @@ export default function RulesPage() {
   ];
 
   const cancellationPolicy = [
-    'Cancellations or rescheduling requests made more than 72 hours before booking: Advance payment may be refundable.',
-    'Cancellations or rescheduling requests made within 72 hours: Advance payment is fully forfeited.',
+    'No cancellations or refunds are allowed.',
+    'No rescheduling is permitted once a booking is confirmed.',
     'This policy applies to all circumstances including health conditions, traffic, weather, or personal emergencies.',
-    'All cancellation requests must be made by contacting us at +971 56 156 1570.',
     'No-shows will be charged the full booking amount.',
   ];
 
@@ -53,7 +52,6 @@ export default function RulesPage() {
     'A 50% advance payment (including 5% VAT) is required to confirm any studio reservation.',
     'Payment must be confirmed before studio access is granted.',
     'We accept bank transfer, credit card, and cash.',
-    'The advance payment is non-refundable if booking is changed or canceled within 72 hours.',
     'Advance payments, once paid, are not refundable and will not be adjusted for any subsequent booking.',
     'Additional charges apply for overtime usage (automatic charge for exceeding booked time by 15+ minutes).',
     'Equipment damage will be charged according to actual purchase or production cost.',

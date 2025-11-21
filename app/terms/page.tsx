@@ -57,23 +57,23 @@ export default function TermsPage() {
               <strong>Booking Confirmation:</strong> To confirm any studio reservation, we require a 50% advance payment, which includes 5% VAT as per UAE regulations.
             </p>
             <p className="text-sb-grey mb-4">
-              <strong>Non-Refundable Policy:</strong> The advance payment is non-refundable if the booking is changed or canceled within 72 hours of the reserved time. This policy helps us manage our schedule and ensure availability for all clients.
+              <strong>No Refund or Adjustment:</strong> Advance payments, once paid, are not refundable and will not be adjusted for any subsequent booking.
             </p>
             <p className="text-sb-grey mb-4">
-              <strong>No Refund or Adjustment:</strong> Advance payments, once paid, are not refundable and will not be adjusted for any subsequent booking.
+              <strong>No Cancellations or Refunds:</strong> We do not offer cancellations or refunds under any circumstances. This policy applies to all situations including health conditions, traffic delays, weather conditions, or personal emergencies.
             </p>
           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-sb-black mb-4">5. Cancellation & Rescheduling</h2>
             <p className="text-sb-grey mb-4">
-              <strong>Request Process:</strong> Any request to cancel or reschedule must be made by contacting us directly at <a href="tel:+971561561570" className="text-sb-black font-semibold hover:underline">+971 56 156 1570</a>.
+              <strong>No Cancellations:</strong> We do not allow cancellations or refunds under any circumstances. Once a booking is confirmed and payment is made, the booking cannot be canceled.
             </p>
             <p className="text-sb-grey mb-4">
-              <strong>72-Hour Policy:</strong> For cancellations or rescheduling requests made later than 72 hours before your appointment, the advance payment will be fully forfeited. This policy applies to all circumstances, including health conditions, traffic delays, weather conditions, or personal emergencies.
+              <strong>No Rescheduling:</strong> Rescheduling is not permitted once a booking is confirmed. The booked time slot is reserved exclusively for you and cannot be changed.
             </p>
             <p className="text-sb-grey mb-4">
-              We recommend planning ahead and contacting us as soon as possible if you anticipate any changes to your booking.
+              <strong>Policy Applicability:</strong> This policy applies to all circumstances, including health conditions, traffic delays, weather conditions, or personal emergencies. We recommend planning ahead and ensuring your availability before confirming a booking.
             </p>
           </section>
 

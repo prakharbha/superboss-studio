@@ -606,7 +606,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
         <div className="flex items-center">
           {steps.map((step, index) => (
             <div key={step.id} className="flex items-center flex-1">
-              <div className="flex flex-col items-center flex-1">
+              <div className="flex flex-col items-center flex-shrink-0">
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all duration-300 ${
                     currentStep >= step.id
@@ -618,7 +618,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
                 </div>
                 <div className="mt-2 text-center hidden md:block">
                   <p
-                    className={`text-sm font-medium ${
+                    className={`text-sm font-medium whitespace-nowrap ${
                       currentStep >= step.id ? 'text-gray-900' : 'text-gray-500'
                     }`}
                   >
@@ -628,7 +628,7 @@ export default function BookingForm({ studios: studiosData = [], equipment: equi
               </div>
               {index < steps.length - 1 && (
                 <div
-                  className={`h-1 flex-1 transition-all duration-300 ${
+                  className={`h-1 flex-1 mx-2 transition-all duration-300 ${
                     currentStep > step.id ? 'bg-black' : 'bg-gray-200'
                   }`}
                 ></div>

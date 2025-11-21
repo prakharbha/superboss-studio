@@ -44,6 +44,7 @@ export default function RulesPage() {
   const cancellationPolicy = [
     'No cancellations or refunds are allowed.',
     'No rescheduling is permitted once a booking is confirmed.',
+    'Advance once paid would not be refundable and will not be adjusted for any future booking.',
     'This policy applies to all circumstances including health conditions, traffic, weather, or personal emergencies.',
     'No-shows will be charged the full booking amount.',
   ];

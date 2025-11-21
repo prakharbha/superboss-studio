@@ -254,7 +254,7 @@ export default function HomeClient({ studiosData }: HomeClientProps) {
       </section>
 
       {/* Latest Events Gallery */}
-      <div className="pt-16 pb-16">
+      <div className="">
         <ImageGallery
           images={[
             { src: '/images/gallery/DSC08515.webp', alt: 'SuperBoss Studio Event' },

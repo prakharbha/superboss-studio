@@ -55,20 +55,20 @@ export default function PrivacyPage() {
                 We collect information that you provide directly to us when you:
               </p>
               <ul className="list-disc pl-6 text-sb-grey space-y-2 mb-6">
-                <li>Book a studio or request information</li>
-                <li>Contact us through our website or email</li>
-                <li>Subscribe to our newsletter or download our catalog</li>
-                <li>Create an account on our platform</li>
+                <li>Book a studio or request information.</li>
+                <li>Contact us through our website or email.</li>
+                <li>Subscribe to our newsletter or download our catalog.</li>
+                <li>Create an account on our platform.</li>
               </ul>
               <p className="text-sb-grey mb-4">
                 The types of information we may collect include:
               </p>
               <ul className="list-disc pl-6 text-sb-grey space-y-2">
-                <li>Name and contact information (email, phone number, address)</li>
-                <li>Company name and business information</li>
-                <li>Booking details and preferences</li>
-                <li>Payment information (processed securely through third-party providers)</li>
-                <li>Communication history with our team</li>
+                <li>Name and contact information (email, phone number, address).</li>
+                <li>Company name and business information.</li>
+                <li>Booking details and preferences.</li>
+                <li>Payment information (processed securely through third-party providers).</li>
+                <li>Communication history with our team.</li>
               </ul>
             </AnimatedSection>
 
@@ -78,13 +78,13 @@ export default function PrivacyPage() {
                 We use the information we collect to:
               </p>
               <ul className="list-disc pl-6 text-sb-grey space-y-2">
-                <li>Process and manage your studio bookings</li>
-                <li>Communicate with you about your reservations and inquiries</li>
-                <li>Send you important updates about our services</li>
-                <li>Improve our services and customer experience</li>
-                <li>Send promotional materials (only with your consent)</li>
-                <li>Comply with legal obligations</li>
-                <li>Prevent fraud and ensure security</li>
+                <li>Process and manage your studio bookings.</li>
+                <li>Communicate with you about your reservations and inquiries.</li>
+                <li>Send you important updates about our services.</li>
+                <li>Improve our services and customer experience.</li>
+                <li>Send promotional materials (only with your consent).</li>
+                <li>Comply with legal obligations.</li>
+                <li>Prevent fraud and ensure security.</li>
               </ul>
             </AnimatedSection>
 
@@ -94,9 +94,9 @@ export default function PrivacyPage() {
                 We do not sell, trade, or rent your personal information to third parties. We may share your information only in the following circumstances:
               </p>
               <ul className="list-disc pl-6 text-sb-grey space-y-2">
-                <li><strong>Service Providers:</strong> We may share information with trusted third-party service providers who assist us in operating our business (e.g., payment processors, email services)</li>
-                <li><strong>Legal Requirements:</strong> We may disclose information if required by law or to protect our rights and safety</li>
-                <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or sale of assets, your information may be transferred</li>
+                <li><strong>Service Providers:</strong> We may share information with trusted third-party service providers who assist us in operating our business (e.g., payment processors, email services).</li>
+                <li><strong>Legal Requirements:</strong> We may disclose information if required by law or to protect our rights and safety.</li>
+                <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or sale of assets, your information may be transferred.</li>
               </ul>
             </AnimatedSection>
 
@@ -116,13 +116,13 @@ export default function PrivacyPage() {
                 You have the right to:
               </p>
               <ul className="list-disc pl-6 text-sb-grey space-y-2">
-                <li>Access the personal information we hold about you</li>
-                <li>Request correction of inaccurate information</li>
-                <li>Request deletion of your personal information</li>
-                <li>Object to processing of your personal information</li>
-                <li>Request restriction of processing</li>
-                <li>Data portability</li>
-                <li>Withdraw consent at any time</li>
+                <li>Access the personal information we hold about you.</li>
+                <li>Request correction of inaccurate information.</li>
+                <li>Request deletion of your personal information.</li>
+                <li>Object to processing of your personal information.</li>
+                <li>Request restriction of processing.</li>
+                <li>Data portability.</li>
+                <li>Withdraw consent at any time.</li>
               </ul>
             </AnimatedSection>
 

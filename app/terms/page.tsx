@@ -59,6 +59,9 @@ export default function TermsPage() {
             <p className="text-sb-grey mb-4">
               <strong>Non-Refundable Policy:</strong> The advance payment is non-refundable if the booking is changed or canceled within 72 hours of the reserved time. This policy helps us manage our schedule and ensure availability for all clients.
             </p>
+            <p className="text-sb-grey mb-4">
+              <strong>No Refund or Adjustment:</strong> Advance payments, once paid, are not refundable and will not be adjusted for any subsequent booking.
+            </p>
           </section>
 
           <section className="mb-8">

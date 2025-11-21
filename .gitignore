@@ -57,3 +57,6 @@ scripts/equipment-pdf-full-text.txt
 
 # Note: catalogue.pdf (small placeholder) is kept in repo
 # Note: Utility scripts (migrations, optimizations) are kept in git for team use
+
+# Markdown documentation files
+*.md

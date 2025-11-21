@@ -26,7 +26,7 @@ async function getBookingData() {
           pricePerDay: studio.pricePerDay,
           currency: studio.currency,
         }))
-        .sort((a, b) => (a.pricePerHour || 0) - (b.pricePerHour || 0)), // Sort by price per hour in ascending order
+        .sort((a: any, b: any) => (a.pricePerHour || 0) - (b.pricePerHour || 0)), // Sort by price per hour in ascending order
       equipment: equipment.map((item: any) => ({
         id: item.id,
         name: item.name,

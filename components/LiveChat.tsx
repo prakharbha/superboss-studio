@@ -71,19 +71,11 @@ export default function LiveChat() {
     ]);
   };
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim()) return;
 
-    // Prepare WhatsApp message
-    const whatsappNumber = '+971561561570';
-    const message = `Hi, I'm ${userName} (${userEmail}${userPhone ? ', ' + userPhone : ''}).\n\n${inputValue}`;
-    const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
-    
-    // Open WhatsApp
-    window.open(whatsappUrl, '_blank');
-
-    // Add message to chat
+    // Add user message to chat immediately
     const newMessage: Message = {
       id: messages.length + 1,
       text: inputValue,
@@ -92,18 +84,86 @@ export default function LiveChat() {
     };
 
     setMessages([...messages, newMessage]);
+    const currentInput = inputValue;
     setInputValue('');
 
-    // Auto-reply
-    setTimeout(() => {
-      const autoReply: Message = {
+    // Show sending indicator
+    const sendingMessage: Message = {
+      id: messages.length + 2,
+      text: 'Sending...',
+      sender: 'bot',
+      timestamp: new Date(),
+    };
+    setMessages((prev) => [...prev, sendingMessage]);
+
+    try {
+      // Send message to WhatsApp Business API
+      const response = await fetch('/api/whatsapp/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: userName,
+          email: userEmail,
+          phone: userPhone,
+          message: currentInput,
+        }),
+      });
+
+      const data = await response.json();
+
+      // Remove sending indicator
+      setMessages((prev) => prev.filter(msg => msg.id !== sendingMessage.id));
+
+      if (data.success) {
+        if (data.fallback) {
+          // WhatsApp API not configured, fallback to opening WhatsApp
+          const whatsappNumber = '+971561561570';
+          const whatsappMessage = `Hi, I'm ${userName} (${userEmail}${userPhone ? ', ' + userPhone : ''}).\n\n${currentInput}`;
+          const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(whatsappMessage)}`;
+          window.open(whatsappUrl, '_blank');
+          
+          const fallbackReply: Message = {
+            id: messages.length + 2,
+            text: "Message sent! Opening WhatsApp to continue the conversation... 💬",
+            sender: 'bot',
+            timestamp: new Date(),
+          };
+          setMessages((prev) => [...prev, fallbackReply]);
+        } else {
+          // Message sent successfully via API
+          const successReply: Message = {
+            id: messages.length + 2,
+            text: "✅ Message sent! Our team will reply to you on WhatsApp shortly. Check your WhatsApp for our response! 💬",
+            sender: 'bot',
+            timestamp: new Date(),
+          };
+          setMessages((prev) => [...prev, successReply]);
+        }
+      } else {
+        throw new Error(data.error || 'Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      
+      // Remove sending indicator
+      setMessages((prev) => prev.filter(msg => msg.id !== sendingMessage.id));
+      
+      // Fallback to opening WhatsApp directly
+      const whatsappNumber = '+971561561570';
+      const whatsappMessage = `Hi, I'm ${userName} (${userEmail}${userPhone ? ', ' + userPhone : ''}).\n\n${currentInput}`;
+      const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(whatsappMessage)}`;
+      window.open(whatsappUrl, '_blank');
+      
+      const errorReply: Message = {
         id: messages.length + 2,
-        text: "Opening WhatsApp... You'll be connected directly with our team for real-time support! 💬",
+        text: "Opening WhatsApp... You'll be connected directly with our team! 💬",
         sender: 'bot',
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, autoReply]);
-    }, 500);
+      setMessages((prev) => [...prev, errorReply]);
+    }
   };
 
   const handleClose = () => {

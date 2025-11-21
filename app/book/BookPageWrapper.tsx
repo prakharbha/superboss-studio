@@ -10,21 +10,23 @@ async function getBookingData() {
     ]);
 
     return {
-      studios: studios.map((studio: any) => ({
-        id: studio.id,
-        name: studio.name,
-        slug: studio.slug?.current || studio.slug,
-        size: studio.size,
-        unit: studio.unit,
-        description: studio.description,
-        pricePerHour: studio.pricePerHour,
-        price2Hours: studio.price2Hours,
-        price4Hours: studio.price4Hours,
-        price6Hours: studio.price6Hours,
-        price8Hours: studio.price8Hours || studio.pricePerDay,
-        pricePerDay: studio.pricePerDay,
-        currency: studio.currency,
-      })),
+      studios: studios
+        .map((studio: any) => ({
+          id: studio.id,
+          name: studio.name,
+          slug: studio.slug?.current || studio.slug,
+          size: studio.size,
+          unit: studio.unit,
+          description: studio.description,
+          pricePerHour: studio.pricePerHour,
+          price2Hours: studio.price2Hours,
+          price4Hours: studio.price4Hours,
+          price6Hours: studio.price6Hours,
+          price8Hours: studio.price8Hours || studio.pricePerDay,
+          pricePerDay: studio.pricePerDay,
+          currency: studio.currency,
+        }))
+        .sort((a, b) => (a.pricePerHour || 0) - (b.pricePerHour || 0)), // Sort by price per hour in ascending order
       equipment: equipment.map((item: any) => ({
         id: item.id,
         name: item.name,

@@ -11,73 +11,7 @@ const client = createClient({
   token: process.env.SANITY_API_TOKEN,
 });
 
-const props = [
-  {
-    id: 'marble-coffee-table',
-    name: 'Marble Coffee Table',
-    category: 'Furniture',
-    description: 'DIMENSION: 1.27m(Length), 0.7m (Width), 0.39m(Height)',
-    priceHalfDay: 75,
-    pricePerDay: 140,
-    currency: 'AED',
-    available: true,
-    imageFile: 'pr1.webp',
-  },
-  {
-    id: '2-piece-round-side-table',
-    name: '2-Piece Round Side Table',
-    category: 'Furniture',
-    description: 'Height: 0.46m, Diameter: 0.7m / Height: 0.41m, Diameter: 0.5m. Available: 1',
-    priceHalfDay: 75,
-    pricePerDay: 140,
-    currency: 'AED',
-    available: true,
-    imageFile: 'pr2.webp',
-  },
-  {
-    id: 'single-round-side-table',
-    name: 'Single Round Side Table',
-    category: 'Furniture',
-    description: 'Height: 0.41m, Diameter: 0.5m. Available: 1',
-    priceHalfDay: 35,
-    pricePerDay: 60,
-    currency: 'AED',
-    available: true,
-    imageFile: 'pr3.webp',
-  },
-  {
-    id: 'wooden-table',
-    name: 'Wooden Table',
-    category: 'Furniture',
-    description: 'DIMENSION: 0.91m(Length), 0.5m(Width), 0.41m(Height). Available: 1',
-    priceHalfDay: 60,
-    pricePerDay: 110,
-    currency: 'AED',
-    available: true,
-    imageFile: 'pr4.webp',
-  },
-  {
-    id: 'rock-marble-side-table',
-    name: 'Rock Marble Side Table',
-    category: 'Furniture',
-    description: 'DIMENSION: 0.48m(Width), 0.53m(Height). Available: 1',
-    priceHalfDay: 45,
-    pricePerDay: 80,
-    currency: 'AED',
-    available: true,
-    imageFile: 'pr5.webp',
-  },
-  {
-    id: 'double-tier-side-table',
-    name: 'Double Tier Side Table',
-    category: 'Furniture',
-    description: 'DIMENSION: 0.5m (Diameter) 0.55m(Height). Available: 1',
-    priceHalfDay: 45,
-    pricePerDay: 80,
-    currency: 'AED',
-    available: true,
-    imageFile: 'pr6.webp',
-  },
+const newProps = [
   {
     id: 'velvet-sofa-gray-set',
     name: 'VELVET SOFA GRAY SET',
@@ -231,44 +165,70 @@ async function uploadImage(imagePath) {
 
 async function addProps() {
   try {
-    for (const prop of props) {
-      const imagePath = path.join(process.cwd(), prop.imageFile);
-      
-      if (!fs.existsSync(imagePath)) {
-        console.error(`Image not found: ${imagePath}`);
-        continue;
-      }
-      
-      console.log(`Uploading image for ${prop.name}...`);
-      const imageAssetId = await uploadImage(imagePath);
-      
-      const doc = {
-        _type: 'prop',
-        id: prop.id,
-        name: prop.name,
-        category: prop.category,
-        description: prop.description,
-        priceHalfDay: prop.priceHalfDay,
-        pricePerDay: prop.pricePerDay,
-        currency: prop.currency,
-        available: prop.available,
-        image: {
-          _type: 'image',
-          asset: {
-            _type: 'reference',
-            _ref: imageAssetId,
+    console.log('🎨 Adding new props (pr7-pr18) to Sanity CMS...\n');
+    
+    let success = 0;
+    let errors = 0;
+
+    for (const prop of newProps) {
+      try {
+        // Check if prop already exists
+        const existing = await client.fetch(
+          `*[_type == "prop" && id == $id][0]`,
+          { id: prop.id }
+        );
+
+        if (existing) {
+          console.log(`⏭️  Skipping ${prop.name} (already exists)`);
+          continue;
+        }
+
+        const imagePath = path.join(process.cwd(), prop.imageFile);
+        
+        if (!fs.existsSync(imagePath)) {
+          console.error(`❌ Image not found: ${imagePath}`);
+          errors++;
+          continue;
+        }
+        
+        console.log(`📤 Uploading image for ${prop.name}...`);
+        const imageAssetId = await uploadImage(imagePath);
+        
+        const doc = {
+          _type: 'prop',
+          id: prop.id,
+          name: prop.name,
+          category: prop.category,
+          description: prop.description,
+          priceHalfDay: prop.priceHalfDay,
+          pricePerDay: prop.pricePerDay,
+          currency: prop.currency,
+          available: prop.available,
+          image: {
+            _type: 'image',
+            asset: {
+              _type: 'reference',
+              _ref: imageAssetId,
+            },
+            alt: prop.name,
           },
-          alt: prop.name,
-        },
-      };
-      
-      await client.create(doc);
-      console.log(`✅ Added: ${prop.name}`);
+        };
+        
+        await client.create(doc);
+        console.log(`✅ Added: ${prop.name}`);
+        success++;
+      } catch (error) {
+        console.error(`❌ Error adding ${prop.name}:`, error.message);
+        errors++;
+      }
     }
     
-    console.log(`\n✅ Successfully added ${props.length} props`);
+    console.log(`\n✅ Successfully added ${success} props`);
+    if (errors > 0) {
+      console.log(`⚠️  ${errors} errors occurred`);
+    }
   } catch (error) {
-    console.error('Error adding props:', error);
+    console.error('❌ Error adding props:', error);
     process.exit(1);
   }
 }

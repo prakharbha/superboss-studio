@@ -1,9 +1,12 @@
 import { client, propsQuery } from '@/lib/sanity';
 import PropsClient from './PropsClient';
 
+// Always fetch fresh data (no caching)
+export const revalidate = 0;
+
 async function getProps() {
   try {
-    const props = await client.fetch(propsQuery);
+    const props = await client.fetch(propsQuery, {}, { cache: 'no-store' });
     return props.map((item: any) => ({
       id: item.id,
       name: item.name,
